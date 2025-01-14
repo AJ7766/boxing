@@ -1,101 +1,114 @@
-import Image from "next/image";
+type Fighter = {
+  name: string;
+};
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+type Event = {
+  title: string;
+  slug: string;
+  date: string;
+  location: string;
+  status: string;
+  broadcasters: string[];
+  id: string;
+};
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+type Match = {
+  id: string;
+  title: string;
+  date: string;
+  location: string;
+  scheduled_rounds: number;
+  status: string;
+  fighters: {
+    fighter_1: Fighter;
+    fighter_2: Fighter;
+  };
+  event: Event;
+};
+
+export default async function Home() {
+  const url = 'https://boxing-data-api.p.rapidapi.com/v1/fights/';
+  const options = {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': '6d8f144cc1msh9ee0c53d6339abfp1b3198jsnefa95c58c76d',
+      'x-rapidapi-host': 'boxing-data-api.p.rapidapi.com'
+    }
+  };
+
+  const fetchMatches = async (page: number): Promise<any> => {
+    const res = await fetch(`${url}?page=${page}`, options);
+    return res.json();
+  };
+
+  let allMatches: Match[] = [];
+  let page = 1;
+
+  try {
+    let data: any;
+    do {
+      data = await fetchMatches(page);
+      
+      // Log the data to inspect its structure
+      console.log('Fetched data:', data);
+
+      // Check if the fetched data is an array before spreading
+      if (Array.isArray(data)) {
+        allMatches = [...allMatches, ...data];
+      } else {
+        console.error('Fetched data is not an array:', data);
+        break; // Exit loop if data is not in the expected format
+      }
+
+      page += 1; // Increase page number to fetch the next set of matches
+    } while (data.length === 25); // Continue until less than 25 matches are returned (last page)
+
+    // Group matches by event
+    const groupedByEvent = allMatches.reduce((groups: { [key: string]: Match[] }, match) => {
+      const eventId = match.event.id;
+      if (!groups[eventId]) {
+        groups[eventId] = [];
+      }
+      groups[eventId].push(match);
+      return groups;
+    }, {});
+
+    return (
+      <div>
+        <h1>Upcoming Fights</h1>
+        {Object.entries(groupedByEvent).map(([eventId, matches]) => {
+          const event = matches[0].event; // All matches in this group have the same event
+          return (
+            <div key={eventId} className="match-card">
+              <h2>{event.title}</h2>
+              <p>Date: {new Date(event.date).toLocaleDateString()}</p>
+              <p>Location: {event.location}</p>
+              <p>Status: {event.status}</p>
+              {matches.map((match) => (
+                <div key={match.id}>
+                  <h3>{match.title}</h3>
+                  <p>Date: {new Date(match.date).toLocaleDateString()}</p>
+                  <p>Rounds: {match.scheduled_rounds}</p>
+                  <p>Status: {match.status}</p>
+                  <div>
+                    <strong>
+                      {match.fighters.fighter_1.name} vs {match.fighters.fighter_2.name}
+                    </strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    );
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return (
+      <div>
+        <h1>Error fetching data</h1>
+        <p>Something went wrong. Please try again later.</p>
+      </div>
+    );
+  }
 }
