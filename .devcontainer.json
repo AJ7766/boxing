@@ -1,0 +1,19 @@
+{
+    "name": "Boxing App Development",
+    "dockerFile": "Dockerfile",
+    "appPort": 3000,
+    "workspaceFolder": "/workspace",
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "terminal.integrated.shell.linux": "/bin/bash"
+        },
+        "extensions": [
+          "dbaeumer.vscode-eslint",
+          "esbenp.prettier-vscode"
+        ]
+      }
+    },
+    "postCreateCommand": "npm install"
+  }
+  
