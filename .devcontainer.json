@@ -2,7 +2,7 @@
     "name": "Boxing App Development",
     "dockerFile": "Dockerfile",
     "appPort": 3000,
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/app",
     "customizations": {
       "vscode": {
         "settings": {
