@@ -1,16 +1,16 @@
 import { DateTime } from 'luxon';
 
 export default function Home() {
-  const UTCDate = new Date(); // Current date and time
-  
+  const date = new Date();
+
   const localTimeFormat = (date: Date) => {
-    const localDateTime = DateTime.fromJSDate(date).setZone('local');
-    return localDateTime.toFormat('HH:mm - dd/MM/yyyy')
+    const localDateTime = DateTime.fromJSDate(date).setZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
+    return localDateTime.toFormat('HH:mm - dd/MM/yyyy');
   }
 
   return (
     <>
-      <div>LOCAL TIME: {localTimeFormat(UTCDate)}</div>
+      <div>LOCAL TIME test: {localTimeFormat(date)}</div>
     </>
   );
 }
