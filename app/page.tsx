@@ -1,17 +1,12 @@
-"use client"
-import { DateTime } from 'luxon';
+import dynamic from 'next/dynamic';
 
-export default function Home() {
-  const date = new Date();
+const Time = dynamic(() => import('@/components/Time').then((mod) => mod.Time), { ssr: true, loading: () => <p>Loading...</p> });
 
-  const localTimeFormat = (date: Date) => {
-    const localDateTime = DateTime.fromJSDate(date).setZone('local') ;
-    return localDateTime.toFormat('HH:mm - dd/MM/yyyy')
-  }
+export default async function Home() {
 
   return (
     <>
-      <div>LOCAL TIME: {localTimeFormat(date)}</div>
+      <Time />
     </>
   );
 }
