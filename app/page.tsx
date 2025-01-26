@@ -4,13 +4,13 @@ export default function Home() {
   const date = new Date();
 
   const localTimeFormat = (date: Date) => {
-    const localDateTime = DateTime.fromJSDate(date).setZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
-    return localDateTime.toFormat('HH:mm - dd/MM/yyyy');
+    const localDateTime = DateTime.fromJSDate(date).setZone('local', { keepLocalTime: true }) ;
+    return localDateTime.toFormat('HH:mm - dd/MM/yyyy')
   }
 
   return (
     <>
-      <div>LOCAL TIME test: {localTimeFormat(date)}</div>
+      <div>LOCAL TIME2: {localTimeFormat(date)}</div>
     </>
   );
 }
