@@ -1,8 +1,15 @@
 "use client"
 import { DateTime } from "luxon";
+import { useLayoutEffect, useState } from "react";
 
 export const Time = () => {
+    const [isClient, setIsClient] = useState(false);
     const date = new Date();
+    useLayoutEffect(()=> {
+        setIsClient(true);
+    },[])
+
+    if(!isClient) return <div>LOCAL TIME: Loading...</div>;
 
     return <div>LOCAL TIME: {localTimeFormat(date)}</div>
 }
