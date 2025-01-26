@@ -9,7 +9,7 @@ export const Time = () => {
         setIsClient(true);
     },[])
 
-    if(!isClient) return <div>LOCAL TIME: Loading...</div>;
+    if(!isClient) return;
 
     return <div>LOCAL TIME: {localTimeFormat(date)}</div>
 }
