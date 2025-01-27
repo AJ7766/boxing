@@ -1,15 +1,8 @@
-import { Suspense, lazy } from "react";
-
-const Time = lazy(() =>
-  import('@/components/Time').then((module) => ({ default: module.Time }))
-);
+import { Time } from "@/components/Time";
+import { Suspense } from "react";
 
 export default function Home() {
-  return (
-    <div>
-      <Suspense fallback={<p>Loading...</p>}>
-        <Time />
-      </Suspense>
-    </div>
-  );
+  return <Suspense fallback={<p>Loading local time...</p>}>
+    <Time />
+  </Suspense>
 }
