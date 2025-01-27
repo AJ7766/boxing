@@ -1,12 +1,15 @@
-import dynamic from 'next/dynamic';
+import { Suspense, lazy } from "react";
 
-const Time = dynamic(() => import('@/components/Time').then((mod) => mod.Time), { ssr: true, loading: () => <p>Loading...</p> });
+const Time = lazy(() =>
+  import('@/components/Time').then((module) => ({ default: module.Time }))
+);
 
-export default async function Home() {
-
+export default function Home() {
   return (
-    <>
-      <Time />
-    </>
+    <div>
+      <Suspense fallback={<p>Loading...</p>}>
+        <Time />
+      </Suspense>
+    </div>
   );
 }
