@@ -1,5 +1,4 @@
 "use client"
-import { DateTime } from "luxon";
 import { useLayoutEffect, useState } from "react";
 
 export const Time = () => {
@@ -13,11 +12,11 @@ export const Time = () => {
     return <div>LOCAL TIME: {isClient ? localTimeFormat2(date) : 'Loading...'}</div>
 }
 
-const localTimeFormat = (date: Date) => {
+/* const localTimeFormat = (date: Date) => {
     const localDateTime = DateTime.fromJSDate(date).setZone('local');
     return localDateTime.toFormat('HH:mm - dd/MM/yyyy')
 }
-
+ */
 const localTimeFormat2 = (date: Date) => {
     const localDateTime = date.toLocaleString('default', {
         hour: '2-digit',
