@@ -9,15 +9,30 @@ interface EventProps {
 
 interface VideoProps {
     id: string;
+    alt: string;
     type: string;
 }
+const Events = [{
+    title: "ARTUR BETERBIEV vs DMITRY BIVOL",
+    type: "Press Conference",
+    id: "n4LJ-wmRbc8",
+    videos: [{
+        id: "n4LJ-wmRbc8",
+        alt: "Artur Beterbiev vs Dmitry Bivol Press Conference",
+        type: "Press Conference"
+    }]
+}]
 
 export const News = () => {
     return (
-        <div className={`bg-gray-200 min-h-screen p-7 ${rajdhani.className}`}>
-            <Event title="ARTUR BETERBIEV vs DMITRY BIVOL">
-                <Video id="n4LJ-wmRbc8" type='Press Conference' />
-            </Event>
+        <div className={`bg-gray-100 min-h-screen p-7 ${rajdhani.className}`}>
+            {Events.map((event, i) => (
+                <Event key={i} title={event.title}>
+                    {event.videos && event.videos.map((video) => (
+                        <Video key={video.id} id={video.id} alt={video.alt} type={video.type} />
+                    ))}
+                </Event>
+            ))}
         </div>
     );
 }
@@ -34,14 +49,14 @@ const Event = ({ title, children }: EventProps) => {
     )
 }
 
-const Video = ({ id, type }: VideoProps) => {
+const Video = ({ id, alt, type }: VideoProps) => {
     return (
         <div className="relative">
             <div className="overflow-hidden max-w-md">
                 <Link href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer">
                     <Image
                         src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`}
-                        alt="YouTube Video Thumbnail"
+                        alt={`${alt} Thumbnail`}
                         width={1280}
                         height={720}
                         loading='lazy'
