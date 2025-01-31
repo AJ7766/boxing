@@ -9,8 +9,9 @@ export const Nav = () => {
 
     // Add scroll event listener
     useLayoutEffect(() => {
-        setIsClient(true);
         const handleScroll = () => {
+            setIsClient(true);
+            
             if (window.scrollY > 80) {
                 console.log("true")
                 setScrolled(true); // If scrolled more than 80px
@@ -18,6 +19,8 @@ export const Nav = () => {
                 setScrolled(false); // If scrolled less than 80px
             }
         };
+
+        handleScroll();
 
         window.addEventListener("scroll", handleScroll);
 

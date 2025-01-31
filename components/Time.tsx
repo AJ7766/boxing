@@ -2,15 +2,21 @@
 import { DateTime } from "luxon";
 import { useLayoutEffect, useState } from "react";
 
-export const Time = () => {
-    const [isClient, setIsClient] = useState(false);
-    const date = new Date();
+interface DateProps {
+    year: number;
+    month: number;
+    day: number;
+    hour: number;
+}
 
+export const Time = (fightDate: DateProps) => {
+    const [isClient, setIsClient] = useState(false);
+    const date = new Date(Date.UTC(fightDate.year, fightDate.month - 1, fightDate.day, fightDate.hour, 0, 0));
     useLayoutEffect(() => {
         setIsClient(true);
     }, [])
 
-    return <div>LOCAL TIME: {isClient ? localTimeFormat(date) : 'Loading...'}</div>
+    return <p className="font-semibold">RING WALK: {isClient ? localTimeFormat(date) : 'Loading...'}</p>
 }
 
 const localTimeFormat = (date: Date) => {

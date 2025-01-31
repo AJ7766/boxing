@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { rajdhani } from "@/fonts/fonts";
 import Link from "next/link";
+import { Time } from "./Time";
 
 interface EventProps {
     title: string;
@@ -28,12 +29,15 @@ export const News = () => {
         <div className={`bg-gray-100 min-h-screen p-7 ${rajdhani.className}`}>
             {Events.map((event, i) => (
                 <Event key={i} title={event.title}>
+                    <Location location='KINGDOM ARENA, RIYADH, SA' />
+                    <Time year={2025} month={2} day={22} hour={23} />
                     {event.videos && event.videos.map((video) => (
                         <Video key={video.id} id={video.id} alt={video.alt} type={video.type} />
                     ))}
                 </Event>
-            ))}
-        </div>
+            ))
+            }
+        </div >
     );
 }
 
@@ -41,11 +45,17 @@ const Event = ({ title, children }: EventProps) => {
     const parts = title.split('vs');
     return (
         <div>
-            <h1 className="text-4xl font-bold mb-2">
-                {parts[0]} <span className="text-red-500">{`vs${parts[1]}`}</span>
-            </h1>
+            <h1 className="text-9xl font-semibold -mb-20">{parts[0]}</h1>
+            <h1 className="text-9xl font-medium italic text-red-500 pl-3">vs</h1>
+            <h1 className="text-9xl font-semibold -mt-14">{parts[1]}</h1>
             {children}
         </div>
+    )
+}
+
+const Location = ({ location }: { location: string }) => {
+    return (
+        <p className="font-semibold">{location}</p>
     )
 }
 
