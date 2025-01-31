@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@google-cloud/vision": "^4.3.2",
+    "@gsap/react": "^2.1.2",
     "ajv": "^8.17.1",
     "autoprefixer": "^10.4.20",
     "dotenv": "^16.4.7",
+    "gsap": "^3.12.7",
     "luxon": "^3.5.0",
     "next": "15.1.4",
     "openai": "^4.78.1",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@types/gsap": "^1.20.2",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20",
     "@types/react": "^19.0.7",
