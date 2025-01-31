@@ -15,18 +15,18 @@ export const Event = ({ title, children }: EventProps) => {
     const parts = title.split('vs');
     const containerRef = useRef<HTMLDivElement>(null);
 
+    // Animation for the event component
     useGSAP(() => {
         gsap.fromTo(
             containerRef.current?.children ?? [],
-            { opacity: 0, y: 50 }, // Start position
+            { opacity: 0, y: 50 },
             {
                 opacity: 1,
                 y: 0,
-                duration: 1.5,
-                stagger: 0.3, // Adds a delay between each h1
+                stagger: 0.3,
                 scrollTrigger: {
                     trigger: containerRef.current,
-                    start: "top 90%", // When 80% of the viewport is reached
+                    start: "top 90%",
                     end: "top 30%",
                     scrub: true,
                 },

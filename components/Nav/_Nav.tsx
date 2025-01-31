@@ -1,7 +1,6 @@
 "use client";
-import { rajdhani } from "@/fonts/fonts";
-import Link from "next/link";
 import { useLayoutEffect, useState } from "react";
+import { LinkC } from "./Link";
 
 export const Nav = () => {
     const [isClient, setIsClient] = useState(false);
@@ -31,10 +30,10 @@ export const Nav = () => {
 
     return (
         <nav
-            className={`bg-white flex items-center justify-center -translate-x-1/2 left-1/2 transition-[height,width,position,color,background-color] duration-700 ease-swoosh`}
+            className={`bg-white flex items-center justify-center -translate-x-1/2 left-1/2 transition-[height,width,position,color,background-color] duration-700 ease-swoosh z-10`}
             style={{
                 height: isClient ? "56px" : "0px",
-                width: scrolled ? "100%" : "1024px",
+                width: scrolled ? "100vw" : "1024px",
                 position: scrolled ? "fixed" : "absolute",
                 color: scrolled ? "white" : "black",
                 backgroundColor: scrolled ? "black" : "white",
@@ -50,9 +49,3 @@ export const Nav = () => {
         </nav>
     );
 };
-
-const LinkC = ({ name, link }: { name: string; link: string }) => {
-    return <li className={`${rajdhani.className} font-semibold text-base`}>
-        <Link href={`/${link}`}>{name}</Link>
-    </li>
-}

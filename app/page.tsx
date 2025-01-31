@@ -1,12 +1,12 @@
+import { Hero } from "@/components/Hero";
 import { News } from "@/components/News/_News";
 
 export default function Home() {
   return (
-    <div className="h-[200vh]">
-      {/* Hero */}
-      <div className="bg-[url(../public/bg.jpg)] min-h-screen bg-cover bg-center max-h-screen w-full" />
+    <>
+      <Hero />
       <News />
-    </div>
+    </>
   )
 }
 
