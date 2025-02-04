@@ -10,7 +10,7 @@ export const Nav = () => {
     useLayoutEffect(() => {
         const handleScroll = () => {
             setIsClient(true);
-            
+
             if (window.scrollY > 80) {
                 console.log("true")
                 setScrolled(true); // If scrolled more than 80px
@@ -41,6 +41,7 @@ export const Nav = () => {
             }}
         >
             <menu className="flex gap-32 font-sans">
+                <LinkC name="NEWS" link="" />
                 <LinkC name="FIGHTS" link="fights" />
                 <LinkC name="RANKINGS" link="rankings" />
                 <LinkC name="BOXERS" link="boxers" />

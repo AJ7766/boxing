@@ -1,3 +1,5 @@
+"use client"
+import { useIsClient } from "@/hooks/useClient";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,6 +10,8 @@ interface VideoProps {
 }
 
 export const Video = ({ id, alt, type }: VideoProps) => {
+    const isClient = useIsClient();
+
     return (
         <div className="relative">
             <div className="overflow-hidden max-w-md">
@@ -22,7 +26,15 @@ export const Video = ({ id, alt, type }: VideoProps) => {
                     />
                 </Link>
             </div>
-            <p className="absolute top-2 left-2 text-white text-xl font-semibold text-shadow">{type}</p>
+            {isClient && <p className="absolute top-2 left-2 text-white text-xl font-semibold text-shadow">{type}</p>}
         </div>
     )
 }
+
+const SkeletonLoader = () => (
+    <div className="animate-pulse h-96 flex flex-col gap-2">
+        <div className="bg-gray-300 max-w-7xl w-auto "></div>
+        <div className="bg-gray-300 max-w-7xl w-full"></div>
+        <div className="bg-gray-300 max-w-7xl w-full"></div>
+    </div>
+);

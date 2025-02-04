@@ -24,5 +24,5 @@ export const Hero = () => {
             }
         );
     }, []);
-    return <div ref={heroRef} className="bg-[url(../public/bg.jpg)] min-h-screen bg-cover bg-center max-h-screen w-full" />
+    return <div ref={heroRef} className="bg-[url(../public/bg.webp)] min-h-screen bg-cover bg-center max-h-screen w-full" />
 }

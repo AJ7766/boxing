@@ -14,7 +14,7 @@ interface DivisionProps {
 export interface EventProps {
     title: string;
     slug: string;
-    date: string; // ISO date string
+    date: Date;
     location: string;
     fights: FightProps[];
     division: DivisionProps;
