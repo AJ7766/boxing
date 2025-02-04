@@ -31,10 +31,10 @@ export const Video = ({ id, alt, type }: VideoProps) => {
     )
 }
 
-const SkeletonLoader = () => (
+/* const SkeletonLoader = () => (
     <div className="animate-pulse h-96 flex flex-col gap-2">
         <div className="bg-gray-300 max-w-7xl w-auto "></div>
         <div className="bg-gray-300 max-w-7xl w-full"></div>
         <div className="bg-gray-300 max-w-7xl w-full"></div>
     </div>
-);
+); */
