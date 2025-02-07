@@ -3,9 +3,9 @@ import { DateTime } from "./DateTime";
 import { Event } from "./Event";
 import { Location } from "./Location";
 import { Video } from "./Video";
-import { getFight } from "@/server/actions/getFight";
 import { FightersBg } from "./FightersBg";
 import { Fight } from "./FIght";
+import { getFight } from "@/services/fightActions";
 
 const Videos = [{
     id: "lUAA0b-YjQM",
@@ -26,26 +26,30 @@ const Videos = [{
 
 export const News = async () => {
     const fetchedFight = await getFight('675269742d129078aff55563');
+
+    if (!fetchedFight) {
+        console.error('No fight found');
+    }
+
     return (
-        <div className={`relative bg-gray-100 min-h-screen p-7 ${rajdhani.className} overflow-hidden`}>
+        <div className={`relative bg-gray-100 px-7 py-16 ${rajdhani.className} overflow-hidden`}>
             <FightersBg
-                fighter1={fetchedFight.fighters.fighter_1.name || fetchedFight.fighters.fighter_1.full_name}
-                fighter2={fetchedFight.fighters.fighter_2.name || fetchedFight.fighters.fighter_2.full_name}
+                fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
+                fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
             />
             <Event
-                fighter1={fetchedFight.fighters.fighter_1}
-                fighter2={fetchedFight.fighters.fighter_2}
+                fighter1={fetchedFight?.fighter1}
+                fighter2={fetchedFight?.fighter2}
             >
                 <Fight
-                    fighter1={fetchedFight.fighters.fighter_1.full_name || fetchedFight.fighters.fighter_1.name}
-                    fighter2={fetchedFight.fighters.fighter_2.full_name || fetchedFight.fighters.fighter_2.name}
+                    fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
+                    fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
                 />
                 <Location
-                    location={fetchedFight.location}
+                    location={fetchedFight?.location}
                 />
-                <DateTime
-                    fightDate={new Date(fetchedFight.date)}
-                />
+                <DateTime fightDate={fetchedFight?.date ? new Date(fetchedFight.date) : null} />
+
                 {/* Videos */}
                 <div className="flex flex-row gap-1">
                     {Videos.map((video) => (

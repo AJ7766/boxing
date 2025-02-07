@@ -14,11 +14,11 @@ interface DivisionProps {
 export interface EventProps {
     title: string;
     slug: string;
-    date: Date;
+    date: string;
     location: string;
     fights: FightProps[];
     division: DivisionProps;
-    status: "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED"; // Enum-like string literal
-    broadcasters: BroadcasterProps[]; // Array of broadcasters
-    id: string; // Unique identifier
+    status: "NOT_STARTED" | "LIVE" | "FINISHED";
+    broadcasters: BroadcasterProps[];
+    id: string;
 };

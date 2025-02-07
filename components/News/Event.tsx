@@ -3,15 +3,15 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from '@gsap/react';
 import { useRef } from "react";
-import { Fighter } from "@/types/fightsType";
+import { FightsFighter } from "@/types/fightsType";
 import { useIsClient } from "@/hooks/useClient";
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface EventProps {
     children: React.ReactNode;
-    fighter1: Fighter;
-    fighter2: Fighter;
+    fighter1: FightsFighter;
+    fighter2: FightsFighter;
 }
 export const Event = ({ children, fighter1, fighter2 }: EventProps) => {
     const isClient = useIsClient();

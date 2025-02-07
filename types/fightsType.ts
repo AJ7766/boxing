@@ -1,36 +1,13 @@
-export interface FighterStats {
-    wins: number;
-    losses: number;
-    draws: number;
-    total_bouts: number;
-    total_rounds: number;
-    ko_percentage: number;
-    ko_wins: number;
-    stopped: number;
-}
-
-export interface Fighter {
-    name: string;
-    full_name: string;
-    age: number;
-    height: string;
-    nationality: string;
-    reach: string;
-    stance: string;
-    stats: FighterStats;
-    debut: string;
-    id: string;
-}
+import { FighterProps } from "./fighterType";
 
 export interface FightProps {
     id: string;
     title: string;
     slug: string;
     date: string;
-    date_str: string;
     fighters: {
-        fighter_1: Fighter;
-        fighter_2: Fighter;
+        fighter_1: FighterProps;
+        fighter_2: FighterProps;
     };
     location: string;
     results: {

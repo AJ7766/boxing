@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Fighter {
+  id            String  @id
+  name          String?
+  age           Int?
+  gender        String?
+  height        String?
+  nationality   String?
+  nickname      String?
+  reach         String?
+  stance        String?
+  wins          Int?
+  losses        Int?
+  draws         Int?
+  total_bouts   Int?
+  total_rounds  Int?
+  ko_percentage Int?
+  ko_wins       Int?
+  stopped       Int?
+  debut         String?
+  divisionName  String?
+  divisionSlug  String?
+  weightLb      Float?
+  weightKg      Float?
+  titleNames    Json?
+
+  // Relationships
+  fightsAsFighter1 Fight[] @relation("Fighter1Relation")
+  fightsAsFighter2 Fight[] @relation("Fighter2Relation")
+}
+
+model Fight {
+  id               String    @id
+  title            String?
+  slug             String?
+  date             DateTime?
+  location         String?
+  results          Json?
+  scheduledRounds  Int?
+  scores           Json?
+  status           String?
+  eventTitle       String?
+  eventSlug        String?
+  eventDate        DateTime?
+  eventLocation    String?
+  divisionName     String?
+  divisionWeightLb Float?
+  divisionWeightKg Float?
+  titleNames       Json?
+// Foreign Keys
+  fighter1Id       String?   
+  fighter2Id       String?
+
+  // Relations
+  fighter1         Fighter?  @relation("Fighter1Relation", fields: [fighter1Id], references: [id])
+  fighter2         Fighter?  @relation("Fighter2Relation", fields: [fighter2Id], references: [id])
+}

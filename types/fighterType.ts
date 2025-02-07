@@ -2,10 +2,10 @@ export interface FighterStats {
     wins: number;
     losses: number;
     draws: number;
-    total_bouts: number;
-    total_rounds: number;
-    ko_percentage: number;
-    ko_wins: number;
+    totalBouts: number;
+    totalRounds: number;
+    koPercentage: number;
+    koWins: number;
     stopped: number;
 }
 
@@ -14,7 +14,7 @@ export interface FighterTitle {
     id: string;
 }
 
-export interface Fighter {
+export interface FighterProps {
     name: string;
     age: number;
     gender: string | null;

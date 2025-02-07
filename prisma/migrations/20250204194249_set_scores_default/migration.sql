@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Fight" ALTER COLUMN "scores" SET DEFAULT ARRAY[]::TEXT[];
