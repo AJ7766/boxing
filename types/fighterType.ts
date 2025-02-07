@@ -1,31 +1,34 @@
-export interface FighterStats {
-    wins: number;
-    losses: number;
-    draws: number;
-    totalBouts: number;
-    totalRounds: number;
-    koPercentage: number;
-    koWins: number;
-    stopped: number;
+export interface StatsProps {
+    wins?: number | null;
+    losses?: number | null;
+    draws?: number | null;
+    totalBouts?: number | null;
+    totalRounds?: number | null;
+    koPercentage?: number | null;
+    koWins?: number | null;
+    stopped?: number | null;
 }
 
-export interface FighterTitle {
-    name: string;
-    id: string;
+export interface TitleProps {
+    titleId?: string;
+    titleName?: string;
 }
 
 export interface FighterProps {
-    name: string;
-    age: number;
-    gender: string | null;
-    height: string;
-    nationality: string;
-    nickname: string | null;
-    reach: string;
-    stance: string;
-    stats: FighterStats;
-    debut: string;
-    id: string;
-    division: string | null;
-    titles: FighterTitle[];
+    id?: string;
+    name?: string | null;
+    age?: number | null;
+    gender?: string | null;
+    height?: string | null;
+    nationality?: string | null;
+    nickname?: string | null;
+    reach?: string | null;
+    stance?: string | null;
+    stats?: StatsProps;
+    debut?: string | null;
+    divisionName?: string | null;
+    divisionSlug?: string | null;
+    weightLb?: number | null;
+    weightKg?: number | null;
+    titleNames?: TitleProps[] | null;
 }
