@@ -7,8 +7,3 @@ export const localTimeFormat = (date?: string | null) => {
 
     return localDateTime.toFormat('dd MMMM - (HH:mm') + ` ${timeZone})`;
 }
-
-export const shortDateFormat = (date: Date | null) => {
-    if (date === null) return 'No date available';
-    return DateTime.fromJSDate(date).setZone('local').toFormat('dd MMMM');
-};
