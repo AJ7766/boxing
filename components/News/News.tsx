@@ -59,7 +59,7 @@ export const News = async () => {
                 <Location
                     location={fetchedFight?.location}
                 />
-                <NewsDate date={fetchedFight?.date?.toString()} />
+                <NewsDate date={fetchedFight?.date?.toISOString()} />
 
                 {/* Videos */}
                 <div className="flex flex-row gap-1">
