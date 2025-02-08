@@ -1,4 +1,4 @@
-import { FightDate } from "@/components/Fights/Date";
+import { Date } from "@/components/Fights/Date";
 import { FighterName } from "@/components/Fights/FighterName";
 import { FighterStats } from "@/components/Fights/FighterStats";
 import { rajdhani } from "@/fonts/fonts";
@@ -74,7 +74,7 @@ export default async function Fights() {
                         <div className="flex flex-col justify-between text-center">
                             <div>
                                 {/* DATE */}
-                                <FightDate date={fight.date?.toISOString()} />
+                                <Date date={fight.date?.toISOString()} />
                                 {/* LOCATION */}
                                 <p className="text-lg font-medium text-gray-500 border-b mb-2">{fight.location}</p>
                                 {/* ROUNDS @ DIVISION */}

@@ -2,12 +2,12 @@
 import { localTimeFormat } from "@/utils/DateTimeFormatter";
 import { useLayoutEffect, useState } from "react";
 
-export const DateTime = ({ fightDate }: { fightDate: Date | null }) => {
+export const NewsDate = ({ date }: { date?: string | null }) => {
     const [isClient, setIsClient] = useState(false);
 
     useLayoutEffect(() => {
         setIsClient(true);
     }, [])
 
-    return <p className="font-semibold">RING WALK: {isClient ? localTimeFormat(fightDate) : 'Loading...'}</p>
+    return <p className="font-semibold">RING WALK: {isClient ? localTimeFormat(date) : 'Loading...'}</p>
 }

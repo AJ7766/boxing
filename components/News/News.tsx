@@ -1,5 +1,5 @@
 import { rajdhani } from "@/fonts/fonts";
-import { DateTime } from "./DateTime";
+import { NewsDate } from "./NewsDate";
 import { Event } from "./Event";
 import { Location } from "./Location";
 import { Video } from "./Video";
@@ -59,7 +59,7 @@ export const News = async () => {
                 <Location
                     location={fetchedFight?.location}
                 />
-                <DateTime fightDate={fetchedFight?.date ? new Date(fetchedFight.date) : null} />
+                <NewsDate date={fetchedFight?.date?.toString()} />
 
                 {/* Videos */}
                 <div className="flex flex-row gap-1">
