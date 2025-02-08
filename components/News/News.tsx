@@ -5,7 +5,7 @@ import { Location } from "./Location";
 import { Video } from "./Video";
 import { FightersBg } from "./FightersBg";
 import { Fight } from "./FIght";
-import { getFight } from "@/services/fightActions";
+import { prisma } from "@/lib/prisma";
 
 const Videos = [{
     id: "lUAA0b-YjQM",
@@ -25,7 +25,18 @@ const Videos = [{
 ]
 
 export const News = async () => {
-    const fetchedFight = await getFight('675269742d129078aff55563');
+    
+    const id = '675269742d129078aff55563';
+    const fetchedFight = await prisma.fight.findUnique({
+        where: { id },
+        select: {
+            title: true,
+            location: true,
+            date: true,
+            fighter1: { select: { name: true, nickname: true } },
+            fighter2: { select: { name: true, nickname: true } },
+        },
+    });
 
     if (!fetchedFight) {
         console.error('No fight found');

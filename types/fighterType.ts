@@ -2,10 +2,10 @@ export interface StatsProps {
     wins?: number | null;
     losses?: number | null;
     draws?: number | null;
-    totalBouts?: number | null;
-    totalRounds?: number | null;
-    koPercentage?: number | null;
-    koWins?: number | null;
+    total_bouts?: number | null;
+    total_rounds?: number | null;
+    ko_percentage?: number | null;
+    ko_wins?: number | null;
     stopped?: number | null;
 }
 
@@ -24,7 +24,14 @@ export interface FighterProps {
     nickname?: string | null;
     reach?: string | null;
     stance?: string | null;
-    stats?: StatsProps;
+    wins?: number | null;
+    losses?: number | null;
+    draws?: number | null;
+    total_bouts?: number | null;
+    total_rounds?: number | null;
+    ko_percentage?: number | null;
+    ko_wins?: number | null;
+    stopped?: number | null;
     debut?: string | null;
     divisionName?: string | null;
     divisionSlug?: string | null;

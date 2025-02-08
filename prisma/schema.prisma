@@ -8,6 +8,19 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model Title {
+  id     String  @id
+  name   String
+  fights Fight[] @relation("FightTitles")
+}
+
+model Broadcaster {
+  id            String   @id @default(cuid())
+  name          String
+  country       String
+  fights        Fight[]  @relation("FightBroadcasters")
+}
+
 model Fighter {
   id            String  @id
   name          String?
@@ -39,7 +52,7 @@ model Fighter {
 }
 
 model Fight {
-  id               String    @id
+  id               String        @id
   title            String?
   slug             String?
   date             DateTime?
@@ -55,12 +68,14 @@ model Fight {
   divisionName     String?
   divisionWeightLb Float?
   divisionWeightKg Float?
-  titleNames       Json?
-// Foreign Keys
-  fighter1Id       String?   
-  fighter2Id       String?
+  titles           Title[]       @relation("FightTitles") // Many-to-many relation
+  broadcasters     Broadcaster[] @relation("FightBroadcasters")
+
+  // Foreign Keys
+  fighter1Id String?
+  fighter2Id String?
 
   // Relations
-  fighter1         Fighter?  @relation("Fighter1Relation", fields: [fighter1Id], references: [id])
-  fighter2         Fighter?  @relation("Fighter2Relation", fields: [fighter2Id], references: [id])
+  fighter1 Fighter? @relation("Fighter1Relation", fields: [fighter1Id], references: [id])
+  fighter2 Fighter? @relation("Fighter2Relation", fields: [fighter2Id], references: [id])
 }
