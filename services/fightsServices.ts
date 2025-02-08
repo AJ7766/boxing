@@ -2,14 +2,13 @@ import { prisma } from "@/lib/prisma";
 import { DateTime } from "luxon";
 
 export const getFights = async (start: number, end: number) => {
-
     const today = DateTime.local();  // Current date
-    const yesterday = today.minus({ week: 1 }).toJSDate(); // Yesterday
+    const oneWeekAgo = today.minus({ week: 1 }).toJSDate(); // 1 week ago
 
     const fightsPromise = prisma.fight.findMany({
         where: {
             date: {
-                gte: yesterday,   // Date greater than or equal to yesterday
+                gte: oneWeekAgo,   // Date greater than or equal to 1 week ago
             },
             titles: {
                 some: {}  // Ensures there is at least one title related to the fight
@@ -57,7 +56,7 @@ export const getFights = async (start: number, end: number) => {
     const totalFightsPromise = prisma.fight.count({
         where: {
             date: {
-                gte: yesterday,
+                gte: oneWeekAgo,
             },
             titles: {
                 some: {},
