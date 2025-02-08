@@ -1,54 +1,23 @@
-import { Date } from "@/components/Fights/Date";
-import { FighterName } from "@/components/Fights/FighterName";
-import { FighterStats } from "@/components/Fights/FighterStats";
+import { FightCards } from "@/components/Fights/Fights";
 import { Pagination } from "@/components/Fights/Pagination";
+import { Search } from "@/components/Fights/Search";
 import { rajdhani } from "@/fonts/fonts";
-import { getFights, getSearchParams } from "@/services/fightsServices";
+import { getSearchParams } from "@/services/fightsServices";
 
 export default async function Fights({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
-    const { page, per_page, start, end } = await getSearchParams({ searchParams })
-    const { fights, totalFights } = await getFights(start, end);
+    const { page, per_page, start, end } = await getSearchParams({ searchParams });
 
     return (
         <main className={`${rajdhani.className} bg-white text-lg whitespace-nowrap flex flex-col gap-20 py-12`}>
+            <h2 className="text-center text-4xl font-semibold">UPCOMING</h2>
+            <Search start={start} end={end} />
             {/* No fights found */}
-            {fights.length <= 0 ? <p className="text-center text-4xl font-medium">No fights found</p>
-                : // Fights
-                (fights.map((fight, i) => (
-                    <div className={`max-w-[850px] w-full mx-auto flex flex-col items-center gap-2`} key={i}>
-                        {/* TITLE */}
-                        <div className="w-full grid grid-cols-[20%_60%_20%] items-center">
-                            <div>
-                                <FighterName name={fight.fighter1?.name || fight.fighter1?.nickname} />
-                                <FighterStats stats={`${fight.fighter1?.wins}-${fight.fighter1?.losses || 0}-${fight.fighter1?.draws || 0}`} />
-                            </div>
-                            <div className="flex flex-col justify-between text-center">
-                                <div>
-                                    {/* DATE */}
-                                    <Date date={fight.date?.toISOString()} />
-                                    {/* LOCATION */}
-                                    <p className="text-lg font-medium text-gray-500 border-b mb-2">{fight.location}</p>
-                                    {/* ROUNDS @ DIVISION */}
-                                    <p className="text-red-700 text-lg font-semibold">{fight.scheduledRounds} ROUNDS @ {fight.divisionName}</p>
-                                    {/* BELTS IN PLAY */}
-                                    {fight.titles.map((title) => (
-                                        <p className="text-[#804A00] text-base font-medium" key={title.id}>{title.name}</p>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="text-right">
-                                <FighterName name={fight.fighter2?.name || fight.fighter2?.nickname} />
-                                <FighterStats stats={`${fight.fighter1?.wins}-${fight.fighter1?.losses || 0}-${fight.fighter1?.draws || 0}`} />
-                            </div>
-                        </div>
-                    </div>
-                )))}
+            <FightCards start={start} end={end} />
             <Pagination
                 page={page}
                 per_page={per_page}
-                hasPrevPage={start > 1}
-                hasNextPage={end < totalFights}
-                totalFights={totalFights}
+                start={start}
+                end={end}
             />
         </main>
     )

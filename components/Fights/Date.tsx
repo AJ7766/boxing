@@ -4,7 +4,6 @@ import { DateTime } from "luxon";
 
 export const Date = ({ date }: { date?: string | null }) => {
     const isClient = useIsClient();
-
     if (date === null || date === undefined) return 'No time available';
 
     const localDateTime = DateTime.fromISO(date).setZone('local');

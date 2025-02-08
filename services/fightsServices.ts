@@ -1,9 +1,31 @@
+"use server"
 import { prisma } from "@/lib/prisma";
 import { DateTime } from "luxon";
 
-export const getFights = async (start: number, end: number) => {
-    const today = DateTime.local();  // Current date
-    const oneWeekAgo = today.minus({ week: 1 }).toJSDate(); // 1 week ago
+const getTotalFights = async (query?: string) => {
+    const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
+    const totalFights = await prisma.fight.count({
+        where: {
+            ...(query && {
+                OR: [
+                    { title: { contains: query, mode: 'insensitive' } },
+                    { fighter1: { name: { contains: query, mode: 'insensitive' } } },
+                    { fighter2: { name: { contains: query, mode: 'insensitive' } } }
+                ],
+            }),
+            date: {
+                gte: oneWeekAgo,
+            },
+            titles: {
+                some: {},
+            },
+        },
+    });
+    return totalFights;
+}
+
+export const getFights = async (start: number, end: number, query?: string) => {
+    const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
 
     const fightsPromise = prisma.fight.findMany({
         where: {
@@ -52,23 +74,9 @@ export const getFights = async (start: number, end: number) => {
             date: 'asc', // Sort by date in ascending order (earliest first)
         },
     });
-
-    const totalFightsPromise = prisma.fight.count({
-        where: {
-            date: {
-                gte: oneWeekAgo,
-            },
-            titles: {
-                some: {},
-            },
-        },
-    });
-
-    const [fights, totalFights] = await Promise.all([fightsPromise, totalFightsPromise]);
-
-    return { fights, totalFights };
+    const [fights, totalFights] = await Promise.all([fightsPromise, getTotalFights(query)]);
+    return { fetchedFights: fights, totalFights };
 }
-
 
 export const getSearchParams = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) => {
     // Getting searchParams and returning the values
@@ -79,4 +87,66 @@ export const getSearchParams = async ({ searchParams }: { searchParams: Promise<
     const start = (Number(page) - 1) * Number(per_page); // Calculate start of the page 0, 5, 10...
     const end = start + Number(per_page); // Calculate end of the page 5, 10 ,15...
     return { page, per_page, start, end }
+}
+
+export const handleSearch = async (query: string, start: number, end: number) => {
+    const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
+
+    const fightsPromise = prisma.fight.findMany({
+        where: {
+            OR: query
+                ? [
+                    { title: { contains: query, mode: 'insensitive' } },
+                    { fighter1: { name: { contains: query, mode: 'insensitive' } } },
+                    { fighter2: { name: { contains: query, mode: 'insensitive' } } }
+                ]
+                : undefined,
+            date: {
+                gte: oneWeekAgo,
+            },
+            titles: {
+                some: {}
+            },
+        },
+        skip: query ? 0 : start,
+        take: end - start,
+        select: {
+            title: true,
+            fighter1: {
+                select: {
+                    name: true,
+                    nickname: true,
+                    wins: true,
+                    losses: true,
+                    draws: true,
+                    total_bouts: true,
+                    ko_wins: true,
+                    stopped: true,
+                },
+            },
+            fighter2: {
+                select: {
+                    name: true,
+                    nickname: true,
+                    wins: true,
+                    losses: true,
+                    draws: true,
+                    total_bouts: true,
+                    ko_wins: true,
+                    stopped: true,
+                },
+            },
+            date: true,
+            location: true,
+            divisionName: true,
+            scheduledRounds: true,
+            titles: true,
+        },
+        orderBy: {
+            date: 'asc',
+        },
+    });
+
+    const [fights, totalFights] = await Promise.all([fightsPromise, getTotalFights(query)]);
+    return { fetchedFights: fights, totalFights };
 }

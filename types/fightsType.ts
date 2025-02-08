@@ -1,37 +1,36 @@
 import { FighterProps } from "./fighterType";
 
+interface TitleProps {
+    id: string;
+    name: string;
+}
+
 export interface FightProps {
     id: string;
-    title: string;
-    slug: string;
-    date: string;
-    fighters: {
-        fighter_1: FighterProps;
-        fighter_2: FighterProps;
-    };
-    location: string;
+    title: string | null;
+    slug: string | null;
+    date: Date | null;
+    location: string | null;
     results: {
         outcome: string;
         round: string;
     } | null;
-    scheduled_rounds: number;
+    scheduledRounds: number | null;
     scores: string[];
-    status: string;
-    division: {
-        name: string;
-        weight_lb: number | null;
-        weight_kg: number | null;
-        id: string;
-    };
+    status: string | null;
+    division: string | null;
     event: {
-        title: string;
-        slug: string;
-        date: string;
-        location: string;
+        title: string | null;
+        slug: string | null;
+        date: Date | null;
+        location: string | null;
         broadcasters: {
             [key: string]: string;
         }[];
-        status: string;
+        status: string | null;
         id: string;
     };
+    titles: TitleProps[];
+    fighter1: FighterProps| null;
+    fighter2: FighterProps | null;
 }
