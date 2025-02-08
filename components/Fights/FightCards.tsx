@@ -11,7 +11,6 @@ export const FightCards = ({ start, end }: { start: number, end: number }) => {
     const { fights, setFights } = useFights();
 
     const [isLoading, setIsLoading] = useState(true);
-    const isClient = useIsClient();
 
     useEffect(() => {
         const fetchFights = async () => {
@@ -25,7 +24,7 @@ export const FightCards = ({ start, end }: { start: number, end: number }) => {
         fetchFights();
     }, [end, start, setFights])
 
-    if (!isClient || isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
+    if (isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
 
     return (
         (fights.fights.length <= 0 ? <p className="text-center text-4xl font-medium">No fights found</p>
