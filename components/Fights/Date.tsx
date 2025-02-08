@@ -1,9 +1,10 @@
 "use client"
 import { DateTime } from "luxon";
 
-export const FightDate = ({ date }: { date: Date | null }) => {
-    if (date === null) return 'No time available';
-    const localDateTime = DateTime.fromJSDate(date).setZone('local');
+export const FightDate = ({ date }: { date?: string | null }) => {
+    if (date === null || date === undefined) return 'No time available';
+    
+    const localDateTime = DateTime.fromISO(date).setZone('local');
     const timeZone = localDateTime.zoneName;
 
     return (

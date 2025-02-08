@@ -74,7 +74,7 @@ export default async function Fights() {
                         <div className="flex flex-col justify-between text-center">
                             <div>
                                 {/* DATE */}
-                                <FightDate date={fight.date} />
+                                <FightDate date={fight.date?.toISOString()} />
                                 {/* LOCATION */}
                                 <p className="text-lg font-medium text-gray-500 border-b mb-2">{fight.location}</p>
                                 {/* ROUNDS @ DIVISION */}
