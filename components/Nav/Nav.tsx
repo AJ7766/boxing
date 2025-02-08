@@ -1,18 +1,16 @@
 "use client";
 import { useLayoutEffect, useState } from "react";
 import { LinkC } from "./Link";
+import { useIsClient } from "@/hooks/useClient";
 
 export const Nav = () => {
-    const [isClient, setIsClient] = useState(false);
+    const isClient = useIsClient();
     const [scrolled, setScrolled] = useState(false);
 
     // Add scroll event listener
     useLayoutEffect(() => {
         const handleScroll = () => {
-            setIsClient(true);
-
             if (window.scrollY > 80) {
-                console.log("true")
                 setScrolled(true); // If scrolled more than 80px
             } else {
                 setScrolled(false); // If scrolled less than 80px

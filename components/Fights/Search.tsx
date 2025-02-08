@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 
 export const Search = ({ start, end }: { start: number, end: number }) => {
     const { setFights } = useFights();
-
     const [query, setQuery] = useState('');
+
     useEffect(() => {
+        if (!query) return;
+        
         const timeout = setTimeout(async () => {
             const { fetchedFights, totalFights } = await handleSearch(query, start, end);
             setFights({
