@@ -17,17 +17,17 @@ export const Pagination = ({ page, per_page, hasPrevPage, hasNextPage, totalFigh
     const totalPages = Math.ceil(totalFights / Number(per_page));
 
     return (
-        <div className="flex gap-1 m-auto">
+        <div className="font-medium flex gap-1 items-center m-auto ">
             {hasPrevPage &&
                 <Link href={`?page=${prevPage}&per_page=${per_page}`} scroll={false}>
-                    <button className="text-base font-medium py-[2px] px-3">Previous</button>
+                    <button>Previous</button>
                 </Link>
             }
             {/* Render page numbers */}
             {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => (
                 <Link key={number} href={`?page=${number}&per_page=${per_page}`} scroll={false}>
                     <button
-                        className={`font-medium py-[2px] px-3 ${Number(page) === number && 'bg-gray-100 rounded-md'}`}
+                        className={`py-[2px] px-3 ${Number(page) === number && 'bg-gray-100 rounded-md'}`}
                     >
                         {number}
                     </button>
@@ -35,7 +35,7 @@ export const Pagination = ({ page, per_page, hasPrevPage, hasNextPage, totalFigh
             ))}
             {hasNextPage &&
                 <Link href={`?page=${nextPage}&per_page=${per_page}`} scroll={false}>
-                    <button className="text-base font-medium py-[2px] px-3">Next</button>
+                    <button>Next</button>
                 </Link>
             }
         </div>
