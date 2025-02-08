@@ -1,27 +1,8 @@
 "use client"
 import { useFights } from "@/context/fightsContext";
-import { handleSearch } from "@/services/fightsServices";
-import { useEffect, useState } from "react";
 
-export const Search = ({ start, end }: { start: number, end: number }) => {
+export const Search = () => {
     const { setFights } = useFights();
-    const [query, setQuery] = useState('');
-
-    useEffect(() => {
-        setFights({
-            isLoading: true
-        });
-        const timeout = setTimeout(async () => {
-            const { fetchedFights, totalFights } = await handleSearch(query, start, end);
-            setFights({
-                fights: JSON.parse(JSON.stringify(fetchedFights)),
-                totalFights: totalFights,
-                isLoading: false
-            });
-        }, 300);
-
-        return () => clearTimeout(timeout);
-    }, [query, start, end, setFights]);
 
     return (
         <>
@@ -34,7 +15,10 @@ export const Search = ({ start, end }: { start: number, end: number }) => {
                 type="text"
                 name="query"
                 placeholder="Search for a fight"
-                onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
+                onInput={(e) => setFights(prev => ({
+                    ...prev,
+                    query: (e.target as HTMLInputElement).value,
+                }))}
             />
         </>
     )

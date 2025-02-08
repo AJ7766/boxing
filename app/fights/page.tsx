@@ -1,6 +1,7 @@
 import { FightCards } from "@/components/Fights/FightCards";
 import { Pagination } from "@/components/Fights/Pagination";
 import { Search } from "@/components/Fights/Search";
+import { FightsProvider } from "@/context/fightsContext";
 import { rajdhani } from "@/fonts/fonts";
 import { getSearchParams } from "@/services/fightsServices";
 
@@ -10,15 +11,17 @@ export default async function Fights({ searchParams }: { searchParams: Promise<{
     return (
         <main className={`${rajdhani.className} bg-white text-lg whitespace-nowrap flex flex-col gap-20 py-12`}>
             <h2 className="text-center text-4xl font-semibold">UPCOMING</h2>
-            <Search start={start} end={end} />
-            {/* No fights found */}
-            <FightCards />
-            <Pagination
-                page={page}
-                per_page={per_page}
-                start={start}
-                end={end}
-            />
+            <FightsProvider start={start} end={end}>
+                <Search />
+                {/* No fights found */}
+                <FightCards />
+                <Pagination
+                    page={page}
+                    per_page={per_page}
+                    start={start}
+                    end={end}
+                />
+            </FightsProvider>
         </main>
     )
 }

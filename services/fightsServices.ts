@@ -24,60 +24,6 @@ const getTotalFights = async (query?: string) => {
     return totalFights;
 }
 
-export const getFights = async (start: number, end: number, query?: string) => {
-    const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
-
-    const fightsPromise = prisma.fight.findMany({
-        where: {
-            date: {
-                gte: oneWeekAgo,   // Date greater than or equal to 1 week ago
-            },
-            titles: {
-                some: {}  // Ensures there is at least one title related to the fight
-            },
-        },
-        skip: start,
-        take: end - start,
-        select: {
-            title: true,
-            fighter1: {
-                select: {
-                    name: true,
-                    nickname: true,
-                    wins: true,
-                    losses: true,
-                    draws: true,
-                    total_bouts: true,
-                    ko_wins: true,
-                    stopped: true,
-                },
-            },
-            fighter2: {
-                select: {
-                    name: true,
-                    nickname: true,
-                    wins: true,
-                    losses: true,
-                    draws: true,
-                    total_bouts: true,
-                    ko_wins: true,
-                    stopped: true,
-                },
-            },
-            date: true,
-            location: true,
-            divisionName: true,
-            scheduledRounds: true,
-            titles: true,
-        },
-        orderBy: {
-            date: 'asc', // Sort by date in ascending order (earliest first)
-        },
-    });
-    const [fights, totalFights] = await Promise.all([fightsPromise, getTotalFights(query)]);
-    return { fetchedFights: fights, totalFights };
-}
-
 export const getSearchParams = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) => {
     // Getting searchParams and returning the values
     const currParams = await searchParams;
@@ -89,7 +35,7 @@ export const getSearchParams = async ({ searchParams }: { searchParams: Promise<
     return { page, per_page, start, end }
 }
 
-export const handleSearch = async (query: string, start: number, end: number) => {
+export const getFights = async (query: string, start: number, end: number) => {
     const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
 
     const fightsPromise = prisma.fight.findMany({
