@@ -23,6 +23,7 @@ export const Pagination = ({ page, per_page, hasPrevPage, hasNextPage, totalFigh
                     <button className="text-base font-medium py-[2px] px-3">Previous</button>
                 </Link>
             }
+            {/* Render page numbers */}
             {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => (
                 <Link key={number} href={`?page=${number}&per_page=${per_page}`} scroll={false}>
                     <button
