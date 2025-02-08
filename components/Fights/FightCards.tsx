@@ -4,7 +4,6 @@ import { FighterName } from "./FighterName";
 import { FighterStats } from "./FighterStats";
 import { Date } from "./Date";
 import { getFights } from "@/services/fightsServices";
-import { useIsClient } from "@/hooks/useClient";
 import { useFights } from "@/context/fightsContext";
 
 export const FightCards = ({ start, end }: { start: number, end: number }) => {
