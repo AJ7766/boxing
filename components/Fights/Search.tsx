@@ -20,11 +20,16 @@ export const Search = ({ start, end }: { start: number, end: number }) => {
     }, [query, start, end, setFights]);
 
     return (
-        <input
-            className="bg-gray-100 text-center text-2xl font-semibold py-2 px-4 rounded-md"
-            type="text"
-            name="query"
-            onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
-        />
+        <>
+            <label htmlFor="searchQuery" className="sr-only">
+                Search for a fighter
+            </label>
+            <input
+                className="bg-gray-100 text-center text-2xl font-semibold py-2 px-4 rounded-md"
+                type="text"
+                name="query"
+                onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
+            />
+        </>
     )
 }
