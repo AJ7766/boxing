@@ -4,12 +4,10 @@ import { handleSearch } from "@/services/fightsServices";
 import { useEffect, useState } from "react";
 
 export const Search = ({ start, end }: { start: number, end: number }) => {
-    const { setFights } = useFights();
+    const { setFights, fights } = useFights();
     const [query, setQuery] = useState('');
 
     useEffect(() => {
-        if (!query) return;
-        
         const timeout = setTimeout(async () => {
             const { fetchedFights, totalFights } = await handleSearch(query, start, end);
             setFights({
@@ -19,7 +17,7 @@ export const Search = ({ start, end }: { start: number, end: number }) => {
         }, 300);
 
         return () => clearTimeout(timeout);
-    }, [query, start, end, setFights]);
+    }, [query, start, end, setFights, fights.fights.length]);
 
     return (
         <>
