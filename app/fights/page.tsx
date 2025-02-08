@@ -1,68 +1,19 @@
 import { Date } from "@/components/Fights/Date";
 import { FighterName } from "@/components/Fights/FighterName";
 import { FighterStats } from "@/components/Fights/FighterStats";
+import { Pagination } from "@/components/Fights/Pagination";
 import { rajdhani } from "@/fonts/fonts";
-import { prisma } from "@/lib/prisma";
-import { DateTime } from "luxon";
+import { getFights, getSearchParams } from "@/services/fightsServices";
 
-export default async function Fights() {
-    const today = DateTime.local();  // Current date
-    const yesterday = today.minus({ days: 1 }).toJSDate(); // Yesterday
-    const threeMonthLater = today.plus({ months: 3 }).toJSDate(); // 3 months later
-
-    const fights = await prisma.fight.findMany({
-        where: {
-            date: {
-                gte: yesterday,   // Date greater than or equal to yesterday
-                lte: threeMonthLater, // Date less than or equal to 3 month later
-            },
-            titles: {
-                some: {}  // Ensures there is at least one title related to the fight
-            },
-        },
-        select: {
-            title: true,
-            fighter1: {
-                select: {
-                    name: true,
-                    nickname: true,
-                    wins: true,
-                    losses: true,
-                    draws: true,
-                    total_bouts: true,
-                    ko_wins: true,
-                    stopped: true,
-                },
-            },
-            fighter2: {
-                select: {
-                    name: true,
-                    nickname: true,
-                    wins: true,
-                    losses: true,
-                    draws: true,
-                    total_bouts: true,
-                    ko_wins: true,
-                    stopped: true,
-                },
-            },
-            date: true,
-            location: true,
-            divisionName: true,
-            scheduledRounds: true,
-            titles: true,
-        },
-        orderBy: {
-            date: 'asc', // Sort by date in ascending order (earliest first)
-        },
-        take: 20, // Limit to 50 results
-    });
+export default async function Fights({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+    const { page, per_page, start, end } = await getSearchParams({ searchParams })
+    const { fights, totalFights } = await getFights(start, end);
 
     if (!fights)
         return <p>No fights found</p>;
 
     return (
-        <div className={`${rajdhani.className} bg-white text-lg whitespace-nowrap flex flex-col gap-20 py-12`}>
+        <main className={`${rajdhani.className} bg-white text-lg whitespace-nowrap flex flex-col gap-20 py-12`}>
             {fights.map((fight, i) => (
                 <div className={`max-w-[850px] w-full mx-auto flex flex-col items-center gap-2`} key={i}>
                     {/* TITLE */}
@@ -92,7 +43,14 @@ export default async function Fights() {
                     </div>
                 </div>
             ))}
-        </div>
+            <Pagination
+                page={page}
+                per_page={per_page}
+                hasPrevPage={start > 1}
+                hasNextPage={end < totalFights}
+                totalFights={totalFights}
+            />
+        </main>
     )
 }
 
