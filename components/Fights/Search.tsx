@@ -3,7 +3,6 @@ import { useFights } from "@/context/fightsContext";
 
 export const Search = () => {
     const { setFights } = useFights();
-
     return (
         <>
             <label htmlFor="searchQuery" className="sr-only">
