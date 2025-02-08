@@ -1,4 +1,4 @@
-import { FightCards } from "@/components/Fights/Fights";
+import { FightCards } from "@/components/Fights/FightCards";
 import { Pagination } from "@/components/Fights/Pagination";
 import { Search } from "@/components/Fights/Search";
 import { rajdhani } from "@/fonts/fonts";
