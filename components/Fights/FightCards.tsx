@@ -12,8 +12,8 @@ export const FightCards = () => {
     if (!isClient || fights.isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
 
     return (
-        (fights.fights && fights.fights.length <= 0 ? <p className="text-center text-4xl font-medium">No fights found</p>
-            : // Fights
+        (fights.fights?.length ?? 0) === 0 ? <p className="text-center text-4xl font-medium">No fights found</p>
+        : // Fights
             (fights?.fights?.map((fight, i) => (
                 <div className={`max-w-[850px] w-full mx-auto flex flex-col items-center gap-2`} key={i}>
                     {/* TITLE */}
@@ -41,5 +41,5 @@ export const FightCards = () => {
                         </div>
                     </div>
                 </div>
-            )))))
+            ))))
 }

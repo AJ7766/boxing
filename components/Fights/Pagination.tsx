@@ -14,11 +14,11 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
 
     const prevPage = Number(page) > 1 ? Number(page) - 1 : 1;
     const nextPage = Number(page) + 1;
-    const hasPrevPage = start > 1 && fights.totalFights >= Number(per_page); // if start > 1 and totalFights >= 8
-    const hasNextPage = end < fights.totalFights;
+    const hasPrevPage = start > 1 && (fights.totalFights ?? 0) >= Number(per_page); // if start > 1 and totalFights >= 8
+    const hasNextPage = end < (fights.totalFights ?? 0);
 
     // Calculate total pages available
-    const totalPages = Math.ceil(fights.totalFights / Number(per_page));
+    const totalPages = Math.ceil((fights.totalFights ?? 0) / Number(per_page));
 
     return (
         <div className="font-medium flex gap-1 items-center m-auto ">
@@ -28,7 +28,7 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
                 </Link>
             }
             {/* Render page numbers */}
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => (
+            {Array.from({ length: totalPages ?? 0 }, (_, index) => index + 1).map((number) => (
                 <Link key={number} href={`?page=${number}&per_page=${per_page}`} scroll={false}>
                     <button
                         className={`py-[2px] px-3 ${Number(page) === number && 'bg-gray-100 rounded-md'}`}
