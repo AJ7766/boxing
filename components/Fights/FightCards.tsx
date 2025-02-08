@@ -37,7 +37,7 @@ export const FightCards = () => {
                         {/* FIGHTER 2 */}
                         <div className="text-right">
                             <FighterName name={fight.fighter2?.name || fight.fighter2?.nickname} />
-                            <FighterStats stats={`${fight.fighter1?.wins}-${fight.fighter1?.losses || 0}-${fight.fighter1?.draws || 0}`} />
+                            <FighterStats stats={`${fight.fighter2?.wins}-${fight.fighter2?.losses || 0}-${fight.fighter2?.draws || 0}`} />
                         </div>
                     </div>
                 </div>
