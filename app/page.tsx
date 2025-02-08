@@ -21,8 +21,7 @@ const Videos = [{
   id: "nDyCgocB5aM",
   alt: "Artur Beterbiev vs Dmitry Bivol First fight",
   type: "First Fight"
-}
-]
+}]
 
 export default async function News() {
   const id = '675269742d129078aff55563';
