@@ -3,8 +3,9 @@ import { FightProps } from '@/types/fightsType';
 import { createContext, useContext, useState } from 'react';
 
 interface FightsState {
-    fights: FightProps[];
-    totalFights: number;
+    fights?: FightProps[];
+    totalFights?: number;
+    isLoading?: boolean;
 }
 
 interface FightsContextProps {
@@ -18,6 +19,7 @@ export const FightsProvider = ({ children }: { children: React.ReactNode }) => {
     const [fights, setFights] = useState<FightsState>({
         fights: [],
         totalFights: 0,
+        isLoading: false
     })
 
     return (

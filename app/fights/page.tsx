@@ -12,7 +12,7 @@ export default async function Fights({ searchParams }: { searchParams: Promise<{
             <h2 className="text-center text-4xl font-semibold">UPCOMING</h2>
             <Search start={start} end={end} />
             {/* No fights found */}
-            <FightCards start={start} end={end} />
+            <FightCards />
             <Pagination
                 page={page}
                 per_page={per_page}

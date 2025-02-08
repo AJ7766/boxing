@@ -4,20 +4,24 @@ import { handleSearch } from "@/services/fightsServices";
 import { useEffect, useState } from "react";
 
 export const Search = ({ start, end }: { start: number, end: number }) => {
-    const { setFights, fights } = useFights();
+    const { setFights } = useFights();
     const [query, setQuery] = useState('');
 
     useEffect(() => {
+        setFights({
+            isLoading: true
+        });
         const timeout = setTimeout(async () => {
             const { fetchedFights, totalFights } = await handleSearch(query, start, end);
             setFights({
                 fights: JSON.parse(JSON.stringify(fetchedFights)),
                 totalFights: totalFights,
+                isLoading: false
             });
         }, 300);
 
         return () => clearTimeout(timeout);
-    }, [query, start, end, setFights, fights.fights.length]);
+    }, [query, start, end, setFights]);
 
     return (
         <>

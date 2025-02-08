@@ -1,34 +1,20 @@
 "use client"
-import { useEffect, useState } from "react"
 import { FighterName } from "./FighterName";
 import { FighterStats } from "./FighterStats";
 import { Date } from "./Date";
-import { getFights } from "@/services/fightsServices";
 import { useFights } from "@/context/fightsContext";
+import { useIsClient } from "@/hooks/useClient";
 
-export const FightCards = ({ start, end }: { start: number, end: number }) => {
-    const { fights, setFights } = useFights();
+export const FightCards = () => {
+    const isClient = useIsClient();
+    const { fights } = useFights();
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchFights = async () => {
-            const { fetchedFights, totalFights } = await getFights(start, end);
-            setFights({
-                fights: JSON.parse(JSON.stringify(fetchedFights)),
-                totalFights: totalFights,
-            });
-            setIsLoading(false);
-        }
-        fetchFights();
-    }, [end, start, setFights])
-
-    if (isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
+    if (!isClient || fights.isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
 
     return (
-        (fights.fights.length <= 0 ? <p className="text-center text-4xl font-medium">No fights found</p>
+        (fights.fights && fights.fights.length <= 0 ? <p className="text-center text-4xl font-medium">No fights found</p>
             : // Fights
-            (fights.fights.map((fight, i) => (
+            (fights?.fights?.map((fight, i) => (
                 <div className={`max-w-[850px] w-full mx-auto flex flex-col items-center gap-2`} key={i}>
                     {/* TITLE */}
                     <div className="w-full grid grid-cols-[20%_60%_20%] items-center">
