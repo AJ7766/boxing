@@ -10,8 +10,8 @@ export interface StatsProps {
 }
 
 export interface TitleProps {
-    titleId?: string;
-    titleName?: string;
+    id: string;
+    name: string;
 }
 
 export interface FighterProps {

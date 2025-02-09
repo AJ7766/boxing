@@ -1,9 +1,4 @@
-import { FighterProps } from "./fighterType";
-
-interface TitleProps {
-    id: string;
-    name: string;
-}
+import { FighterProps, TitleProps } from "./fighterType";
 
 export interface FightProps {
     id: string;
@@ -18,7 +13,7 @@ export interface FightProps {
     scheduledRounds: number | null;
     scores: string[];
     status: string | null;
-    divisionName: string | null;
+    division: string | null;
     event: {
         title: string | null;
         slug: string | null;

@@ -28,7 +28,7 @@ export const FightCards = () => {
                             {/* LOCATION */}
                             <p className="text-lg font-medium text-gray-500 border-b mb-2">{fight.location}</p>
                             {/* ROUNDS @ DIVISION */}
-                            <p className="text-red-700 text-lg font-semibold">{fight.scheduledRounds} ROUNDS @ {fight.divisionName}</p>
+                            <p className="text-red-700 text-lg font-semibold">{fight.scheduledRounds} ROUNDS @ {fight.division}</p>
                             {/* BELTS IN PLAY */}
                             {fight.titles.map((title) => (
                                 <p className="text-[#804A00] text-base font-medium" key={title.id}>{title.name}</p>
