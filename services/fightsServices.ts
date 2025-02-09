@@ -84,7 +84,7 @@ export const getFights = async (query: string, start: number, end: number) => {
             },
             date: true,
             location: true,
-            divisionName: true,
+            division: true,
             scheduledRounds: true,
             titles: true,
         },

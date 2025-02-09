@@ -6,7 +6,6 @@ import { EventDate } from "@/components/News/EventDate";
 import { prisma } from "@/lib/prisma";
 import { Video } from "@/components/News/Video";
 import { rajdhani } from "@/fonts/fonts";
-import { fetchData } from "@/fetch/fetchData";
 
 const Videos = [{
   id: "lUAA0b-YjQM",
@@ -25,7 +24,6 @@ const Videos = [{
 }]
 
 export default async function News() {
-  await fetchData();
   const id = '675269742d129078aff55563';
   const fetchedFight = await prisma.fight.findUnique({
     where: { id },
