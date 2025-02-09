@@ -8,6 +8,11 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+model Metadata {
+  id            Int       @id @default(1) // Always a single row
+  lastFetchedAt DateTime?
+}
+
 model Title {
   id     String  @id
   name   String
@@ -15,10 +20,10 @@ model Title {
 }
 
 model Broadcaster {
-  id            String   @id @default(cuid())
-  name          String
-  country       String
-  fights        Fight[]  @relation("FightBroadcasters")
+  id      String  @id @default(cuid())
+  name    String
+  country String
+  fights  Fight[] @relation("FightBroadcasters")
 }
 
 model Fighter {
@@ -40,7 +45,7 @@ model Fighter {
   ko_wins       Int?
   stopped       Int?
   debut         String?
-  divisionName  String?
+  division      String?
   divisionSlug  String?
   weightLb      Float?
   weightKg      Float?
@@ -65,7 +70,7 @@ model Fight {
   eventSlug        String?
   eventDate        DateTime?
   eventLocation    String?
-  divisionName     String?
+  division         String?
   divisionWeightLb Float?
   divisionWeightKg Float?
   titles           Title[]       @relation("FightTitles") // Many-to-many relation

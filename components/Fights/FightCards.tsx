@@ -10,7 +10,7 @@ export const FightCards = () => {
     const { fights } = useFights();
 
     if (!isClient || fights.isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
-
+    
     return (
         (fights.fights?.length ?? 0) === 0 ? <p className="text-center text-4xl font-medium">No fights found</p>
         : // Fights
@@ -28,7 +28,7 @@ export const FightCards = () => {
                             {/* LOCATION */}
                             <p className="text-lg font-medium text-gray-500 border-b mb-2">{fight.location}</p>
                             {/* ROUNDS @ DIVISION */}
-                            <p className="text-red-700 text-lg font-semibold">{fight.scheduledRounds} ROUNDS @ {fight.division}</p>
+                            <p className="text-red-700 text-lg font-semibold">{fight.scheduledRounds} ROUNDS @ {fight.divisionName}</p>
                             {/* BELTS IN PLAY */}
                             {fight.titles.map((title) => (
                                 <p className="text-[#804A00] text-base font-medium" key={title.id}>{title.name}</p>

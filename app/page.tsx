@@ -36,9 +36,9 @@ export default async function News() {
     },
   });
 
-  if (!fetchedFight) {
+  if (!fetchedFight)
     console.error('No fight found');
-  }
+
   return (
     <main className={`relative bg-gray-100 px-7 py-16 ${rajdhani.className} overflow-hidden`}>
       <BgText

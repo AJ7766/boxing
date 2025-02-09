@@ -18,7 +18,7 @@ export interface FightProps {
     scheduledRounds: number | null;
     scores: string[];
     status: string | null;
-    division: string | null;
+    divisionName: string | null;
     event: {
         title: string | null;
         slug: string | null;
