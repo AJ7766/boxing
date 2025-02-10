@@ -1,5 +1,5 @@
 "use client"
-import { useFights } from "@/context/FightsContext";
+import { useFights } from "@/context/fFightsContext";
 
 export const Search = () => {
     const { setFights } = useFights();

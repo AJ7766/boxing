@@ -1,5 +1,5 @@
 "use client"
-import { useFights } from "@/context/FightsContext";
+import { useFights } from "@/context/fFightsContext";
 import Link from "next/link";
 
 interface PaginationProps {

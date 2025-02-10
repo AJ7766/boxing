@@ -1,7 +1,7 @@
 import { FightCards } from "@/components/Fights/FightCards";
 import { Pagination } from "@/components/Fights/Pagination";
 import { Search } from "@/components/Fights/Search";
-import { FightsProvider } from "@/context/FightsContext";
+import { FightsProvider } from "@/context/fFightsContext";
 import { rajdhani } from "@/fonts/fonts";
 import { getSearchParams } from "@/services/fightsServices";
 
