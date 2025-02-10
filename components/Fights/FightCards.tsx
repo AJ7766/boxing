@@ -1,8 +1,8 @@
 "use client"
 import { FighterName } from "./FighterName";
 import { FighterStats } from "./FighterStats";
-import { Date } from "./Date";
-import { useFights } from "@/context/fightsContext";
+import { FightDate } from "./FightDate";
+import { useFights } from "@/context/FightsContext";
 import { useIsClient } from "@/hooks/useClient";
 
 export const FightCards = () => {
@@ -24,7 +24,7 @@ export const FightCards = () => {
                             <FighterStats stats={`${fight.fighter1?.wins}-${fight.fighter1?.losses || 0}-${fight.fighter1?.draws || 0}`} />
                         </div>
                         <div className="flex flex-col justify-between text-center">
-                            <Date date={fight.date ? new window.Date(fight.date).toISOString() : null} />
+                            <FightDate date={fight.date ? new window.Date(fight.date).toISOString() : null} />
                             {/* LOCATION */}
                             <p className="text-lg font-medium text-gray-500 border-b mb-2">{fight.location}</p>
                             {/* ROUNDS @ DIVISION */}

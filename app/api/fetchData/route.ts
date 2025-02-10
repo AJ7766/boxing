@@ -13,6 +13,33 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Data fetched successfully" });
 }
 
+const fetchData = async () => {
+    const metadata = await prisma.metadata.findUnique({
+        where: { id: 1 },
+    });
+
+    const now = new Date();
+    const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+
+    if (metadata?.lastFetchedAt && metadata.lastFetchedAt > twelveHoursAgo) {
+        console.log("Skipping fetch: Data was updated recently.");
+        return;
+    }
+
+    console.log("Fetching new data...");
+    await fetchTitles();
+    await fetchFighters();
+    await fetchFights();
+
+    await prisma.metadata.upsert({
+        where: { id: 1 },
+        update: { lastFetchedAt: now },
+        create: { id: 1, lastFetchedAt: now },
+    });
+
+    console.log("Finished fetching data");
+}
+
 const options = {
     method: 'GET',
     headers: {
@@ -21,7 +48,7 @@ const options = {
     }
 };
 
-export const fetchTitles = async () => {
+const fetchTitles = async () => {
     const url = 'https://boxing-data-api.p.rapidapi.com/v1/titles/?page_num=1&page_size=200';
     const res = await fetch(url, options);
     const titles = await res.json();
@@ -168,30 +195,3 @@ const fetchFights = async () => {
     }
     console.log("Finished fetching fights: " + fights.length);
 };
-
-const fetchData = async () => {
-    const metadata = await prisma.metadata.findUnique({
-        where: { id: 1 },
-    });
-
-    const now = new Date();
-    const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000);
-
-    if (metadata?.lastFetchedAt && metadata.lastFetchedAt > twelveHoursAgo) {
-        console.log("Skipping fetch: Data was updated recently.");
-        return;
-    }
-
-    console.log("Fetching new data...");
-    await fetchTitles();
-    await fetchFighters();
-    await fetchFights();
-
-    await prisma.metadata.upsert({
-        where: { id: 1 },
-        update: { lastFetchedAt: now },
-        create: { id: 1, lastFetchedAt: now },
-    });
-
-    console.log("Finished fetching data");
-}

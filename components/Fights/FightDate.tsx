@@ -2,7 +2,7 @@
 import { useIsClient } from "@/hooks/useClient";
 import { DateTime } from "luxon";
 
-export const Date = ({ date }: { date?: string | null }) => {
+export const FightDate = ({ date }: { date?: string | null }) => {
     const isClient = useIsClient();
     if (date === null || date === undefined) return 'No time available';
 
