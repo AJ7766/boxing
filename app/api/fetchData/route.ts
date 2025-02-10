@@ -3,10 +3,11 @@ import { TitleProps } from "@/types/fighterType";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-    const secret = req.headers.get("x-secret-key");
-
-    if (secret !== process.env.FETCH_SECRET) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authHeader = req.headers.get('authorization');
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+      return new Response('Unauthorized', {
+        status: 401,
+      });
     }
 
     await fetchData();
