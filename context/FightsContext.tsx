@@ -35,16 +35,14 @@ export const FightsProvider = ({ children, start, end }: FightsProviderProps) =>
     const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
 
     // Fetching fights using useQuery
-    const { data, isLoading } = useQuery(
-        ['fights', start, end, fights.query], // Query key should depend on start, end, and query
-        async () => {
+    const { data, isLoading } = useQuery({
+        queryKey: ['fights', start, end, fights.query], // Query key should depend on start, end, and query
+        queryFn: async () => {
             const data = await getFights(fights.query ?? '', start, end, oneWeekAgo);
             return JSON.parse(JSON.stringify(data));
         },
-        {
-            staleTime: 1000 * 60 * 10, // Cache data for 10 minutes
-        }
-    );
+        staleTime: 1000 * 60 * 10, // Cache data for 10 minutes
+    });
 
     // Update state when data changes or is loading
     useEffect(() => {
