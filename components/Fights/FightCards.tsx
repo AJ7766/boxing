@@ -2,7 +2,7 @@
 import { FighterName } from "./FighterName";
 import { FighterStats } from "./FighterStats";
 import { FightDate } from "./FightDate";
-import { useFights } from "@/context/fFightsContext";
+import { useFights } from "@/context/FightsContext";
 import { useIsClient } from "@/hooks/useClient";
 
 export const FightCards = () => {
