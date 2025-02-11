@@ -1,8 +1,25 @@
 "use client"
 import { useFights } from "@/context/FightsContext";
+import { useEffect, useState } from "react";
 
 export const Search = () => {
-    const { setFights } = useFights();
+    const { fights, setFights } = useFights();
+    const [query, setQuery] = useState(fights.query);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setFights(prev => ({
+                ...prev,
+                query: query,
+            }));
+        }, 300);
+
+        // Cleanup the timeout if the query changes before 300ms
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [query, setFights]);
+
     return (
         <>
             <label htmlFor="searchQuery" className="sr-only">
@@ -10,15 +27,12 @@ export const Search = () => {
             </label>
             <input
                 id="searchQuery"
-                className="bg-gray-100 max-w-[850px] w-full mx-auto text-center text-2xl font-semibold py-2 px-4 rounded-md"
+                className="bg-gray-100 max-w-[850px] w-full mx-auto text-center text§-2xl font-semibold py-2 px-4 rounded-md"
                 type="text"
                 name="query"
                 placeholder="Search for a fight"
-                onInput={(e) => setFights(prev => ({
-                    ...prev,
-                    query: (e.target as HTMLInputElement).value,
-                }))}
+                onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
             />
         </>
-    )
-}
+    );
+};

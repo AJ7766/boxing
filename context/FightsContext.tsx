@@ -1,18 +1,20 @@
 "use client"
 import { getFights } from '@/services/fightsServices';
 import { FightProps } from '@/types/fightsType';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 interface FightsState {
     fights?: FightProps[];
     totalFights?: number;
     query?: string;
-    isLoading?: boolean;
 }
 
 interface FightsContextProps {
     fights: FightsState;
     setFights: React.Dispatch<React.SetStateAction<FightsState>>;
+    isLoading: boolean
 }
 
 interface FightsProviderProps {
@@ -28,26 +30,35 @@ export const FightsProvider = ({ children, start, end }: FightsProviderProps) =>
         fights: [],
         totalFights: 0,
         query: '',
-        isLoading: false
-    })
+    });
 
-    // Fetching fights initially, and when query changes
+    const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
+
+    // Fetching fights using useQuery
+    const { data, isLoading } = useQuery(
+        ['fights', start, end, fights.query], // Query key should depend on start, end, and query
+        async () => {
+            const data = await getFights(fights.query ?? '', start, end, oneWeekAgo);
+            return JSON.parse(JSON.stringify(data));
+        },
+        {
+            staleTime: 1000 * 60 * 10, // Cache data for 10 minutes
+        }
+    );
+
+    // Update state when data changes or is loading
     useEffect(() => {
-        setFights(prev => ({ ...prev, isLoading: true }));
-        const timeout = setTimeout(async () => {
-            const { fetchedFights, totalFights } = await getFights(fights.query ?? '', start, end);
-            setFights(prev => ({
+        if (data) {
+            setFights((prev) => ({
                 ...prev,
-                fights: JSON.parse(JSON.stringify(fetchedFights)),
-                totalFights: totalFights,
-                isLoading: false
-            }));
-        }, 300);
-        return () => clearTimeout(timeout);
-    }, [fights.query, start, end]);
+                fights: data.fetchedFights,
+                totalFights: data.totalFights,
+            }))
+        }
+    }, [data, isLoading, fights.query]);
 
     return (
-        <FightsContext.Provider value={{ fights, setFights }}>
+        <FightsContext.Provider value={{ fights, setFights, isLoading }}>
             {children}
         </FightsContext.Provider>
     );

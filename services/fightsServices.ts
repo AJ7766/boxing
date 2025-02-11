@@ -1,9 +1,7 @@
 "use server"
 import { prisma } from "@/lib/prisma";
-import { DateTime } from "luxon";
 
-const getTotalFights = async (query?: string) => {
-    const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
+const getTotalFights = async (oneWeekAgo: Date, query?: string) => {
     const totalFights = await prisma.fight.count({
         where: {
             ...(query && {
@@ -35,9 +33,7 @@ export const getSearchParams = async ({ searchParams }: { searchParams: Promise<
     return { page, per_page, start, end }
 }
 
-export const getFights = async (query: string, start: number, end: number) => {
-    const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
-
+export const getFights = async (query: string, start: number, end: number, oneWeekAgo: Date) => {
     const fightsPromise = prisma.fight.findMany({
         where: {
             OR: query
@@ -93,6 +89,6 @@ export const getFights = async (query: string, start: number, end: number) => {
         },
     });
 
-    const [fights, totalFights] = await Promise.all([fightsPromise, getTotalFights(query)]);
+    const [fights, totalFights] = await Promise.all([fightsPromise, getTotalFights(oneWeekAgo, query)]);
     return { fetchedFights: fights, totalFights };
 }
