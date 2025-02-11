@@ -7,15 +7,15 @@ import { useIsClient } from "@/hooks/useClient";
 
 export const FightCards = () => {
     const isClient = useIsClient();
-    const { data, isLoading } = useFights();
-    
+    const { data: { fights }, isLoading } = useFights();
+
     if (!isClient || isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
 
-    if (data.fights?.length === 0) return <p className="text-center text-4xl font-medium">No fights found</p>
+    if (fights?.length === 0) return <p className="text-center text-4xl font-medium">No fights found</p>
 
     return (
         // RENDER FIGHTS
-        (data.fights?.map((fight, i) => (
+        (fights?.map((fight, i) => (
             <div className={`max-w-[850px] w-full mx-auto flex flex-col items-center gap-2`} key={i}>
                 {/* TITLE */}
                 <div className="w-full grid grid-cols-[20%_60%_20%] items-center">

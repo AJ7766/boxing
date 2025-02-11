@@ -10,15 +10,15 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
-    const { data } = useFights();
-    
+    const { data: { totalFights } } = useFights();
+
     const prevPage = Number(page) > 1 ? Number(page) - 1 : 1;
     const nextPage = Number(page) + 1;
-    const hasPrevPage = start > 1 && (data.totalFights ?? 0) >= Number(per_page); // if start > 1 and totalFights >= 8
-    const hasNextPage = end < (data.totalFights ?? 0);
+    const hasPrevPage = start > 1 && (totalFights ?? 0) >= Number(per_page); // if start > 1 and totalFights >= 8
+    const hasNextPage = end < (totalFights ?? 0);
 
     // Calculate total pages available
-    const totalPages = Math.ceil((data.totalFights ?? 0) / Number(per_page));
+    const totalPages = Math.ceil((totalFights ?? 0) / Number(per_page));
 
     return (
         <div className="font-medium flex gap-1 items-center m-auto ">
