@@ -90,5 +90,5 @@ export const getFights = async (query: string, start: number, end: number, oneWe
     });
 
     const [fights, totalFights] = await Promise.all([fightsPromise, getTotalFights(oneWeekAgo, query)]);
-    return { fetchedFights: fights, totalFights };
+    return { fights, totalFights };
 }

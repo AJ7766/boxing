@@ -3,22 +3,19 @@ import { useFights } from "@/context/FightsContext";
 import { useEffect, useState } from "react";
 
 export const Search = () => {
-    const { fights, setFights } = useFights();
-    const [query, setQuery] = useState(fights.query);
+    const { setQuery } = useFights();
+    const [debounceValue, setDebounceValue] = useState('');
 
     useEffect(() => {
         const handler = setTimeout(() => {
-            setFights(prev => ({
-                ...prev,
-                query: query,
-            }));
+            setQuery(debounceValue)
         }, 300);
 
         // Cleanup the timeout if the query changes before 300ms
         return () => {
             clearTimeout(handler);
         };
-    }, [query, setFights]);
+    }, [debounceValue, setQuery]);
 
     return (
         <>
@@ -31,7 +28,7 @@ export const Search = () => {
                 type="text"
                 name="query"
                 placeholder="Search for a fight"
-                onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
+                onInput={(e) => setDebounceValue((e.target as HTMLInputElement).value)}
             />
         </>
     );
