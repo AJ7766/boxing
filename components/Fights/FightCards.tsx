@@ -8,7 +8,7 @@ import { useIsClient } from "@/hooks/useClient";
 export const FightCards = () => {
     const isClient = useIsClient();
     const { data, isLoading } = useFights();
-    console.log("Fights recieved:", data.fights);
+    
     if (!isClient || isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
 
     if (data.fights?.length === 0) return <p className="text-center text-4xl font-medium">No fights found</p>
