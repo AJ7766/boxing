@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/prisma";
 
 const getTotalFights = async (oneWeekAgo: Date, query?: string) => {
-    const totalFights = await prisma.fight.count({
+    const totalFights = prisma.fight.count({
         where: {
             ...(query && {
                 OR: [
