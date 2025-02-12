@@ -5,7 +5,6 @@ import { Location } from "@/components/News/Location";
 import { EventDate } from "@/components/News/EventDate";
 import { prisma } from "@/lib/prisma";
 import { Video } from "@/components/News/Video";
-import { rajdhani } from "@/fonts/fonts";
 
 const Videos = [{
   id: "lUAA0b-YjQM",
@@ -40,7 +39,7 @@ export default async function News() {
     console.error('No fight found');
 
   return (
-    <main className={`relative bg-gray-100 px-7 py-16 ${rajdhani.className} overflow-hidden`}>
+    <main className={`relative bg-gray-100 px-7 py-16 overflow-hidden`}>
       <BgText
         fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
         fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}

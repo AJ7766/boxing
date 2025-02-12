@@ -10,8 +10,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${rajdhani.className} antialiased`}>
-      <body>
+    <html lang="en">
+      <body className={`${rajdhani.className} antialiased overflow-x-hidden`}>
         <Nav />
         <Hero />
         {children}
