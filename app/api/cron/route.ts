@@ -32,7 +32,8 @@ const fetchData = async () => {
     await fetchTitles();
     await fetchFighters();
     await fetchFights();
-
+    await fetchRankings();
+    
     await prisma.metadata.upsert({
         where: { id: 1 },
         update: { lastFetchedAt: now },
@@ -198,7 +199,7 @@ const fetchFights = async () => {
     console.log("Finished fetching fights: " + fights.length);
 };
 
-export const fetchRankings = async () => {
+const fetchRankings = async () => {
     const { mensScrapedRankings, womensCrapedRankings } = await getRankings();
 
     // Create an array to hold promises for mensRankings
