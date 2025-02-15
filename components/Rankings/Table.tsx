@@ -13,22 +13,14 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
     const handleSort = useCallback((key: keyof RankingsProps) => {
         setSortedRankings(prevRankings => {
             const sorted = [...prevRankings].sort((a, b) => {
-                const aValue = Number(a[key]?.match(/(\d+)/)?.[1]) || NaN;
-                const bValue = Number(b[key]?.match(/(\d+)/)?.[1]) || NaN;
-
-                if (isNaN(aValue) && isNaN(bValue)) return 0;
-                if (isNaN(aValue)) return 1;
-                if (isNaN(bValue)) return -1;
+                const aValue = Number(a[key]?.match(/(\d+)/)?.[0]) || Infinity;
+                const bValue = Number(b[key]?.match(/(\d+)/)?.[0]) || Infinity;
 
                 return aValue - bValue;
             });
             return sorted;
         });
     }, [sortedRankings]);
-
-    useEffect(() => {
-        handleSort('theRing');
-    }, [])
 
     return (
         <>
