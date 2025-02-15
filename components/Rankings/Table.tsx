@@ -29,7 +29,7 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
 
     useEffect(() => {
         handleSort('theRing');
-    }, [])
+    }, [handleSort])
 
     return (
         <>
