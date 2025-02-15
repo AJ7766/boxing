@@ -1,6 +1,6 @@
 "use client"
 import { RankingsProps } from '@/types/rankingsTypes';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 export const Table = ({ mensRankings, womensRankings }: { mensRankings: RankingsProps[], womensRankings: RankingsProps[] }) => {
     const [womens, setWomens] = useState(false);
@@ -10,26 +10,25 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
         setSortedRankings(womens ? womensRankings : mensRankings);
     }, [womens, mensRankings, womensRankings]);
 
-    const handleSort = (key: keyof RankingsProps) => {
-        const sorted = [...sortedRankings].sort((a, b) => {
-            // Extract the numeric value from the string
-            const aValue = Number(a[key]?.match(/(\d+)/)?.[1]) || NaN;
-            const bValue = Number(b[key]?.match(/(\d+)/)?.[1]) || NaN;
+    const handleSort = useCallback((key: keyof RankingsProps) => {
+        setSortedRankings(prevRankings => {
+            const sorted = [...prevRankings].sort((a, b) => {
+                const aValue = Number(a[key]?.match(/(\d+)/)?.[1]) || NaN;
+                const bValue = Number(b[key]?.match(/(\d+)/)?.[1]) || NaN;
 
-            // Checks to see if the values are numbers
-            if (isNaN(aValue) && isNaN(bValue)) return 0;
-            if (isNaN(aValue)) return 1;  // aValue is null or NaN, move it down
-            if (isNaN(bValue)) return -1; // bValue is null or NaN, move it up
+                if (isNaN(aValue) && isNaN(bValue)) return 0;
+                if (isNaN(aValue)) return 1;
+                if (isNaN(bValue)) return -1;
 
-            // If both values are numbers, sort them
-            return aValue - bValue;
+                return aValue - bValue;
+            });
+            return sorted;
         });
-        setSortedRankings(sorted);
-    };
+    }, []);
 
     useEffect(() => {
         handleSort('theRing');
-    }, [handleSort])
+    }, [])
 
     return (
         <>
