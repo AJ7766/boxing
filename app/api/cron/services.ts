@@ -5,6 +5,7 @@ export const getRankings = async () => {
     // Launch a new browser instance
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
+    
     // Navigate to the Wikipedia page
     await page.goto(process.env.SCRAPE_RANKING_URL as string);
 
@@ -29,7 +30,7 @@ export const getRankings = async () => {
             row.textContent?.trim().toLowerCase().includes("current world champions")
         );
 
-        // Get men’s rankings
+        // Get the valid rows for men's and women's rankings
         const validMensRows = stopMensIndex !== -1 ? mensDataRows.slice(0, stopMensIndex) : mensDataRows;
         const validWomensRows = stopWomensIndex !== -1 ? womensDataRows.slice(0, stopWomensIndex) : womensDataRows;
 
@@ -64,6 +65,7 @@ export const getRankings = async () => {
             };
         });
 
+        // Function to sort the rankings before passing them
         const sortRankings = (rankings: RankingsProps[], key: keyof RankingsProps) => {
             return rankings.sort((a, b) => {
                 const aValue = Number(a[key]?.match(/(\d+)/)?.[0]) || Infinity;
