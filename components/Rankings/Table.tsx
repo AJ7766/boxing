@@ -32,27 +32,27 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
                 <table className='mx-auto font-medium table-collapse'>
                     <thead>
                         <tr>
-                            <th rowSpan={2} className="px-4 py-2 border border-gray-300">Boxer</th>
-                            <th rowSpan={2} className="px-4 py-2 border border-gray-300">Record</th>
-                            <th rowSpan={2} className="px-4 py-2 border border-gray-300">Weight Class</th>
-                            <th rowSpan={2} className="px-4 py-2 border border-gray-300">Current World Titles</th>
-                            <th colSpan={womens ? 3 : 5} className="px-4 py-2 border border-gray-300">Ranker</th>
+                            <TableHeader rowSpan={2}>Test</TableHeader>
+                            <TableHeader rowSpan={2}>Record</TableHeader>
+                            <TableHeader rowSpan={2}>Weight Class</TableHeader>
+                            <TableHeader rowSpan={2}>Current World Titles</TableHeader>
+                            <TableHeader colSpan={womens ? 3 : 5}>Ranker</TableHeader>
                         </tr>
                         <tr className="border-b-2 border-gray-500 cursor-pointer">
-                            <th className="px-4 py-2 border border-gray-300" onClick={() => handleSort('theRing')}>The Ring</th>
-                            {!womens && <th className="px-4 py-2 border border-gray-300" onClick={() => handleSort('bwaa')}>BWAA</th>}
-                            {!womens && <th className="px-4 py-2 border border-gray-300" onClick={() => handleSort('tbrb')}>TBRB</th>}
-                            <th className="px-4 py-2 border border-gray-300" onClick={() => handleSort('espn')}>ESPN</th>
-                            <th className="px-4 py-2 border border-gray-300" onClick={() => handleSort('boxRec')}>BoxRec</th>
+                            <TableHeader onClick={() => handleSort('theRing')}>The Ring</TableHeader>
+                            {!womens && <TableHeader onClick={() => handleSort('bwaa')}>BWAA</TableHeader>}
+                            {!womens && <TableHeader onClick={() => handleSort('tbrb')}>TBRB</TableHeader>}
+                            <TableHeader onClick={() => handleSort('espn')}>ESPN</TableHeader>
+                            <TableHeader onClick={() => handleSort('boxRec')}>BoxRec</TableHeader>
                         </tr>
                     </thead>
                     <tbody>
                         {sortedRankings.map((ranking) => (
                             <tr key={ranking.id} className="border-b border-gray-300">
-                                <td className="px-4 py-2 border border-gray-300">{ranking.boxer}</td>
-                                <td className="px-4 py-2 border border-gray-300">{ranking.record}</td>
-                                <td className="px-4 py-2 border border-gray-300">{ranking.weightClass}</td>
-                                <td className="px-4 py-2 border border-gray-300 whitespace-normal break-words">
+                                <TableCell>{ranking.boxer}</TableCell>
+                                <TableCell>{ranking.record}</TableCell>
+                                <TableCell>{ranking.weightClass}</TableCell>
+                                <TableCell className="whitespace-normal break-words">
                                     {ranking.currentWorldTitles &&
                                         ranking.currentWorldTitles
                                             .split(', ') // Split by comma
@@ -62,12 +62,12 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
                                                     {index < arr.length - 1 && !arr[index + 1].includes('and') ? ', ' : ' '}
                                                 </span>
                                             ))}
-                                </td>
-                                <td className="px-4 py-2 border border-gray-300">{ranking.theRing}</td>
-                                {!womens && <td className="px-4 py-2 border border-gray-300">{ranking.bwaa}</td>}
-                                {!womens && <td className="px-4 py-2 border border-gray-300">{ranking.tbrb}</td>}
-                                <td className="px-4 py-2 border border-gray-300">{ranking.espn}</td>
-                                <td className="px-4 py-2 border border-gray-300">{ranking.boxRec}</td>
+                                </TableCell>
+                                <TableCell>{ranking.theRing}</TableCell>
+                                {!womens && <TableCell>{ranking.bwaa}</TableCell>}
+                                {!womens && <TableCell>{ranking.tbrb}</TableCell>}
+                                <TableCell>{ranking.espn}</TableCell>
+                                <TableCell>{ranking.boxRec}</TableCell>
                             </tr>
                         ))}
                     </tbody>
@@ -76,3 +76,18 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
         </>
     )
 }
+
+const TableHeader = ({ children, rowSpan, colSpan, onClick }: { children: React.ReactNode, rowSpan?: number, colSpan?: number, onClick?: () => void }) => (
+    <th
+        className={`px-4 py-2 border border-gray-300 ${onClick && 'cursor-pointer'}`}
+        onClick={onClick}
+        rowSpan={rowSpan}
+        colSpan={colSpan}
+    >
+        {children}
+    </th>
+);
+
+const TableCell = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+    <td className={`px-4 py-2 border border-gray-300 ${className}`}>{children}</td>
+);
