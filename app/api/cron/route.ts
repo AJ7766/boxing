@@ -199,7 +199,7 @@ const fetchFights = async () => {
     console.log("Finished fetching fights: " + fights.length);
 };
 
-export const fetchRankings = async () => {
+const fetchRankings = async () => {
     const { mensScrapedRankings, womensCrapedRankings } = await getRankings();
 
     // Create an array to hold promises for mensRankings
