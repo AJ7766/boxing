@@ -11,7 +11,7 @@ export default async function Fights({ searchParams }: { searchParams: Promise<{
     
     return (
         <main className={`bg-white text-lg whitespace-nowrap flex flex-col gap-20 py-12`}>
-            <h2 className="text-center text-4xl font-semibold">UPCOMING</h2>
+            <h2 className="text-center text-5xl font-semibold">UPCOMING</h2>
             <QueryClientProviderWrapper>
                 <FightsProvider start={start} end={end}>
                     <Search />

@@ -19,6 +19,30 @@ model Title {
   fights Fight[] @relation("FightTitles")
 }
 
+model MensRankings {
+  id                 String  @id
+  boxer              String?
+  record             String?
+  weightClass        String?
+  currentWorldTitles String?
+  theRing            String?
+  bwaa               String?
+  tbrb               String?
+  espn               String?
+  boxRec             String?
+}
+
+model WomensRankings {
+  id                 String  @id
+  boxer              String?
+  record             String?
+  weightClass        String?
+  currentWorldTitles String?
+  theRing            String?
+  espn               String?
+  boxRec             String?
+}
+
 model Broadcaster {
   id      String  @id @default(cuid())
   name    String

@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { TitleProps } from "@/types/fighterType";
 import { NextRequest, NextResponse } from "next/server";
+import { getRankings } from "./services";
 
 export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
@@ -50,7 +51,7 @@ const options = {
 };
 
 const fetchTitles = async () => {
-    const url = 'https://boxing-data-api.p.rapidapi.com/v1/titles/?page_num=1&page_size=200';
+    const url = `${process.env.API_URL}/v1/titles/?page_num=1&page_size=200`;
     const res = await fetch(url, options);
     const titles = await res.json();
     for (let i = 0; i < titles.length; i++) {
@@ -72,7 +73,7 @@ const fetchTitles = async () => {
 };
 
 const fetchFighters = async () => {
-    const url = 'https://boxing-data-api.p.rapidapi.com/v1/fighters/?page_num=1&page_size=5000';
+    const url = `${process.env.API_URL}/v1/fighters/?page_num=1&page_size=5000`;
     const res = await fetch(url, options);
     const fighters = await res.json();
 
@@ -134,7 +135,7 @@ const fetchFighters = async () => {
 };
 
 const fetchFights = async () => {
-    const url = 'https://boxing-data-api.p.rapidapi.com/v1/fights/?page_num=1&page_size=10000';
+    const url = `${process.env.API_URL}/v1/fights/?page_num=1&page_size=10000`;
     const res = await fetch(url, options);
     const fights = await res.json();
 
@@ -196,3 +197,68 @@ const fetchFights = async () => {
     }
     console.log("Finished fetching fights: " + fights.length);
 };
+
+export const fetchRankings = async () => {
+    const { mensScrapedRankings, womensCrapedRankings } = await getRankings();
+
+    // Create an array to hold promises for mensRankings
+    const mensRankingPromises = mensScrapedRankings.map((ranking) => {
+        return prisma.mensRankings.upsert({
+            where: { id: ranking.id }, // Use id as the unique identifier for mensRankings
+            update: {
+                boxer: ranking.boxer || '-',
+                record: ranking.record || '-',
+                weightClass: ranking.weightClass || '-',
+                currentWorldTitles: ranking.currentWorldTitles || '-',
+                theRing: ranking.theRing || '-',
+                bwaa: ranking.bwaa || '-',
+                tbrb: ranking.tbrb || '-',
+                espn: ranking.espn || '-',
+                boxRec: ranking.boxRec || '-'
+            },
+            create: {
+                id: ranking.id, // Ensure to pass the id for new records
+                boxer: ranking.boxer || '-',
+                record: ranking.record || '-',
+                weightClass: ranking.weightClass || '-',
+                currentWorldTitles: ranking.currentWorldTitles || '-',
+                theRing: ranking.theRing || '-',
+                bwaa: ranking.bwaa || '-',
+                tbrb: ranking.tbrb || '-',
+                espn: ranking.espn || '-',
+                boxRec: ranking.boxRec || '-'
+            }
+        });
+    });
+
+    // Create an array to hold promises for womensRankings
+    const womensRankingPromises = womensCrapedRankings.map((ranking) => {
+        return prisma.womensRankings.upsert({
+            where: { id: ranking.id }, // Use id as the unique identifier for womensRankings
+            update: {
+                boxer: ranking.boxer || '-',
+                record: ranking.record || '-',
+                weightClass: ranking.weightClass || '-',
+                currentWorldTitles: ranking.currentWorldTitles || '-',
+                theRing: ranking.theRing || '-',
+                espn: ranking.espn || '-',
+                boxRec: ranking.boxRec || '-'
+            },
+            create: {
+                id: ranking.id, // Ensure to pass the id for new records
+                boxer: ranking.boxer || '-',
+                record: ranking.record || '-',
+                weightClass: ranking.weightClass || '-',
+                currentWorldTitles: ranking.currentWorldTitles || '-',
+                theRing: ranking.theRing || '-',
+                espn: ranking.espn || '-',
+                boxRec: ranking.boxRec || '-'
+            }
+        });
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all([...mensRankingPromises, ...womensRankingPromises]);
+
+    console.log("Finished Mens Rankings: " + mensRankingPromises.length, "Finished Womens Rankings: " + womensRankingPromises.length);
+}

@@ -31,6 +31,7 @@ export const Hero = () => {
             <h1 className="text-white text-9xl">
                 {pathname === "/" && "NEWS"}
                 {pathname === "/fights" && "FIGHTS"}
+                {pathname === "/rankings" && "RANKINGS"}
             </h1>
         </div>
     )
