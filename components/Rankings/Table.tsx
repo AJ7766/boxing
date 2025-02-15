@@ -24,7 +24,7 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
             });
             return sorted;
         });
-    }, []);
+    }, [sortedRankings]);
 
     useEffect(() => {
         handleSort('theRing');
