@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Data fetched successfully" });
 }
 
-export const fetchData = async () => {
+const fetchData = async () => {
     const metadata = await prisma.metadata.findUnique({
         where: { id: 1 },
     });
