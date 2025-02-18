@@ -43,13 +43,6 @@ model WomensRankings {
   boxRec             String?
 }
 
-model Broadcaster {
-  id      String  @id @default(cuid())
-  name    String
-  country String
-  fights  Fight[] @relation("FightBroadcasters")
-}
-
 model Fighter {
   id            String  @id
   name          String?
@@ -81,30 +74,23 @@ model Fighter {
 }
 
 model Fight {
-  id               String        @id
-  title            String?
-  slug             String?
-  date             DateTime?
-  location         String?
-  results          Json?
-  scheduledRounds  Int?
-  scores           Json?
-  status           String?
-  eventTitle       String?
-  eventSlug        String?
-  eventDate        DateTime?
-  eventLocation    String?
-  division         String?
-  divisionWeightLb Float?
-  divisionWeightKg Float?
-  titles           Title[]       @relation("FightTitles") // Many-to-many relation
-  broadcasters     Broadcaster[] @relation("FightBroadcasters")
+  id              String    @id
+  title           String?
+  date            DateTime?
+  location        String?
+  scheduledRounds Int?
+  broadcasters    Json?
+  result          Json?
+  scores          String[]
+  status          String?
+  division        String?
 
   // Foreign Keys
   fighter1Id String?
   fighter2Id String?
 
   // Relations
-  fighter1 Fighter? @relation("Fighter1Relation", fields: [fighter1Id], references: [id])
+  titles   Title[]  @relation("FightTitles") // Many-to-many relation
+  fighter1 Fighter? @relation("Fighter1Relation", fields: [fighter1Id], references: [id]) // One to-many relation
   fighter2 Fighter? @relation("Fighter2Relation", fields: [fighter2Id], references: [id])
 }

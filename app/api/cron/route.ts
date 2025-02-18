@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { TitleProps } from "@/types/fighterType";
 import { NextRequest, NextResponse } from "next/server";
 import { getRankings } from "./services";
+import { BroadcastProps, FightProps } from "@/types/fightsType";
+import { Prisma } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
@@ -15,7 +17,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Data fetched successfully" });
 }
 
-const fetchData = async () => {
+export const fetchData = async () => {
     const metadata = await prisma.metadata.findUnique({
         where: { id: 1 },
     });
@@ -29,8 +31,8 @@ const fetchData = async () => {
     }
 
     console.log("Fetching new data...");
-    await fetchTitles();
-    await fetchFighters();
+/*     await fetchTitles();
+    await fetchFighters(); */
     await fetchFights();
     await fetchRankings();
 
@@ -143,54 +145,57 @@ const fetchFights = async () => {
     for (let i = 0; i < fights.length; i++) {
         const fight = fights[i];
 
+        const broadcasters = fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
+            const [country, network] = Object.entries(broadcaster)[0]; // Extract key-value correctly
+            return {
+                country,  // key is country
+                network,  // value is network
+            };
+        }) || [];
+
+
         await prisma.fight.upsert({
             where: { id: fight.id },
             update: {
                 title: fight.title || null,
-                slug: fight.slug || null,
                 date: fight.date ? new Date(fight.date) : null,
                 location: fight.location || null,
-                results: fight.results || null,
+                result: fight.results ? {
+                    outcome: fight.results.outcome ?? null,
+                    round: fight.results.round ?? null,
+                } as Prisma.JsonObject : Prisma.JsonNull,
                 scheduledRounds: fight.scheduled_rounds || null,
-                scores: fight.scores || null,
+                scores: fight.scores || [],
                 status: fight.status || null,
-                eventTitle: fight.event?.title || null,
-                eventSlug: fight.event?.slug || null,
-                eventDate: fight.event?.date ? new Date(fight.event.date) : null,
-                eventLocation: fight.event?.location || null,
                 division: fight.division?.name || null,
-                divisionWeightLb: fight.division?.weight_lb || null,
-                divisionWeightKg: fight.division?.weight_kg || null,
                 titles: {
                     connect: fight.titles?.map((title: TitleProps) => ({
                         id: title.id,
                     })) || [],
                 },
+                broadcasters: broadcasters as Prisma.JsonObject|| [],
                 fighter1Id: fight.fighters.fighter_1.fighter_id || null,
                 fighter2Id: fight.fighters.fighter_2.fighter_id || null,
             },
             create: {
                 id: fight.id,
                 title: fight.title || null,
-                slug: fight.slug || null,
                 date: fight.date ? new Date(fight.date) : null,
                 location: fight.location || null,
-                results: fight.results || null,
+                result: fight.results ? {
+                    outcome: fight.results.outcome ?? null,
+                    round: fight.results.round ?? null,
+                } as Prisma.JsonObject : Prisma.JsonNull,
                 scheduledRounds: fight.scheduled_rounds || null,
-                scores: fight.scores || null,
+                scores: fight.scores || [],
                 status: fight.status || null,
-                eventTitle: fight.event?.title || null,
-                eventSlug: fight.event?.slug || null,
-                eventDate: fight.event?.date ? new Date(fight.event.date) : null,
-                eventLocation: fight.event?.location || null,
                 division: fight.division?.name || null,
-                divisionWeightLb: fight.division?.weight_lb || null,
-                divisionWeightKg: fight.division?.weight_kg || null,
                 titles: {
                     connect: fight.titles?.map((title: TitleProps) => ({
                         id: title.id,
                     })) || [],
                 },
+                broadcasters: broadcasters as Prisma.JsonObject || [],
                 fighter1Id: fight.fighters.fighter_1.fighter_id || null,
                 fighter2Id: fight.fighters.fighter_2.fighter_id || null,
             },

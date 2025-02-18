@@ -10,10 +10,10 @@ export const FightDate = ({ date }: { date?: string | null }) => {
     const timeZone = localDateTime.zoneName;
 
     return (
-        <p className="text-center text-2xl font-semibold text-gray-600 leading-none">
+        <p className="text-xl font-bold border-b pb-2">
             {localDateTime.toFormat('dd MMMM')}
             <br />
-            <span className="text-lg">{isClient ? `${localDateTime.toFormat('HH:mm')} ${timeZone}` : 'Loading...'}</span>
+            <span className="text-base font-medium">{isClient ? `${localDateTime.toFormat('HH:mm')} ${timeZone}` : 'Loading...'}</span>
         </p>
     )
 }

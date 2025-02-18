@@ -2,7 +2,7 @@ import { FighterProps } from "@/types/fighterType";
 
 export const Table = ({ fighter }: { fighter: FighterProps | null }) => {
     return (
-        <table className="table-auto min-w-52 border-collapse whitespace-nowrap">
+        <table className="table-auto min-w-52 whitespace-nowrap">
             <thead>
                 <tr>
                     <th className="border-b px-4 py-2 text-left">{fighter?.name || fighter?.nickname}</th>

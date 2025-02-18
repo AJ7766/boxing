@@ -81,6 +81,7 @@ export const getFights = async (query: string, start: number, end: number, oneWe
             date: true,
             location: true,
             division: true,
+            broadcasters: true,
             scheduledRounds: true,
             titles: true,
         },

@@ -24,7 +24,7 @@ export const Search = () => {
             </label>
             <input
                 id="searchQuery"
-                className="bg-gray-100 max-w-[850px] w-full mx-auto text-center text§-2xl font-semibold py-2 px-4 rounded-md"
+                className="bg-gray-100 max-w-[900px] w-full mx-auto text-center text§-2xl font-semibold py-2 px-4 rounded-md"
                 type="text"
                 name="query"
                 placeholder="Search for a fight"
