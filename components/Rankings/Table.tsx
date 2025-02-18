@@ -20,7 +20,7 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
             });
             return sorted;
         });
-    }, [sortedRankings]);
+    }, []);
 
     return (
         <>

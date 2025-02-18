@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { TitleProps } from "@/types/fighterType";
 import { NextRequest, NextResponse } from "next/server";
 import { getRankings } from "./services";
-import { BroadcastProps, FightProps } from "@/types/fightsType";
+import { BroadcastProps } from "@/types/fightsType";
 import { Prisma } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
@@ -31,8 +31,8 @@ export const fetchData = async () => {
     }
 
     console.log("Fetching new data...");
-/*     await fetchTitles();
-    await fetchFighters(); */
+    await fetchTitles();
+    await fetchFighters();
     await fetchFights();
     await fetchRankings();
 
