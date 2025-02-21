@@ -1,7 +1,7 @@
 
 export const Location = ({ location }: { location: string | null }) => {
     return (
-        <p className="font-medium text-gray-500">
+        <p className="font-medium leading-tight mb-1">
             {(() => {
                 // Splitting the Arena and Location
                 const parts = location?.split(',') || [];

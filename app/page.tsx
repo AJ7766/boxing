@@ -20,6 +20,11 @@ const Videos = [{
   id: "nDyCgocB5aM",
   alt: "Artur Beterbiev vs Dmitry Bivol First fight",
   type: "First Fight"
+},
+{
+  id:"21AjmeDngBI",
+  alt: "Artur Beterbiev & Dmitry Bivol's FULL public workout",
+  type: "Workout"
 }]
 
 export default async function News() {
