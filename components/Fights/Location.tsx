@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export const Location = ({ location }: { location: string | null }) => {
     return (
         <div className="flex items-center gap-2 mt-3">

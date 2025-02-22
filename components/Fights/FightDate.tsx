@@ -1,7 +1,6 @@
 "use client"
 import { useIsClient } from "@/hooks/useClient";
 import { DateTime } from "luxon";
-import Image from "next/image";
 
 export const FightDate = ({ date }: { date?: string | null }) => {
     const isClient = useIsClient();
