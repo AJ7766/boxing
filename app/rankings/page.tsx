@@ -7,7 +7,7 @@ export default async function Rankings() {
 
     const [mensRankings, womensRankings] = await Promise.all([mensRankingsPromise, womensRankingsPromise])
     return (
-        <main className="bg-white py-12">
+        <main className="bg-white py-12 px-6">
             <h2 className="text-center text-4xl font-semibold mb-6">POUND FOR POUND RANKINGS</h2>
             <Table
                 mensRankings={JSON.parse(JSON.stringify(mensRankings))}

@@ -28,7 +28,7 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
                 <button className={`px-3 py-2 ${!womens && 'bg-gray-200 rounded'}`} onClick={() => setWomens(false)}>Men&apos;s</button>
                 <button className={`px-3 ${womens && 'bg-gray-200 rounded'}`} onClick={() => setWomens(true)}>Women&apos;s</button>
             </div>
-            <div className='mt-6'>
+            <div className='mt-6 overflow-x-auto'>
                 <table className='mx-auto font-medium table-collapse'>
                     <thead>
                         <tr>
