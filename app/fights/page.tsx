@@ -1,6 +1,7 @@
 import { FightCards } from "@/components/Fights/FightCards";
 import { Pagination } from "@/components/Fights/Pagination";
 import { Search } from "@/components/Fights/Search";
+import { Title } from "@/components/Title";
 import { FightsProvider } from "@/context/FightsContext";
 import { QueryClientProviderWrapper } from "@/context/QueryContext";
 import { getSearchParams } from "@/services/fightsServices";
@@ -8,10 +9,10 @@ import { getSearchParams } from "@/services/fightsServices";
 
 export default async function Fights({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
     const { page, per_page, start, end } = await getSearchParams({ searchParams });
-    
+
     return (
         <main className={`bg-white text-lg whitespace-nowrap flex flex-col justify-center gap-20 py-12 px-6`}>
-            <h2 className="text-center text-4xl font-semibold">UPCOMING TITLE FIGHTS</h2>
+            <Title>UPCOMING TITLE FIGHTS</Title>
             <QueryClientProviderWrapper>
                 <FightsProvider start={start} end={end}>
                     <Search />

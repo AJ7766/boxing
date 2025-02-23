@@ -6,10 +6,38 @@ import { Location } from "./Location";
 import { FightersTable } from "./FightersTable";
 import Image from "next/image";
 import { useFights } from "@/context/FightsContext";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const FightCards = () => {
     const isClient = useIsClient();
     const { data: { fights }, isLoading } = useFights();
+    const containerRefs = useRef<(HTMLDivElement | null)[]>([]); // Store multiple refs
+
+    useGSAP(() => {
+        if (!containerRefs.current || !isClient) return;
+
+        containerRefs.current.forEach((card) => {
+            gsap.fromTo(
+                card,
+                { opacity: 0, y: 80 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "-80px bottom",
+                        end: "top 85%",
+                        scrub: true,
+                    },
+                }
+            )
+        });
+    }, [fights]);
 
     if (!isClient || isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
 
@@ -18,7 +46,7 @@ export const FightCards = () => {
     return (
         // RENDER FIGHTS
         (fights?.map((fight, i) => (
-            <div className={`max-w-[900px] w-full mx-auto flex flex-col text-base gap-2 border-b mb-2`} key={i}>
+            <div ref={el => { containerRefs.current[i] = el }} className={`max-w-[900px] w-full mx-auto flex flex-col text-base gap-2 border-b mb-2`} key={i}>
                 <div className="w-full grid grid-cols-[30%_50%_auto] self-start items-start">
                     <div className="flex flex-col justify-between text-left">
                         {/* FIGHT DATE */}

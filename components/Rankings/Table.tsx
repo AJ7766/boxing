@@ -24,7 +24,7 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
 
     return (
         <>
-            <div className='flex text-2xl font-medium justify-center'>
+            <div className='flex text-2xl font-medium justify-center mt-10'>
                 <button className={`px-3 py-2 ${!womens && 'bg-gray-200 rounded'}`} onClick={() => setWomens(false)}>Men&apos;s</button>
                 <button className={`px-3 ${womens && 'bg-gray-200 rounded'}`} onClick={() => setWomens(true)}>Women&apos;s</button>
             </div>

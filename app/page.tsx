@@ -7,28 +7,13 @@ import { prisma } from "@/lib/prisma";
 import { Video } from "@/components/News/Video";
 
 const Videos = [{
-  id: "lUAA0b-YjQM",
-  alt: "Artur Beterbiev vs Dmitry Bivol Face Off",
-  type: "The Face-off"
-},
-{
-  id: "n4LJ-wmRbc8",
-  alt: "Artur Beterbiev vs Dmitry Bivol Press Conference",
-  type: "Press Conference"
-},
-{
-  id: "nDyCgocB5aM",
-  alt: "Artur Beterbiev vs Dmitry Bivol First fight",
-  type: "First Fight"
-},
-{
-  id:"21AjmeDngBI",
-  alt: "Artur Beterbiev & Dmitry Bivol's FULL public workout",
-  type: "Workout"
+  id: "_NCcP6V67MA",
+  alt: "GLOVES OFF: Tank vs Roach | EPISODE 1",
+  type: "GLOVES OFF"
 }]
 
 export default async function News() {
-  const id = '675269742d129078aff55563';
+  const id = '675f98329777a49a554299e9';
   const fetchedFight = await prisma.fight.findUnique({
     where: { id },
     select: {

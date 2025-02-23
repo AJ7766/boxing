@@ -27,7 +27,7 @@ export const Hero = () => {
         );
     }, []);
     return (
-        <div ref={heroRef} className="bg-[url(../public/bg.webp)] min-h-screen bg-cover bg-center max-h-screen w-full">
+        <div ref={heroRef} className="bg-[url(../public/bg.webp)] bg-fixed min-h-screen bg-cover bg-center max-h-screen w-full">
             <h1 className="text-white text-9xl">
                 {pathname === "/" && "NEWS"}
                 {pathname === "/fights" && "FIGHTS"}
