@@ -18,12 +18,11 @@ export const Search = () => {
 
     useGSAP(() => {
         if (!containerRef.current || !inputRef.current || !isClient) return;
-
-        // Create a timeline with both animations starting simultaneously and with the same easing
+        // Create a timeline
         const tl = gsap.timeline({ paused: true, onComplete: () => setShowPlaceholder(true) });
         tl.fromTo(
             containerRef.current,
-            { width: "1.5%"},
+            { width: "1.5%" },
             { width: "100%", duration: 0.5, ease: "power2.in" }
         )
             .fromTo(
@@ -36,7 +35,7 @@ export const Search = () => {
                 { backgroundColor: "#111827" },
                 { backgroundColor: "#f3f4f6", duration: 1, ease: "power4.out" }, 0 // Start immediately
             );
-
+        // Create a ScrollTrigger
         ScrollTrigger.create({
             trigger: containerRef.current,
             start: "bottom 90%",
