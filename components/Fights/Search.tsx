@@ -39,7 +39,6 @@ export const Search = () => {
         ScrollTrigger.create({
             trigger: containerRef.current,
             start: "bottom 90%",
-            markers: true,
             onEnter: () => tl.play(),
             onLeaveBack: () => {
                 setShowPlaceholder(false);
