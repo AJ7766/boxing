@@ -1,35 +1,12 @@
 "use client"
 import { useIsClient } from '@/hooks/useClient';
 import { RankingsProps } from '@/types/rankingsTypes'
-import gsap from "gsap";;
-import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-
-gsap.registerPlugin(ScrollTrigger);
+import React, { useCallback, useEffect, useState } from 'react'
 
 export const Table = ({ mensRankings, womensRankings }: { mensRankings: RankingsProps[], womensRankings: RankingsProps[] }) => {
     const isClient = useIsClient();
     const [womens, setWomens] = useState(false);
     const [sortedRankings, setSortedRankings] = useState<RankingsProps[]>(mensRankings);
-    const overlayRef = useRef<HTMLDivElement>(null);
-
-    useGSAP(() => {
-        if (!overlayRef.current || !isClient) return;
-
-        const tweet = gsap.fromTo(
-            overlayRef.current,
-            { height: "100%" },
-            { height: 0, duration: 1.33, ease: "power4.in", paused: true });
-
-        ScrollTrigger.create({
-            trigger: overlayRef.current,
-            start: "top 85%",
-            onEnter: () => tweet.play(),
-            onLeaveBack: () => tweet.reverse(),
-        });
-
-    }, [isClient])
 
     useEffect(() => {
         setSortedRankings(womens ? womensRankings : mensRankings);
@@ -97,10 +74,6 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
                         ))}
                     </tbody>
                 </table>
-                <div
-                    ref={overlayRef}
-                    className="absolute w-full bg-white inset-0 -translate-x-1/2 left-1/2 top-full -translate-y-full"
-                />
             </div>
         </>
     )
