@@ -48,7 +48,7 @@ export const Search = () => {
     }, [isClient]);
 
     useEffect(() => {
-        const handler = setTimeout(() => {
+        let handler = setTimeout(() => {
             setQuery(debounceValue)
         }, 300);
 
@@ -67,7 +67,7 @@ export const Search = () => {
             <input
                 ref={inputRef}
                 id="searchQuery"
-                className="bg-gray-100 w-full rounded-md text-center text-2xl font-semibold py-2 mx-auto"
+                className="bg-gray-100 w-full rounded-md text-center text-2xl font-semibold py-2 mx-auto -translate-y-1/2"
                 type="text"
                 name="query"
                 placeholder={showPlaceholder ? "Search for a fight" : ""}

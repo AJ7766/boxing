@@ -20,14 +20,13 @@ export const FightCards = () => {
 
     useGSAP(() => {
         if (!containerRefs.current || !isClient) return;
-
+        
         containerRefs.current.forEach((card) => {
             gsap.fromTo(
                 card,
                 { opacity: 0, y: 80 },
                 {
-                    opacity: 1,
-                    y: 0,
+                    opacity: 1, y: 0,
                     scrollTrigger: {
                         trigger: card,
                         start: "-80px bottom",
