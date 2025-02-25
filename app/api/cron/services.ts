@@ -92,3 +92,34 @@ export const scrapeRankings = async () => {
 
     return rankings;
 }
+
+/* export const scrapeBoxer = async () => {
+    const res = await fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&titles=Naoya%20Inoue&prop=extracts|pageimages&explaintext=&redirects=1&origin=*')
+
+    if (!res)
+        throw new Error(`Response: ${res}`);
+
+    const data = await res.json();
+    const page = Object.values(data.query.pages)[0] as { extract: string };
+
+    const amateurHeader = "== Amateur career ==";
+    const amateurCareerStart = page.extract.indexOf(amateurHeader);
+
+    if (amateurCareerStart !== -1) {
+        // Look for the next section header (which starts with "==") after the Amateur career header
+        const afterAmateurHeader = page.extract.slice(amateurCareerStart + amateurHeader.length);
+        const beforeNextSection = afterAmateurHeader.indexOf("==");
+
+        let amateurCareer;
+        if (beforeNextSection !== -1) {
+            // Extract from the start of Amateur career until the next section header
+            amateurCareer = page.extract.slice(
+                amateurCareerStart + amateurHeader.length, // Start right after the amateur header
+                amateurCareerStart + amateurHeader.length + beforeNextSection // End at the start of the next section
+            ).trim();
+        }
+        console.log('Amateur Career Section:', amateurCareer);
+    } else {
+        console.log('Amateur Career section not found');
+    }
+} */
