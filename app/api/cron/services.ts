@@ -1,11 +1,16 @@
 import { RankingsProps } from "@/types/rankingsTypes";
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
 
 export const getRankings = async () => {
     // Launch a new browser instance
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+        args: chromium.args,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless === 'true',
+    });
     const page = await browser.newPage();
-    
+
     // Navigate to the Wikipedia page
     await page.goto(process.env.SCRAPE_RANKING_URL as string);
 

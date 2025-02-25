@@ -12,7 +12,6 @@ export async function GET(req: NextRequest) {
             status: 401,
         });
     }
-
     await fetchData();
     return NextResponse.json({ message: "Data fetched successfully" });
 }
