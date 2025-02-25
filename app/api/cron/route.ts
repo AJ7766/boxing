@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { TitleProps } from "@/types/fighterType";
 import { NextRequest, NextResponse } from "next/server";
-import { getRankings } from "./services";
+import { scrapeRankings } from "./services";
 import { BroadcastProps } from "@/types/fightsType";
 import { Prisma } from "@prisma/client";
 
@@ -209,9 +209,8 @@ const fetchFights = async () => {
     console.log("Finished fetching fights: " + fights.length);
 };
 
-const fetchRankings = async () => {
-    const { mensScrapedRankings, womensCrapedRankings } = await getRankings();
-
+export const fetchRankings = async () => {
+    const { mensScrapedRankings, womensCrapedRankings } = await scrapeRankings();
     // Create an array to hold promises for mensRankings
     const mensRankingPromises = mensScrapedRankings.map((ranking) => {
         return prisma.mensRankings.upsert({
@@ -241,7 +240,6 @@ const fetchRankings = async () => {
             }
         });
     });
-
     // Create an array to hold promises for womensRankings
     const womensRankingPromises = womensCrapedRankings.map((ranking) => {
         return prisma.womensRankings.upsert({

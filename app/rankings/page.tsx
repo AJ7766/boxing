@@ -1,18 +1,33 @@
 import { Table } from '@/components/Rankings/Table';
 import { Title } from '@/components/Title';
 import { prisma } from "@/lib/prisma";
+import { RankingsProps } from '@/types/rankingsTypes';
 
 export default async function Rankings() {
     const mensRankingsPromise = prisma.mensRankings.findMany({})
     const womensRankingsPromise = prisma.womensRankings.findMany({})
 
     const [mensRankings, womensRankings] = await Promise.all([mensRankingsPromise, womensRankingsPromise])
+
+    JSON.parse(JSON.stringify(mensRankings));
+    JSON.parse(JSON.stringify(womensRankings));
+
+    const sortRankings = (rankings: RankingsProps[], key: keyof RankingsProps) => {
+        return [...rankings].sort((a, b) => {
+            // Extract the number from the string, if it exists otherwise assign it with Infinity
+            const aValue = Number(a[key]?.match(/(\d+)/)?.[0]) || Infinity;
+            const bValue = Number(b[key]?.match(/(\d+)/)?.[0]) || Infinity;
+
+            return aValue - bValue;
+        });
+    };
+
     return (
         <main className="bg-white py-12 px-6">
             <Title>POUND FOR POUND RANKINGS</Title>
             <Table
-                mensRankings={JSON.parse(JSON.stringify(mensRankings))}
-                womensRankings={JSON.parse(JSON.stringify(womensRankings))}
+                mensRankings={sortRankings(mensRankings, 'theRing')}
+                womensRankings={sortRankings(womensRankings, 'theRing')}
             />
         </main>
     );

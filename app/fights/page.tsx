@@ -8,6 +8,37 @@ import { getSearchParams } from "@/services/fightsServices";
 
 export default async function Fights({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
     const { page, per_page, start, end } = await getSearchParams({ searchParams });
+    const test = async () => {
+        const res = await fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&titles=Naoya%20Inoue&prop=extracts|pageimages&explaintext=&redirects=1&origin=*')
+
+        if (!res)
+            throw new Error(`Response: ${res}`);
+
+        const data = await res.json();
+        const page = Object.values(data.query.pages)[0] as { extract: string };
+
+        const amateurHeader = "== Amateur career ==";
+        const amateurCareerStart = page.extract.indexOf(amateurHeader);
+
+        if (amateurCareerStart !== -1) {
+            // Look for the next section header (which starts with "==") after the Amateur career header
+            const afterAmateurHeader = page.extract.slice(amateurCareerStart + amateurHeader.length);
+            const beforeNextSection = afterAmateurHeader.indexOf("==");
+
+            let amateurCareer;
+            if (beforeNextSection !== -1) {
+                // Extract from the start of Amateur career until the next section header
+                amateurCareer = page.extract.slice(
+                    amateurCareerStart + amateurHeader.length, // Start right after the amateur header
+                    amateurCareerStart + amateurHeader.length + beforeNextSection // End at the start of the next section
+                ).trim();
+            }
+            console.log('Amateur Career Section:', amateurCareer);
+        } else {
+            console.log('Amateur Career section not found');
+        }
+    }
+
     return (
         <main className={`bg-white text-lg whitespace-nowrap flex flex-col justify-center gap-20 py-12 px-6`}>
             <Title>UPCOMING TITLE FIGHTS</Title>

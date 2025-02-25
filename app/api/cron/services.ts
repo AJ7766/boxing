@@ -2,13 +2,15 @@ import { RankingsProps } from "@/types/rankingsTypes";
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
-export const getRankings = async () => {
+export const scrapeRankings = async () => {
     // Launch a new browser instance
     const browser = await puppeteer.launch({
         args: chromium.args,
-        executablePath: await chromium.executablePath(),
+        executablePath: process.env.NODE_ENV === 'development' ? process.env.LOCAL_CHROME as string
+            : await chromium.executablePath(),
         headless: chromium.headless === 'true',
     });
+
     const page = await browser.newPage();
 
     // Navigate to the Wikipedia page
@@ -71,18 +73,18 @@ export const getRankings = async () => {
         });
 
         // Function to sort the rankings before passing them
-        const sortRankings = (rankings: RankingsProps[], key: keyof RankingsProps) => {
-            return [...rankings].sort((a, b) => {
-                const aValue = Number(a[key]?.match(/(\d+)/)?.[0]) || Infinity;
-                const bValue = Number(b[key]?.match(/(\d+)/)?.[0]) || Infinity;
+        // const sortRankings = (rankings: RankingsProps[], key: keyof RankingsProps) => {
+        //     return [...rankings].sort((a, b) => {
+        //         const aValue = Number(a[key]?.match(/(\d+)/)?.[0]) || Infinity;
+        //         const bValue = Number(b[key]?.match(/(\d+)/)?.[0]) || Infinity;
 
-                return aValue - bValue;
-            });
-        };
+        //         return aValue - bValue;
+        //     });
+        // };
 
         return {
-            mensScrapedRankings: sortRankings(mensRankings, 'theRing'),
-            womensCrapedRankings: sortRankings(womensRankings, 'theRing')
+            mensScrapedRankings: mensRankings,
+            womensCrapedRankings: womensRankings
         };
     });
     // Close the browser
