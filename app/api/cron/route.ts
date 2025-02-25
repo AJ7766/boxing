@@ -74,7 +74,7 @@ const fetchTitles = async () => {
     console.log("Finished fetching titles");
 };
 
-export const fetchFighters = async () => {
+const fetchFighters = async () => {
     const url = `${process.env.API_URL}/v1/fighters/?page_num=1&page_size=5000`;
     const res = await fetch(url, options);
     const fighters = await res.json();
