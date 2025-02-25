@@ -6,7 +6,6 @@ import { FightsProvider } from "@/context/FightsContext";
 import { QueryClientProviderWrapper } from "@/context/QueryContext";
 import { getSearchParams } from "@/services/fightsServices";
 
-
 export default async function Fights({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
     const { page, per_page, start, end } = await getSearchParams({ searchParams });
     return (

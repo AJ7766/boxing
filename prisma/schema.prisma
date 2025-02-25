@@ -14,9 +14,11 @@ model Metadata {
 }
 
 model Title {
-  id     String  @id
-  name   String
-  fights Fight[] @relation("FightTitles")
+  id        String   @id
+  name      String
+  fights    Fight[]  @relation("FightTitles")
+  Fighter   Fighter? @relation(fields: [fighterId], references: [id])
+  fighterId String?
 }
 
 model MensRankings {
@@ -47,7 +49,6 @@ model Fighter {
   id            String  @id
   name          String?
   age           Int?
-  gender        String?
   height        String?
   nationality   String?
   nickname      String?
@@ -63,12 +64,11 @@ model Fighter {
   stopped       Int?
   debut         String?
   division      String?
-  divisionSlug  String?
   weightLb      Float?
   weightKg      Float?
-  titleNames    Json?
 
   // Relationships
+  titles           Title[]
   fightsAsFighter1 Fight[] @relation("Fighter1Relation")
   fightsAsFighter2 Fight[] @relation("Fighter2Relation")
 }

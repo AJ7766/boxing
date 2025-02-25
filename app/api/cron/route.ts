@@ -74,7 +74,7 @@ const fetchTitles = async () => {
     console.log("Finished fetching titles");
 };
 
-const fetchFighters = async () => {
+export const fetchFighters = async () => {
     const url = `${process.env.API_URL}/v1/fighters/?page_num=1&page_size=5000`;
     const res = await fetch(url, options);
     const fighters = await res.json();
@@ -87,10 +87,14 @@ const fetchFighters = async () => {
             update: {
                 name: fighter.name || null,
                 age: fighter.age || null,
-                gender: fighter.gender || null,
                 height: fighter.height || null,
                 nationality: fighter.nationality || null,
                 nickname: fighter.nickname || null,
+                titles: {
+                    connect: fighter.titles?.map((title: TitleProps) => ({
+                        id: title.id,
+                    })) || [],
+                },
                 reach: fighter.reach || null,
                 stance: fighter.stance || null,
                 wins: fighter.stats?.wins || null,
@@ -103,7 +107,6 @@ const fetchFighters = async () => {
                 stopped: fighter.stats?.stopped || null,
                 debut: fighter.debut || null,
                 division: fighter.division?.name || null,
-                divisionSlug: fighter.division?.slug || null,
                 weightLb: fighter.division?.weight_lb || null,
                 weightKg: fighter.division?.weight_kg || null,
             },
@@ -111,10 +114,14 @@ const fetchFighters = async () => {
                 id: fighter.id,
                 name: fighter.name || null,
                 age: fighter.age || null,
-                gender: fighter.gender || null,
                 height: fighter.height || null,
                 nationality: fighter.nationality || null,
                 nickname: fighter.nickname || null,
+                titles: {
+                    connect: fighter.titles?.map((title: TitleProps) => ({
+                        id: title.id,
+                    })) || [],
+                },
                 reach: fighter.reach || null,
                 stance: fighter.stance || null,
                 wins: fighter.stats?.wins || null,
@@ -127,7 +134,6 @@ const fetchFighters = async () => {
                 stopped: fighter.stats?.stopped || null,
                 debut: fighter.debut || null,
                 division: fighter.division?.name || null,
-                divisionSlug: fighter.division?.slug || null,
                 weightLb: fighter.division?.weight_lb || null,
                 weightKg: fighter.division?.weight_kg || null,
             },
@@ -172,7 +178,7 @@ const fetchFights = async () => {
                         id: title.id,
                     })) || [],
                 },
-                broadcasters: broadcasters as Prisma.JsonObject|| [],
+                broadcasters: broadcasters as Prisma.JsonObject || [],
                 fighter1Id: fight.fighters.fighter_1.fighter_id || null,
                 fighter2Id: fight.fighters.fighter_2.fighter_id || null,
             },
