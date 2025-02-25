@@ -9,24 +9,6 @@ import { getSearchParams } from "@/services/fightsServices";
 
 export default async function Fights({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
     const { page, per_page, start, end } = await getSearchParams({ searchParams });
-
-    const test = async () => {
-        console.log("Running")
-        const res = await fetch('https://boxing-xi.vercel.app/api/cron', { 
-            method: 'GET',
-            headers: {
-                'authorization': `Bearer ${process.env.CRON_SECRET}`
-            }
-         });
-
-         if(!res){
-            throw new Error(`Response: ${res}`)
-         }
-
-         console.log(res)
-    }
-
-    test();
     return (
         <main className={`bg-white text-lg whitespace-nowrap flex flex-col justify-center gap-20 py-12 px-6`}>
             <Title>UPCOMING TITLE FIGHTS</Title>

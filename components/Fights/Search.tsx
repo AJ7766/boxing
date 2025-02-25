@@ -48,7 +48,7 @@ export const Search = () => {
     }, [isClient]);
 
     useEffect(() => {
-        let handler = setTimeout(() => {
+        const handler = setTimeout(() => {
             setQuery(debounceValue)
         }, 300);
 
