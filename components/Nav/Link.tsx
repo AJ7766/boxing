@@ -12,7 +12,6 @@ export const LinkC = ({ name, ref }: { name: string, ref: ForwardedRef<HTMLAncho
             ref={ref}
             prefetch={false}
             href={href}
-            onClick={() => window.scrollTo(0, 0)} // Scroll to top when clicked
             // Prefetching the hovered link for faster page loading
             onMouseEnter={() => router.prefetch(href)}
         >
