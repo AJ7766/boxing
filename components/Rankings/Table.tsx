@@ -1,10 +1,8 @@
 "use client"
-import { useIsClient } from '@/hooks/useClient';
 import { RankingsProps } from '@/types/rankingsTypes'
 import React, { useCallback, useEffect, useState } from 'react'
 
 export const Table = ({ mensRankings, womensRankings }: { mensRankings: RankingsProps[], womensRankings: RankingsProps[] }) => {
-    const isClient = useIsClient();
     const [womens, setWomens] = useState(false);
     const [sortedRankings, setSortedRankings] = useState<RankingsProps[]>(mensRankings);
 

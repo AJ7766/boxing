@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LinkC } from "./Link";
 import { useIsClient } from "@/hooks/useClient";
 import { usePathname } from "next/navigation";
@@ -26,7 +26,7 @@ export const Nav = () => {
         if (isClient) return window.innerWidth;
         return 0;
     });
-    
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
