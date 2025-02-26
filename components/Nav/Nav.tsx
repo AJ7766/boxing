@@ -22,6 +22,34 @@ export const Nav = () => {
     const linkRefs = useRef<{ el: HTMLAnchorElement | null; width: number; left: number }[]>([]);
     const pathname = usePathname();
 
+    const [windowWidth, setWindowWidth] = useState(() => {
+        if (isClient) return window.innerWidth;
+        return 0;
+    });
+    
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    useEffect(() => {
+        if (menuRef.current.el) {
+            const rect = menuRef.current.el.getBoundingClientRect();
+            console.log("running menuss");
+            menuRef.current.left = rect.left;
+        }
+        linkRefs.current = links.map((_, index) => {
+            const el = linkRefs.current[index]?.el;
+            if (!el) return { el: null, width: 0, left: 0 };
+            console.log("running linksss")
+            const rect = el.getBoundingClientRect();
+            return { el, width: rect.width, left: rect.left };
+        });
+    }, [windowWidth]);
+
     // Checking for the active link
     useEffect(() => {
         const index = links.findIndex(name => pathname === `/${name}`);
@@ -44,27 +72,6 @@ export const Nav = () => {
             }));
         }
     }, []);
-
-    useLayoutEffect(() => {
-        // Update menu measurements
-        if (menuRef.current.el) {
-            const rect = menuRef.current.el.getBoundingClientRect();
-            menuRef.current.left = rect.left;
-        }
-        // Update measurements for all links
-        linkRefs.current.forEach((link, index) => {
-            if (link.el) {
-                const rect = link.el.getBoundingClientRect();
-                linkRefs.current[index] = {
-                    ...link,
-                    width: rect.width,
-                    left: rect.left,
-                };
-            }
-        });
-        // Update the underline position after measurements have been updated
-        updateUnderlinePosition(underlineState.linkIndex);
-    }, [underlineState.linkIndex, updateUnderlinePosition]);
 
     const handleMouseMove = useCallback((e: React.MouseEvent<HTMLMenuElement>) => {
         const mouseX = e.clientX; // Get the mouse position on the x-axis
@@ -113,12 +120,10 @@ export const Nav = () => {
                 top: isScrolled ? "0" : "80px",
             }}>
             <menu
+                // Reference to element if it doesn't already exist
                 ref={(el: HTMLMenuElement | null) => {
-                    // Reference to the el and assigning size and position
-                    if (el) {
-                        const rect = el.getBoundingClientRect();
-                        menuRef.current = { el, left: rect.left };
-                    }
+                    if (el && !menuRef.current.el)
+                        (menuRef.current = { el, left: 0 })
                 }}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={() => updateUnderlinePosition(underlineState.linkIndex)}
@@ -128,12 +133,9 @@ export const Nav = () => {
                     <LinkC
                         key={name}
                         name={name}
-                        ref={(el: HTMLAnchorElement | null) => {
-                            if (el) {
-                                const rect = el.getBoundingClientRect();
-                                linkRefs.current[index] = { el, width: rect.width, left: rect.left };
-                            }
-                        }} />))}
+                        ref={(el: HTMLAnchorElement | null) => (el && !linkRefs.current[index])
+                            && (linkRefs.current[index] = { el, width: 0, left: 0 })}
+                    />))}
                 {/* Underline */}
                 {isClient && <div
                     className="absolute bottom-0 h-[2px] bg-red-600"
