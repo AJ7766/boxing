@@ -34,6 +34,7 @@ export const Nav = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    // Get the position and width of the menu when window is resized
     useEffect(() => {
         if (menuRef.current.el) {
             const rect = menuRef.current.el.getBoundingClientRect();
@@ -68,7 +69,7 @@ export const Nav = () => {
                 // Only update if values have changed
                 if (prev.width === newWidth && prev.left === newLeft)
                     return prev;
-                
+
                 return { ...prev, width: newWidth, left: newLeft };
             });
         }
@@ -111,7 +112,7 @@ export const Nav = () => {
                 ${isScrolled
                     ? "transition-[width,position,background-color]"
                     : "transition-[height,width,position,color,background-color]"}
-                     duration-700 ease-swoosh z-10`}
+                    duration-700 ease-swoosh z-10`}
             style={{
                 height: isClient ? "56px" : "0px",
                 width: isScrolled ? "100vw" : "1024px",
@@ -134,8 +135,10 @@ export const Nav = () => {
                     <LinkC
                         key={name}
                         name={name}
-                        ref={(el: HTMLAnchorElement | null) => (el && !linkRefs.current[index])
-                            && (linkRefs.current[index] = { el, width: 0, left: 0 })}
+                        ref={(el: HTMLAnchorElement | null) => {
+                            if (el && !linkRefs.current[index])
+                                linkRefs.current[index] = { el, width: 0, left: 0 }
+                        }}
                     />))}
                 {/* Underline */}
                 {isClient && <div
