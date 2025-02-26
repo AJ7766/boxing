@@ -23,8 +23,7 @@ export const Nav = () => {
     const pathname = usePathname();
 
     const [windowWidth, setWindowWidth] = useState(() => {
-        if (isClient) return window.innerWidth;
-        return 0;
+        return isClient ? window.innerWidth : 0;
     });
 
     useEffect(() => {
@@ -63,11 +62,15 @@ export const Nav = () => {
     const updateUnderlinePosition = useCallback((index: number) => {
         const link = linkRefs.current[index];
         if (link && menuRef.current) {
-            setUnderlineState((prev) => ({
-                ...prev,
-                width: link.width,
-                left: link.left - menuRef.current.left + link.width / 2, // Adjusting the underline position, matching link in <menu>
-            }));
+            setUnderlineState((prev) => {
+                const newWidth = link.width;
+                const newLeft = link.left - menuRef.current.left + link.width / 2;
+                // Only update if values have changed
+                if (prev.width === newWidth && prev.left === newLeft)
+                    return prev;
+                
+                return { ...prev, width: newWidth, left: newLeft };
+            });
         }
     }, []);
 
