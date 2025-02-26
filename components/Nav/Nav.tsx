@@ -38,13 +38,11 @@ export const Nav = () => {
     useEffect(() => {
         if (menuRef.current.el) {
             const rect = menuRef.current.el.getBoundingClientRect();
-            console.log("running menuss");
             menuRef.current.left = rect.left;
         }
         linkRefs.current = links.map((_, index) => {
             const el = linkRefs.current[index]?.el;
             if (!el) return { el: null, width: 0, left: 0 };
-            console.log("running linksss")
             const rect = el.getBoundingClientRect();
             return { el, width: rect.width, left: rect.left };
         });
