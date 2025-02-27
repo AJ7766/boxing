@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 export const Hero = () => {
     const heroRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
-    
+
     useGSAP(() => {
         gsap.fromTo(
             heroRef.current,
@@ -26,13 +26,5 @@ export const Hero = () => {
             }
         );
     }, []);
-    return (
-        <div ref={heroRef} className="bg-[url(../public/bg.webp)] bg-fixed min-h-screen bg-cover bg-center max-h-screen w-full">
-            <h1 className="text-white text-9xl">
-                {pathname === "/" && "NEWS"}
-                {pathname === "/fights" && "FIGHTS"}
-                {pathname === "/rankings" && "RANKINGS"}
-            </h1>
-        </div>
-    )
+    return <div ref={heroRef} className="bg-[url(../public/bg.jpg)] bg-fixed min-h-screen bg-cover bg-center max-h-screen w-full" />
 }

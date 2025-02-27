@@ -5,11 +5,16 @@ import { Location } from "@/components/News/Location";
 import { EventDate } from "@/components/News/EventDate";
 import { prisma } from "@/lib/prisma";
 import { Video } from "@/components/News/Video";
+import { Countdown } from "@/components/News/Countdown";
 
 const Videos = [{
   id: "_NCcP6V67MA",
   alt: "GLOVES OFF: Tank vs Roach | EPISODE 1",
-  type: "GLOVES OFF"
+  type: "GLOVES OFF",
+}, {
+  id: "Kf682Zs_piM",
+  alt: "Tank vs. Roach MEDIA WORKOUT",
+  type: "MEDIA WORKOUT",
 }]
 
 export default async function News() {
@@ -29,37 +34,40 @@ export default async function News() {
     console.error('No fight found');
 
   return (
-    <main className={`relative bg-gray-100 px-7 py-16 overflow-hidden`}>
-      <BgText
-        fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
-        fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
-      />
-      <Event
-        fighter1={fetchedFight?.fighter1}
-        fighter2={fetchedFight?.fighter2}
-      >
-        <Fight
+    <main className={`relative bg-gray-100 px-7 py-16`}>
+      <Countdown date={fetchedFight?.date?.toISOString()} />
+      <div className="overflow-hidden">
+        <BgText
           fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
           fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
         />
-        <Location
-          location={fetchedFight?.location}
-        />
-        <EventDate date={fetchedFight?.date?.toISOString()} />
+        <Event
+          fighter1={fetchedFight?.fighter1}
+          fighter2={fetchedFight?.fighter2}
+        >
+          <Fight
+            fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
+            fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
+          />
+          <Location
+            location={fetchedFight?.location}
+          />
+          <EventDate date={fetchedFight?.date?.toISOString()} />
 
-        {/* Videos */}
-        <div className="flex flex-row gap-1">
-          {Videos.map((video) => (
-            <Video
-              key={video.id}
-              id={video.id}
-              alt={video.alt}
-              type={video.type}
-            />
-          ))
-          }
-        </div>
-      </Event>
+          {/* Videos */}
+          <div className="flex flex-row gap-1">
+            {Videos.map((video) => (
+              <Video
+                key={video.id}
+                id={video.id}
+                alt={video.alt}
+                type={video.type}
+              />
+            ))
+            }
+          </div>
+        </Event>
+      </div>
     </main >
   )
 }
