@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 export const Search = () => {
     const { setQuery } = useFights();
     const isClient = useIsClient();
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const [debounceValue, setDebounceValue] = useState('');
     const [showPlaceholder, setShowPlaceholder] = useState(false);
@@ -60,9 +60,9 @@ export const Search = () => {
     if (!isClient) return;
 
     return (
-        <div ref={containerRef} className="mx-auto max-w-[900px]">
+        <search ref={containerRef} className="mx-auto max-w-[900px]">
             <label htmlFor="searchQuery" className="sr-only">
-                Search for a fight
+                Search fight
             </label>
             <input
                 ref={inputRef}
@@ -73,6 +73,6 @@ export const Search = () => {
                 placeholder={showPlaceholder ? "Search for a fight" : ""}
                 onInput={(e) => setDebounceValue((e.target as HTMLInputElement).value)}
             />
-        </div>
+        </search>
     );
 };
