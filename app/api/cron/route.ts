@@ -30,9 +30,9 @@ const fetchData = async () => {
     }
 
     console.log("Fetching new data...");
-    await fetchTitles();
-    await fetchFighters();
-    await fetchFights();
+    // await fetchTitles();
+    // await fetchFighters();
+    // await fetchFights();
     await fetchRankings();
 
     await prisma.metadata.upsert({

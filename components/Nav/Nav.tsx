@@ -3,6 +3,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { LinkC } from "./Link";
 import { useIsClient } from "@/hooks/useClient";
 import { usePathname } from "next/navigation";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const Nav = () => {
     const isClient = useIsClient();
@@ -18,6 +23,7 @@ export const Nav = () => {
     });
 
     // Refs to Link and Menu, holding their position and width
+    const navRef = useRef<HTMLElement | null>(null);
     const menuRef = useRef<{ el: HTMLMenuElement | null; left: number }>({ el: null, left: 0 });
     const linkRefs = useRef<{ el: HTMLAnchorElement | null; width: number; left: number }[]>([]);
     const pathname = usePathname();
@@ -106,9 +112,13 @@ export const Nav = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [handleScroll]);
 
+    useGSAP(() => {
+
+    }, [])
     return (
         <nav
-            className={`bg-white h-14 flex items-center justify-center -translate-x-1/2 left-1/2 
+            ref={navRef}
+            className={`bg-white h-14 items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex
                 ${isScrolled
                     ? "transition-[width,position,background-color]"
                     : "transition-[height,width,position,color,background-color]"}

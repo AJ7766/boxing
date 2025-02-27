@@ -8,13 +8,19 @@ import { Video } from "@/components/News/Video";
 import { Countdown } from "@/components/News/Countdown";
 
 const Videos = [{
-  id: "_NCcP6V67MA",
-  alt: "GLOVES OFF: Tank vs Roach | EPISODE 1",
-  type: "GLOVES OFF",
-}, {
+  id: "XXcnG0w5T9k",
+  alt: "Gervonta Davis primed for Lamont Roach, aims for 3 fights in 2025",
+  type: "INTERVIEW"
+},
+{
   id: "Kf682Zs_piM",
   alt: "Tank vs. Roach MEDIA WORKOUT",
   type: "MEDIA WORKOUT",
+},
+{
+  id: "_NCcP6V67MA",
+  alt: "GLOVES OFF: Tank vs Roach | EPISODE 1",
+  type: "GLOVES OFF",
 }]
 
 export default async function News() {
@@ -33,6 +39,16 @@ export default async function News() {
   if (!fetchedFight)
     console.error('No fight found');
 
+  if (process.env.CRON_SECRET) {
+    await fetch('https://boxing-xi.vercel.app/api/cron', {
+      headers: {
+        'authorization': `Bearer ${process.env.CRON_SECRET}`
+      }
+    });
+    console.log("Fetching")
+  } else {
+    console.error('CRON_SECRET is not defined');
+  }
   return (
     <main className={`relative bg-gray-100 px-7 py-16`}>
       <Countdown date={fetchedFight?.date?.toISOString()} />
