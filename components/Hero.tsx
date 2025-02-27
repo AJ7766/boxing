@@ -3,14 +3,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from '@gsap/react';
 import { useRef } from "react";
-import { usePathname } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const Hero = () => {
     const heroRef = useRef<HTMLDivElement>(null);
-    const pathname = usePathname();
-
+    
     useGSAP(() => {
         gsap.fromTo(
             heroRef.current,
