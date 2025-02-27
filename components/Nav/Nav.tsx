@@ -133,6 +133,7 @@ export const Nav = () => {
                 {/* Links */}
                 {links.map((name, index) => (
                     <LinkC
+                        className={`${isClient ? 'opacity-100' : 'opacity-0'}`}
                         key={name}
                         name={name}
                         ref={(el: HTMLAnchorElement | null) => {

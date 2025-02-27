@@ -1,6 +1,4 @@
 "use client"
 export const Location = ({ location }: { location?: string | null }) => {
-    return (
-        <p className="font-semibold">{location}</p>
-    )
+    return <address className="font-semibold not-italic">{location}</address>
 }

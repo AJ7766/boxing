@@ -25,7 +25,7 @@ export const Video = ({ id, alt, type }: VideoProps) => {
                     />
                 </Link>
             </div>
-            {isClient && <p className="absolute top-2 left-2 text-white text-xl font-semibold text-shadow">{type}</p>}
+            {isClient && <span className="absolute top-2 left-2 text-white text-xl font-semibold drop-shadow-[2px_1px_2.5px_black]">{type}</span>}
         </div>
     )
 }

@@ -7,8 +7,8 @@ import { useRef } from "react";
 gsap.registerPlugin(ScrollTrigger);
 
 export const Hero = () => {
-    const heroRef = useRef<HTMLDivElement>(null);
-    
+    const heroRef = useRef<HTMLElement>(null);
+
     useGSAP(() => {
         gsap.fromTo(
             heroRef.current,
@@ -24,5 +24,5 @@ export const Hero = () => {
             }
         );
     }, []);
-    return <div ref={heroRef} className="bg-[url(../public/bg.jpg)] bg-fixed min-h-screen bg-cover bg-center max-h-screen w-full" />
+    return <section ref={heroRef} className="bg-[url(../public/bg.jpg)] bg-fixed min-h-screen bg-cover bg-center max-h-screen w-full" />
 }

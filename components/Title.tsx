@@ -30,14 +30,14 @@ export const Title = ({ children }: { children: string }) => {
 
     return (
         <div className="relative w-fit mx-auto">
-            <h2 className="text-4xl font-semibold relative text-center">
+            <h3 className="text-4xl font-semibold relative text-center">
                 {children}
-                {/* Overlay Div to Simulate Pseudo-Element */}
+                {/* Overlay div to simulate pseudo-element */}
                 <div
                     ref={overlayRef}
                     className="absolute inset-0 -translate-x-full left-full bg-white"
                 />
-            </h2>
+            </h3>
         </div>
     );
 };

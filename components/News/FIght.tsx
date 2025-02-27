@@ -4,5 +4,5 @@ interface FightProps {
 }
 
 export const Fight = ({ fighter1, fighter2 }: FightProps) => {
-    return <h2 className="font-medium text-gray-600">{fighter1} vs {fighter2}</h2>
+    return <p className="font-medium text-gray-600">{fighter1} vs {fighter2}</p>
 }
