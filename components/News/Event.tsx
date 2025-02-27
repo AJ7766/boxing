@@ -42,10 +42,10 @@ export const Event = ({ children, fighter1, fighter2 }: EventProps) => {
     return (
         <div className="relative">
             {!isClient ? <SkeletonLoader /> : (
-                <div ref={containerRef} className="text-9xl -mb-2">
-                    <h2 className="font-semibold -mb-20">{fighter1?.name || fighter1?.nickname}</h2>
+                <div ref={containerRef} className="-mb-2 text-4xl lg:text-9xl">
+                    <h2 className="font-semibold lg:-mb-20">{fighter1?.name || fighter1?.nickname}</h2>
                     <h2 className="font-medium italic text-red-500 pl-3">vs</h2>
-                    <h2 className="font-semibold -mt-14">{fighter2?.name || fighter2?.nickname}</h2>
+                    <h2 className="font-semibold lg:-mt-14">{fighter2?.name || fighter2?.nickname}</h2>
                 </div>
             )}
             {children}

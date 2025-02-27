@@ -42,7 +42,7 @@ export default async function News() {
   return (
     <main className={`relative bg-gray-100 px-7 py-16`}>
       <Countdown date={fetchedFight?.date?.toISOString()} />
-      <div className="overflow-hidden">
+      <div className="relative overflow-hidden">
         <BgText
           fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
           fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}

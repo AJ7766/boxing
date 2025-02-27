@@ -23,6 +23,7 @@ export const Nav = () => {
     const navRef = useRef<HTMLElement | null>(null);
     const menuRef = useRef<{ el: HTMLMenuElement | null; left: number }>({ el: null, left: 0 });
     const linkRefs = useRef<{ el: HTMLAnchorElement | null; width: number; left: number }[]>([]);
+    const prevClosestLinkIndex = useRef<number | null>(null);
     const pathname = usePathname();
     const [hasAnimated, setHasAnimated] = useState(false);
     const [windowWidth, setWindowWidth] = useState(() => {
@@ -69,6 +70,7 @@ export const Nav = () => {
             setUnderlineState((prev) => {
                 const newWidth = link.width;
                 const newLeft = link.left - menuRef.current.left + link.width / 2;
+
                 // Only update if values have changed
                 if (prev.width === newWidth && prev.left === newLeft)
                     return prev;
@@ -94,8 +96,9 @@ export const Nav = () => {
             }
         });
         // If link was found, update the underline position
-        if (closestLinkIndex !== -1) {
+        if (closestLinkIndex !== -1 && prevClosestLinkIndex.current !== closestLinkIndex) {
             updateUnderlinePosition(closestLinkIndex);
+            prevClosestLinkIndex.current = closestLinkIndex; // Update the prev linkIndex to prevent unecessary re-render
         }
     }, [updateUnderlinePosition]); // Add updateUnderlinePosition as a dependency, to get the correct underline position
 
