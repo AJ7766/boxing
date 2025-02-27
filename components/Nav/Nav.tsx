@@ -5,9 +5,6 @@ import { useIsClient } from "@/hooks/useClient";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export const Nav = () => {
     const isClient = useIsClient();
@@ -27,7 +24,7 @@ export const Nav = () => {
     const menuRef = useRef<{ el: HTMLMenuElement | null; left: number }>({ el: null, left: 0 });
     const linkRefs = useRef<{ el: HTMLAnchorElement | null; width: number; left: number }[]>([]);
     const pathname = usePathname();
-
+    const [hasAnimated, setHasAnimated] = useState(false);
     const [windowWidth, setWindowWidth] = useState(() => {
         return isClient ? window.innerWidth : 0;
     });
@@ -52,7 +49,7 @@ export const Nav = () => {
             const rect = el.getBoundingClientRect();
             return { el, width: rect.width, left: rect.left };
         });
-    }, [windowWidth]);
+    }, [windowWidth, isClient]);
 
     // Checking for the active link
     useEffect(() => {
@@ -113,24 +110,37 @@ export const Nav = () => {
     }, [handleScroll]);
 
     useGSAP(() => {
+        if (!navRef.current || !isClient) return;
 
-    }, [])
+        if (!isScrolled) {
+            // Set initial position of the nav, when not scrolled
+            gsap.set(navRef.current, { position: "absolute", top: "80px" });
+            // Animate the height on initial render if not scrolled
+            if (!hasAnimated) {
+                gsap.fromTo(
+                    navRef.current,
+                    { height: "0px" },
+                    { height: "56px", ease: "sine.in", duration: 0.6 }
+                );
+                setHasAnimated(true);
+            }
+            // Animate the nav when scrolled back to the top
+            gsap.to(
+                navRef.current,
+                { width: "1024px", color: "black", backgroundColor: "white", ease: "circ.out", duration: 0.6 });
+        } else {
+            // Set the position of the nav when scrolled
+            gsap.set(navRef.current, { position: "fixed", top: "0px" });
+            // When scrolled, update the nav immediately to the new styles.
+            gsap.to(navRef.current, { width: "100vw", height: "56px", color: "white", backgroundColor: "black", duration: 0.6, ease: "circ.out" });
+            setHasAnimated(true);
+        }
+    }, [isClient, isScrolled])
     return (
         <nav
             ref={navRef}
-            className={`bg-white h-14 items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex
-                ${isScrolled
-                    ? "transition-[width,position,background-color]"
-                    : "transition-[height,width,position,color,background-color]"}
-                    duration-700 ease-swoosh z-10`}
-            style={{
-                height: isClient ? "56px" : "0px",
-                width: isScrolled ? "100vw" : "1024px",
-                position: isScrolled ? "fixed" : "absolute",
-                color: isScrolled ? "white" : "black",
-                backgroundColor: isScrolled ? "black" : "white",
-                top: isScrolled ? "0" : "80px",
-            }}>
+            className={`${isScrolled ? "w-screen h-14" : "w-[1024px] h-0"} items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex z-10`}
+        >
             <menu
                 // Reference to element if it doesn't already exist
                 ref={(el: HTMLMenuElement | null) => {

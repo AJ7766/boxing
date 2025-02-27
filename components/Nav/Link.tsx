@@ -7,16 +7,14 @@ export const LinkC = ({ name, className, ref }: { name: string, className: strin
     const router = useRouter();
     const href = `/${name === 'news' ? '/' : name.toLocaleLowerCase()}`;
 
-    return <li className={`${rajdhani.className} font-semibold text-base`}>
-        <Link
-            ref={ref}
-            className={className}
-            prefetch={false}
-            href={href}
-            // Prefetching the hovered link for faster page loading
-            onMouseEnter={() => router.prefetch(href)}
-        >
-            {name.toUpperCase()}
-        </Link>
-    </li>
+    return <Link
+        ref={ref}
+        className={`${className} ${rajdhani.className} font-semibold text-base transition-opacity duration-600 ease-in`}
+        prefetch={false}
+        href={href}
+        // Prefetching the hovered link for faster page loading
+        onMouseEnter={() => router.prefetch(href)}
+    >
+        {name.toUpperCase()}
+    </Link>
 }
