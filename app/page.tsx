@@ -39,16 +39,6 @@ export default async function News() {
   if (!fetchedFight)
     console.error('No fight found');
 
-  if (process.env.CRON_SECRET) {
-    await fetch('https://boxing-xi.vercel.app/api/cron', {
-      headers: {
-        'authorization': `Bearer ${process.env.CRON_SECRET}`
-      }
-    });
-    console.log("Fetching")
-  } else {
-    console.error('CRON_SECRET is not defined');
-  }
   return (
     <main className={`relative bg-gray-100 px-7 py-16`}>
       <Countdown date={fetchedFight?.date?.toISOString()} />
