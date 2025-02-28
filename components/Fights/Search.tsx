@@ -70,7 +70,7 @@ export const Search = () => {
                 className="bg-gray-100 w-full rounded-md text-center text-2xl font-semibold py-2 mx-auto -translate-y-1/2"
                 type="text"
                 name="query"
-                placeholder={showPlaceholder ? "Search for a fight" : ""}
+                placeholder={showPlaceholder ? "Search fight" : ""}
                 onInput={(e) => setDebounceValue((e.target as HTMLInputElement).value)}
             />
         </search>
