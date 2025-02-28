@@ -18,8 +18,9 @@ export const Video = ({ id, alt, type }: VideoProps) => {
                     <Image
                         src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`}
                         alt={`${alt} Thumbnail`}
-                        width={1280}
-                        height={720}
+                        width={500}
+                        height={500}
+                        quality={15}
                         loading='lazy'
                         className="w-auto transform transition-transform duration-300 ease-swoosh hover:scale-105"
                     />
