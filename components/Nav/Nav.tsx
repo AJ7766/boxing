@@ -8,9 +8,10 @@ import { useGSAP } from "@gsap/react";
 
 export const Nav = () => {
     const isClient = useIsClient();
+    const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
-
-    const links = ["news", "fights", "rankings", "boxers", "about"];
+    const [hasAnimated, setHasAnimated] = useState(false);
+    const [windowWidth, setWindowWidth] = useState(() => isClient ? window.innerWidth : 0)
     const [underlineState, setUnderlineState] = useState<{
         linkIndex: number;
         width: number;
@@ -18,25 +19,28 @@ export const Nav = () => {
     }>({
         linkIndex: 0, width: 0, left: 0
     });
-
+    const links = ["news", "fights", "rankings", "boxers", "about"];
     // Refs to Link and Menu, holding their position and width
     const navRef = useRef<HTMLElement | null>(null);
     const menuRef = useRef<{ el: HTMLMenuElement | null; left: number }>({ el: null, left: 0 });
     const linkRefs = useRef<{ el: HTMLAnchorElement | null; width: number; left: number }[]>([]);
     const prevClosestLinkIndex = useRef<number | null>(null);
-    const pathname = usePathname();
-    const [hasAnimated, setHasAnimated] = useState(false);
-    const [windowWidth, setWindowWidth] = useState(() => {
-        return isClient ? window.innerWidth : 0;
-    });
 
     useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
+        const handleResize = () => setWindowWidth(window.innerWidth)
+
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+    useEffect(() => {
+        const handleScroll = () => setIsScrolled(window.scrollY > 80);
+        // Initial call
+        handleScroll()
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
 
     // Get the position and width of the menu when window is resized
     useEffect(() => {
@@ -101,16 +105,6 @@ export const Nav = () => {
             prevClosestLinkIndex.current = closestLinkIndex; // Update the prev linkIndex to prevent unecessary re-render
         }
     }, [updateUnderlinePosition]); // Add updateUnderlinePosition as a dependency, to get the correct underline position
-
-    const handleScroll = useCallback(() => {
-        setIsScrolled(window.scrollY > 80);
-    }, []);
-
-    useEffect(() => {
-        handleScroll() // Initial call
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
 
     useGSAP(() => {
         if (!navRef.current || !isClient) return;
