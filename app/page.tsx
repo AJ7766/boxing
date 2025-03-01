@@ -41,11 +41,7 @@ export default async function News() {
   return (
     <main className={`relative bg-gray-100 px-7 py-16`}>
       <Countdown date={fetchedFight?.eventDate?.toISOString()} />
-      <div className="relative overflow-hidden">
-        <BgText
-          fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
-          fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
-        />
+      <div className="relative overflow-hidden z-10">
         <Event
           fighter1={fetchedFight?.fighter1}
           fighter2={fetchedFight?.fighter2}
@@ -70,6 +66,10 @@ export default async function News() {
             }
           </div>
         </Event>
+        <BgText
+          fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
+          fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
+        />
       </div>
     </main >
   )

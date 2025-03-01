@@ -134,8 +134,7 @@ export const Nav = () => {
     return (
         <nav
             ref={navRef}
-            className={`${isScrolled ? "w-screen h-14" : "w-[1024px] h-0"} items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex z-10`}
-        >
+            className={`${isScrolled ? "w-screen h-14" : "w-[1024px] h-0"} items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex z-30`}>
             <menu
                 // Reference to element if it doesn't already exist
                 ref={(el: HTMLMenuElement | null) => {

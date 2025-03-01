@@ -31,18 +31,11 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
         });
     }, []);
 
-    const pseudoActiveClass =
-        "after:absolute after:bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1/4 after:h-[1.7px] after:bg-red-600 after:transition-[opacity] after:opacity-100 after:duration-300";
-
     return (
         <>
             <div className='flex text-2xl font-medium justify-center mt-10'>
-                <button className={`relative px-3 py-2 
-    after:content-[''] after:absolute after:bottom-2 after:h-[3px] after:left-1/2 after:-translate-x-1/2 after:bg-red-600 after:transition-[width] after:duration-300 
-    ${!womens ? 'after:w-2/5' : 'after:w-0 hover:after:w-[calc(100%-24px)]'}`} onClick={() => setWomens(false)}>Men&apos;s</button>
-                <button className={`relative px-3 py-2 
-    after:content-[''] after:absolute after:bottom-2 after:h-[3px] after:left-1/2 after:-translate-x-1/2 after:bg-red-600 after:transition-[width] after:duration-300 
-    ${womens ? 'after:w-2/5' : 'after:w-0 hover:after:w-[calc(100%-24px)]'}`} onClick={() => setWomens(true)}>Women&apos;s</button>
+                <CategoryButton womens={!womens} category="Men" onClick={() => setWomens(false)} />
+                <CategoryButton womens={womens} category="Women" onClick={() => setWomens(true)} />
             </div>
             <div className='relative mt-6 overflow-x-auto'>
                 <table className='mx-auto font-medium table-collapse'>
@@ -56,21 +49,24 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
                         </tr>
                         <tr className="border-b-2 border-gray-500 cursor-pointer">
                             <TableHeader
-                                className={`${sortedRankings.selectedRanking === 'theRing' && pseudoActiveClass}`}
+                                active={sortedRankings.selectedRanking === 'theRing'}
                                 onClick={() => handleSort('theRing')}>The Ring</TableHeader>
-                            {!womens && <>
-                                <TableHeader
-                                    className={`${sortedRankings.selectedRanking === 'bwaa' && pseudoActiveClass}`}
-                                    onClick={() => handleSort('bwaa')}>BWAA</TableHeader>
-                                <TableHeader
-                                    className={`${sortedRankings.selectedRanking === 'tbrb' && pseudoActiveClass}`}
-                                    onClick={() => handleSort('tbrb')}>TBRB</TableHeader>
-                            </>}
+                            {/* Only render womens columns if womens is true */}
+                            {!womens &&
+                                <>
+                                    <TableHeader
+                                        active={sortedRankings.selectedRanking === 'bwaa'}
+                                        onClick={() => handleSort('bwaa')}>BWAA</TableHeader>
+                                    <TableHeader
+                                        active={sortedRankings.selectedRanking === 'tbrb'}
+                                        onClick={() => handleSort('tbrb')}>TBRB</TableHeader>
+                                </>
+                            }
                             <TableHeader
-                                className={`${sortedRankings.selectedRanking === 'espn' && pseudoActiveClass}`}
+                                active={sortedRankings.selectedRanking === 'espn'}
                                 onClick={() => handleSort('espn')}>ESPN</TableHeader>
                             <TableHeader
-                                className={`${sortedRankings.selectedRanking === 'boxRec' && pseudoActiveClass}`}
+                                active={sortedRankings.selectedRanking === 'boxRec'}
                                 onClick={() => handleSort('boxRec')}>BoxRec</TableHeader>
                         </tr>
                     </thead>
@@ -92,8 +88,12 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
                                             ))}
                                 </TableCell>
                                 <TableCell>{ranking.theRing}</TableCell>
-                                {!womens && <TableCell>{ranking.bwaa}</TableCell>}
-                                {!womens && <TableCell>{ranking.tbrb}</TableCell>}
+                                {!womens &&
+                                    <>
+                                        <TableCell>{ranking.bwaa}</TableCell>
+                                        <TableCell>{ranking.tbrb}</TableCell>
+                                    </>
+                                }
                                 <TableCell>{ranking.espn}</TableCell>
                                 <TableCell>{ranking.boxRec}</TableCell>
                             </tr>
@@ -105,16 +105,28 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
     )
 }
 
-const TableHeader = ({ children, className, rowSpan, colSpan, onClick }: { children: React.ReactNode, className?: string, rowSpan?: number, colSpan?: number, onClick?: () => void }) => (
-    <th
-        className={`relative px-4 py-2 border border-gray-300 ${onClick && 'cursor-pointer'} after:opacity-0 ${className}`}
-        onClick={onClick}
-        rowSpan={rowSpan}
-        colSpan={colSpan}
-    >
-        {children}
-    </th>
-);
+const CategoryButton = ({ womens, category, onClick }: { womens: boolean, category: string, onClick: () => void }) => {
+    return <button className={`relative px-3 py-2 
+        after:content-[''] after:absolute after:bottom-2 after:h-[3px] after:left-1/2 after:-translate-x-1/2 after:bg-red-600 after:transition-[width] after:duration-300 
+        ${womens ? 'after:w-2/5' : 'after:w-0 hover:after:w-[calc(100%-24px)]'}`} onClick={onClick}>{category}&apos;s</button>
+}
+
+const TableHeader = ({ children, active, rowSpan, colSpan, onClick }: { children: React.ReactNode, active?: boolean, rowSpan?: number, colSpan?: number, onClick?: () => void }) => {
+
+    const pseudoActiveClass =
+        "after:absolute after:bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1/4 after:h-[1.7px] after:bg-red-600 after:transition-[opacity] after:opacity-100 after:duration-300";
+
+    return (
+        <th
+            className={`relative px-4 py-2 border border-gray-300 ${onClick && 'cursor-pointer'} after:opacity-0 ${active && pseudoActiveClass}`}
+            onClick={onClick}
+            rowSpan={rowSpan}
+            colSpan={colSpan}
+        >
+            {children}
+        </th>
+    )
+}
 
 const TableCell = ({ children, className }: { children: React.ReactNode, className?: string }) => (
     <td className={`px-4 py-2 border border-gray-300 ${className}`}>{children}</td>

@@ -17,7 +17,7 @@ interface EventProps {
 export const Event = ({ children, fighter1, fighter2 }: EventProps) => {
     const isClient = useIsClient();
     const containerRef = useRef<HTMLDivElement>(null);
-    
+
     // Animation for the event component
     useGSAP(() => {
         if (!containerRef.current || !isClient) return;
@@ -40,17 +40,16 @@ export const Event = ({ children, fighter1, fighter2 }: EventProps) => {
     }, [isClient]);
 
     return (
-        <div className="relative">
-            {!isClient ? <SkeletonLoader /> : (
-                <div ref={containerRef} className="-mb-2 text-4xl lg:text-9xl">
+        (!isClient ? <SkeletonLoader /> : (
+            <>
+                <div ref={containerRef} className="relative -mb-2 text-4xl lg:text-9xl">
                     <h2 className="font-semibold lg:-mb-20">{fighter1?.name || fighter1?.nickname}</h2>
                     <h2 className="font-medium italic text-red-500 pl-3">vs</h2>
                     <h2 className="font-semibold lg:-mt-14">{fighter2?.name || fighter2?.nickname}</h2>
                 </div>
-            )}
-            {children}
-        </div>
-    )
+                {children}
+            </>
+        )))
 }
 
 const SkeletonLoader = () => (
