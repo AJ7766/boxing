@@ -14,6 +14,8 @@ export interface FightProps {
     id: string;
     title: string | null;
     date: Date | null;
+    eventTitle: string | null;
+    eventDate: Date | null;
     location: string | null;
     result?: ResultProps;
     scheduledRounds: number | null;

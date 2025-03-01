@@ -77,6 +77,8 @@ model Fight {
   id              String    @id
   title           String?
   date            DateTime?
+  eventTitle      String?
+  eventDate       DateTime?
   location        String?
   scheduledRounds Int?
   broadcasters    Json?

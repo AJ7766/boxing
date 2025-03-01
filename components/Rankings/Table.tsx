@@ -17,7 +17,6 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
     }, [womens, mensRankings, womensRankings]);
 
     const handleSort = useCallback((key: keyof RankingsProps) => {
-        console.log("Sorting by", key);
         setSortedRankings(() => {
             const sorted = sortedRankings.ranking.sort((a, b) => {
                 const aValue = Number(a[key]?.match(/(\d+)/)?.[0]) || Infinity;

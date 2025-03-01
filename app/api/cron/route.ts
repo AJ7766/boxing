@@ -164,6 +164,8 @@ const fetchFights = async () => {
             update: {
                 title: fight.title || null,
                 date: fight.date ? new Date(fight.date) : null,
+                eventTitle: fight.event.title || null,
+                eventDate: fight.event.date ? new Date(fight.event.date) : null,
                 location: fight.location || null,
                 result: fight.results ? {
                     outcome: fight.results.outcome ?? null,
