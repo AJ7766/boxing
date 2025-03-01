@@ -80,19 +80,7 @@ export const Nav = () => {
             const rect = el.getBoundingClientRect();
             return { el, width: rect.width, left: rect.left };
         });
-    }, [windowWidth, isClient]);
-
-    // Checking for the active link
-    useEffect(() => {
-        const index = links.findIndex(name => pathname === `/${name}`);
-        const activeIndex = index !== -1 ? index : links.indexOf("news"); // If not found, default to "news"
-        // Update activeLinkIndex and underlineState
-        setUnderlineState((prev) => ({
-            ...prev,
-            linkIndex: activeIndex
-        }));
-        updateUnderlinePosition(activeIndex);
-    }, [pathname]);
+    }, [windowWidth, links, isClient]);
 
     const updateUnderlinePosition = useCallback((index: number) => {
         const link = linkRefs.current[index];
@@ -109,6 +97,18 @@ export const Nav = () => {
             });
         }
     }, []);
+
+    // Checking for the active link
+    useEffect(() => {
+        const index = links.findIndex(name => pathname === `/${name}`);
+        const activeIndex = index !== -1 ? index : links.indexOf("news"); // If not found, default to "news"
+        // Update activeLinkIndex and underlineState
+        setUnderlineState((prev) => ({
+            ...prev,
+            linkIndex: activeIndex
+        }));
+        updateUnderlinePosition(activeIndex);
+    }, [pathname]);
 
     const handleMouseMove = useCallback((e: React.MouseEvent<HTMLMenuElement>) => {
         const mouseX = e.clientX; // Get the mouse position on the x-axis
