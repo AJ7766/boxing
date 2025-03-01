@@ -80,7 +80,7 @@ export const Nav = () => {
             const rect = el.getBoundingClientRect();
             return { el, width: rect.width, left: rect.left };
         });
-    }, [windowWidth, links, isClient]);
+    }, [windowWidth, isClient]);
 
     const updateUnderlinePosition = useCallback((index: number) => {
         const link = linkRefs.current[index];

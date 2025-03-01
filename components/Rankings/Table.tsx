@@ -14,7 +14,7 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
             ranking: womens ? womensRankings : mensRankings,
             selectedRanking: 'theRing'
         });
-    }, [womens, sortedRankings]);
+    }, [womens]);
 
     const handleSort = useCallback((key: keyof RankingsProps) => {
         setSortedRankings(() => {
