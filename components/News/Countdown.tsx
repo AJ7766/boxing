@@ -28,7 +28,7 @@ export const Countdown = ({ date }: { date?: string | null }) => {
     useEffect(() => {
         const interval = setInterval(updateCountdown, 1000);
         return () => clearInterval(interval);
-    }, []);
+    }, [updateCountdown]);
 
     return (
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 bg-white flex flex-col gap-1 text-center font-bold text-xl shadow">

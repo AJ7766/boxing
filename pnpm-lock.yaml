@@ -30,7 +30,7 @@ importers:
         specifier: ^3.5.0
         version: 3.5.0
       next:
-        specifier: ^15.1.7
+        specifier: ^15.2.0
         version: 15.2.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       puppeteer-core:
         specifier: ^24.3.0

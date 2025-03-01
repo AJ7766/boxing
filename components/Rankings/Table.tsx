@@ -14,14 +14,13 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
             ranking: womens ? womensRankings : mensRankings,
             selectedRanking: 'theRing'
         });
-    }, [womens]);
+    }, [womens, mensRankings, womensRankings]);
 
     const handleSort = useCallback((key: keyof RankingsProps) => {
-        setSortedRankings(() => {
-            const sorted = sortedRankings.ranking.sort((a, b) => {
+        setSortedRankings(prev => {
+            const sorted = [...prev.ranking].sort((a, b) => {
                 const aValue = Number(a[key]?.match(/(\d+)/)?.[0]) || Infinity;
                 const bValue = Number(b[key]?.match(/(\d+)/)?.[0]) || Infinity;
-
                 return aValue - bValue;
             });
             return {
