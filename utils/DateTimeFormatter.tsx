@@ -5,5 +5,5 @@ export const localTimeFormat = (date?: string | null) => {
     const localDateTime = DateTime.fromISO(date).setZone('local');
     const timeZone = localDateTime.zoneName;
 
-    return localDateTime.toFormat('dd MMMM - (HH:mm') + ` ${timeZone})`;
+    return `${localDateTime.toFormat('ccc')}, ${localDateTime.toFormat('dd MMMM - (HH:mm')} ${timeZone})`
 }

@@ -1,11 +1,9 @@
 import { BgText } from "@/components/News/BgText";
 import { Event } from "@/components/News/Event";
-import { Fight } from "@/components/News/FIght";
-import { Location } from "@/components/News/Location";
-import { EventDate } from "@/components/News/EventDate";
 import { prisma } from "@/lib/prisma";
 import { Video } from "@/components/News/Video";
 import { Countdown } from "@/components/News/Countdown";
+import { EventDetails } from "@/components/News/EventDetails";
 
 const Videos = [{
   id: "XXcnG0w5T9k",
@@ -31,6 +29,7 @@ export default async function News() {
       title: true,
       location: true,
       date: true,
+      eventDate: true,
       fighter1: { select: { name: true, nickname: true } },
       fighter2: { select: { name: true, nickname: true } },
     },
@@ -51,15 +50,13 @@ export default async function News() {
           fighter1={fetchedFight?.fighter1}
           fighter2={fetchedFight?.fighter2}
         >
-          <Fight
+          <EventDetails
             fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
             fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
-          />
-          <Location
+            eventDate={fetchedFight?.eventDate?.toISOString()}
             location={fetchedFight?.location}
+            date={fetchedFight?.date?.toISOString()}
           />
-          <EventDate date={fetchedFight?.date?.toISOString()} />
-
           {/* Videos */}
           <div className="flex flex-row gap-1">
             {Videos.map((video) => (
