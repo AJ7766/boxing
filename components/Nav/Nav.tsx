@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LinkC } from "./Link";
 import { useIsClient } from "@/hooks/useClient";
 import { usePathname } from "next/navigation";
@@ -19,7 +19,7 @@ export const Nav = () => {
     }>({
         linkIndex: 0, width: 0, left: 0
     });
-    const links = useMemo(() => ["news", "fights", "rankings", "boxers", "about"], []);
+    const links = ["news", "fights", "rankings", "boxers", "about"];
     // Refs to Link and Menu, holding their position and width
     const navRef = useRef<HTMLElement | null>(null);
     const menuRef = useRef<{ el: HTMLMenuElement | null; left: number }>({ el: null, left: 0 });
@@ -80,7 +80,8 @@ export const Nav = () => {
             const rect = el.getBoundingClientRect();
             return { el, width: rect.width, left: rect.left };
         });
-    }, [windowWidth, links, isClient]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [windowWidth, isClient]);
 
     const updateUnderlinePosition = useCallback((index: number) => {
         const link = linkRefs.current[index];
@@ -108,7 +109,8 @@ export const Nav = () => {
             linkIndex: activeIndex
         }));
         updateUnderlinePosition(activeIndex);
-    }, [pathname, links, updateUnderlinePosition]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pathname]);
 
     const handleMouseMove = useCallback((e: React.MouseEvent<HTMLMenuElement>) => {
         const mouseX = e.clientX; // Get the mouse position on the x-axis

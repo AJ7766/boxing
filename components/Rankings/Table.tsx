@@ -14,7 +14,8 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
             ranking: womens ? womensRankings : mensRankings,
             selectedRanking: 'theRing'
         });
-    }, [womens, mensRankings, womensRankings]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [womens]);
 
     const handleSort = useCallback((key: keyof RankingsProps) => {
         setSortedRankings(prev => {
