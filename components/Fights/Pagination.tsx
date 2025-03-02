@@ -12,7 +12,6 @@ interface PaginationProps {
 
 export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
     const { data: { totalFights } } = useFights();
-    const router = useRouter();
     const prevPage = Number(page) > 1 ? Number(page) - 1 : 1;
     const nextPage = Number(page) + 1;
     const hasPrevPage = start > 1 && (totalFights ?? 0) >= Number(per_page); // If start > 1 and totalFights >= 8
@@ -27,8 +26,7 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
                 <Link
                     href={`?page=${prevPage}&per_page=${per_page}`}
                     scroll={false}
-                    prefetch={false}
-                    onMouseEnter={() => router.prefetch(`?page=${prevPage}&per_page=${per_page}`)}>
+                    prefetch={false}>
                     <button>Previous</button>
                 </Link>
             }
@@ -38,9 +36,7 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
                     key={number}
                     href={`?page=${number}&per_page=${per_page}`}
                     scroll={false}
-                    prefetch={false}
-                    onMouseEnter={() => router.prefetch(`?page=${number}&per_page=${per_page}`)}
-                >
+                    prefetch={false}>
                     <button
                         className={`py-[2px] px-3 ${Number(page) === number && 'bg-gray-100 rounded-md'}`}
                     >
@@ -52,8 +48,7 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
                 <Link
                     href={`?page=${nextPage}&per_page=${per_page}`}
                     scroll={false}
-                    prefetch={false}
-                    onMouseEnter={() => router.prefetch(`?page=${nextPage}&per_page=${per_page}`)}>
+                    prefetch={false}>
                     <button>Next</button>
                 </Link>
             }
