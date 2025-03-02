@@ -18,7 +18,7 @@ export const FightCards = () => {
     const containerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
     useGSAP(() => {
-        if (!containerRefs.current || !isClient) return;
+        if (!containerRefs.current || !isClient || isLoading) return;
 
         containerRefs.current.forEach((card) => {
             gsap.fromTo(
@@ -35,7 +35,7 @@ export const FightCards = () => {
                 }
             )
         });
-    }, [fights]);
+    }, [isLoading, isClient]);
 
     if (!isClient || isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
 
