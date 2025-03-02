@@ -1,9 +1,10 @@
 import { BgText } from "@/components/News/BgText";
-import { Event } from "@/components/News/Event";
+import { EventFighters } from "@/components/News/EventFighters";
 import { prisma } from "@/lib/prisma";
 import { Video } from "@/components/News/Video";
 import { Countdown } from "@/components/News/Countdown";
 import { EventDetails } from "@/components/News/EventDetails";
+import { BroadcastProps } from "@/types/fightsType";
 
 const Videos = [{
   id: "XXcnG0w5T9k",
@@ -30,6 +31,7 @@ export default async function News() {
       location: true,
       date: true,
       eventDate: true,
+      broadcasters: true,
       fighter1: { select: { name: true, nickname: true } },
       fighter2: { select: { name: true, nickname: true } },
     },
@@ -42,7 +44,7 @@ export default async function News() {
     <main className={`relative bg-gray-100 px-7 py-16`}>
       <Countdown date={fetchedFight?.eventDate?.toISOString()} />
       <div className="relative overflow-hidden z-10">
-        <Event
+        <EventFighters
           fighter1={fetchedFight?.fighter1}
           fighter2={fetchedFight?.fighter2}
         >
@@ -52,6 +54,7 @@ export default async function News() {
             eventDate={fetchedFight?.eventDate?.toISOString()}
             location={fetchedFight?.location}
             date={fetchedFight?.date?.toISOString()}
+            broadcasters={fetchedFight?.broadcasters as BroadcastProps[] | undefined}
           />
           {/* Videos */}
           <div className="flex flex-row gap-1">
@@ -65,7 +68,7 @@ export default async function News() {
             ))
             }
           </div>
-        </Event>
+        </EventFighters>
         <BgText
           fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
           fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}

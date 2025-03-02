@@ -14,7 +14,7 @@ interface EventProps {
     fighter2?: FighterProps | null;
 }
 
-export const Event = ({ children, fighter1, fighter2 }: EventProps) => {
+export const EventFighters = ({ children, fighter1, fighter2 }: EventProps) => {
     const isClient = useIsClient();
     const containerRef = useRef<HTMLDivElement>(null);
 
