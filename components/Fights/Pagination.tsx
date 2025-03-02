@@ -15,7 +15,7 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
     const router = useRouter();
     const prevPage = Number(page) > 1 ? Number(page) - 1 : 1;
     const nextPage = Number(page) + 1;
-    const hasPrevPage = start > 1 && (totalFights ?? 0) >= Number(per_page); // if start > 1 and totalFights >= 8
+    const hasPrevPage = start > 1 && (totalFights ?? 0) >= Number(per_page); // If start > 1 and totalFights >= 8
     const hasNextPage = end < (totalFights ?? 0);
 
     // Calculate total pages available
