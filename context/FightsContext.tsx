@@ -30,7 +30,7 @@ export const FightsProvider = ({ children, start, end }: FightsProviderProps) =>
     const oneWeekAgo = DateTime.local().minus({ week: 1 }).toJSDate(); // 1 week ago
     // Fetching fights using useQuery
     const { data, isLoading } = useQuery({
-        queryKey: ['fights', start, end, query], // Query key should depend on start, end, and query
+        queryKey: [start, end, query], // Query key should depend on start, end, and query
         queryFn: async () => {
             const data = await getFights(query ?? '', start, end, oneWeekAgo);
             return JSON.parse(JSON.stringify(data));
