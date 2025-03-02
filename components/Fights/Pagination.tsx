@@ -24,7 +24,6 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
             {hasPrevPage &&
                 <Link
                     href={`?page=${prevPage}&per_page=${per_page}`}
-                    scroll={false}
                     prefetch={false}>
                     <button>Previous</button>
                 </Link>
@@ -34,7 +33,6 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
                 <Link
                     key={number}
                     href={`?page=${number}&per_page=${per_page}`}
-                    scroll={false}
                     prefetch={false}>
                     <button
                         className={`py-[2px] px-3 ${Number(page) === number && 'bg-gray-100 rounded-md'}`}
@@ -46,7 +44,6 @@ export const Pagination = ({ page, per_page, start, end }: PaginationProps) => {
             {hasNextPage &&
                 <Link
                     href={`?page=${nextPage}&per_page=${per_page}`}
-                    scroll={false}
                     prefetch={false}>
                     <button>Next</button>
                 </Link>
