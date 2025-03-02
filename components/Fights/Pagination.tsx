@@ -1,7 +1,6 @@
 "use client"
 import { useFights } from "@/context/FightsContext";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 interface PaginationProps {
     page: string | string[];
