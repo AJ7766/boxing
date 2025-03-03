@@ -24,9 +24,9 @@ const fetchData = async () => {
     });
 
     const now = new Date();
-    const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+    const twentyThreeHoursAgo = new Date(now.getTime() - 23 * 60 * 60 * 1000);
 
-    if (metadata?.lastFetchedAt && metadata.lastFetchedAt > twelveHoursAgo) {
+    if (metadata?.lastFetchedAt && metadata.lastFetchedAt > twentyThreeHoursAgo) {
         console.log("Skipping fetch: Data was updated recently.");
         return;
     }
