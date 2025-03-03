@@ -5,6 +5,8 @@ import { scrapeRankings } from "./services";
 import { BroadcastProps } from "@/types/fightsType";
 import { Prisma } from "@prisma/client";
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
