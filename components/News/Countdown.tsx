@@ -12,7 +12,6 @@ export const Countdown = ({ date }: { date?: string | null }) => {
         const now = DateTime.now();
         const fightTime = DateTime.fromISO(date);
         const diff = fightTime.diff(now, ["days", "hours", "minutes", "seconds"]).toObject();
-
         if (!diff.seconds || diff.seconds < 0)
             return setCountdown("00:00:00:00")
         // Joining the object to display in "00:00:00:00" format
