@@ -53,7 +53,7 @@ export const FightCards = () => {
                 </div>
                 {/* FIGHTERS */}
                 <FightersTable
-                    fighter1={fight.fighter1?.name || fight.fighter1?.nickname}
+                    fighter1={fight.fighter1?.name || fight.fighter1?.nickname || fight.title?.split('vs')[0]}
                     fighter2={fight.fighter2?.name || fight.fighter2?.nickname || fight.title?.split('vs')[1]}
                     stats1={`${fight.fighter1 ? `${fight.fighter1?.wins}-${fight.fighter1?.losses || 0}-${fight.fighter1?.draws || 0} (${fight.fighter1?.ko_wins} KO)` : ''}`}
                     stats2={`${fight.fighter2 ? `${fight.fighter2?.wins}-${fight.fighter2?.losses || 0}-${fight.fighter2?.draws || 0} (${fight.fighter2?.ko_wins} KO)` : ''}`}

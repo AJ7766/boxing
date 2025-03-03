@@ -72,16 +72,6 @@ export const scrapeRankings = async () => {
             };
         });
 
-        // Function to sort the rankings before passing them
-        // const sortRankings = (rankings: RankingsProps[], key: keyof RankingsProps) => {
-        //     return [...rankings].sort((a, b) => {
-        //         const aValue = Number(a[key]?.match(/(\d+)/)?.[0]) || Infinity;
-        //         const bValue = Number(b[key]?.match(/(\d+)/)?.[0]) || Infinity;
-
-        //         return aValue - bValue;
-        //     });
-        // };
-
         return {
             mensScrapedRankings: mensRankings,
             womensCrapedRankings: womensRankings

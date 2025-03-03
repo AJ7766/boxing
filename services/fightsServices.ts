@@ -1,27 +1,6 @@
 "use server"
 import { prisma } from "@/lib/prisma";
 
-const getTotalFights = async (oneWeekAgo: Date, query?: string) => {
-    const totalFights = prisma.fight.count({
-        where: {
-            ...(query && {
-                OR: [
-                    { title: { contains: query, mode: 'insensitive' } },
-                    { fighter1: { name: { contains: query, mode: 'insensitive' } } },
-                    { fighter2: { name: { contains: query, mode: 'insensitive' } } }
-                ],
-            }),
-            date: {
-                gte: oneWeekAgo,
-            },
-            titles: {
-                some: {},
-            },
-        },
-    });
-    return totalFights;
-}
-
 export const getSearchParams = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) => {
     // Getting searchParams and returning the values
     const currParams = await searchParams;
@@ -45,9 +24,6 @@ export const getFights = async (query: string, start: number, end: number, oneWe
                 : undefined,
             date: {
                 gte: oneWeekAgo,
-            },
-            titles: {
-                some: {}
             },
         },
         skip: query ? 0 : start,
@@ -92,4 +68,22 @@ export const getFights = async (query: string, start: number, end: number, oneWe
 
     const [fights, totalFights] = await Promise.all([fightsPromise, getTotalFights(oneWeekAgo, query)]);
     return { fights, totalFights };
+}
+
+const getTotalFights = async (oneWeekAgo: Date, query?: string) => {
+    const totalFights = prisma.fight.count({
+        where: {
+            ...(query && {
+                OR: [
+                    { title: { contains: query, mode: 'insensitive' } },
+                    { fighter1: { name: { contains: query, mode: 'insensitive' } } },
+                    { fighter2: { name: { contains: query, mode: 'insensitive' } } }
+                ],
+            }),
+            date: {
+                gte: oneWeekAgo,
+            },
+        },
+    });
+    return totalFights;
 }

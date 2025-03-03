@@ -6,24 +6,14 @@ import { Countdown } from "@/components/News/Countdown";
 import { EventDetails } from "@/components/News/EventDetails";
 import { BroadcastProps } from "@/types/fightsType";
 
-const Videos = [{
-  id: "XXcnG0w5T9k",
-  alt: "Gervonta Davis primed for Lamont Roach, aims for 3 fights in 2025",
-  type: "INTERVIEW"
-},
-{
-  id: "Kf682Zs_piM",
-  alt: "Tank vs. Roach MEDIA WORKOUT",
-  type: "MEDIA WORKOUT",
-},
-{
-  id: "_NCcP6V67MA",
-  alt: "GLOVES OFF: Tank vs Roach | EPISODE 1",
-  type: "GLOVES OFF",
+const videos = [{
+  id: 'j6L7PxQvKmw',
+  alt: 'RYAN GARCIA & EDDY TALK ROLLY ROMERO FIGHT! "RYAN IS ON ANOTHER LEVEL! HES GONNA BE READY',
+  type:'RYAN GARCIA TALKS ABOUT THE FIGHT'
 }]
 
 export default async function News() {
-  const id = '675f98329777a49a554299e9';
+  const id = '67c2bf078553c6d8585ef370';
   const fetchedFight = await prisma.fight.findUnique({
     where: { id },
     select: {
@@ -58,7 +48,7 @@ export default async function News() {
           />
           {/* Videos */}
           <div className="flex flex-row gap-1">
-            {Videos.map((video) => (
+            {videos && videos.map((video) => (
               <Video
                 key={video.id}
                 id={video.id}
