@@ -14,10 +14,5 @@ export const dazn = localFont({
       weight: '600',
       style: 'semibold',
     },
-    {
-      path: '../public/fonts/DAZNTrim_v2.9_normal_800.woff2',
-      weight: '800',
-      style: 'extrabold',
-    },
   ],
 })
