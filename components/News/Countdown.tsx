@@ -31,7 +31,7 @@ export const Countdown = ({ date }: { date?: string | null }) => {
 
     return (
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 bg-white flex flex-col gap-1 text-center font-bold text-xl shadow">
-            <h3 className="text-2xl">EVENT STARTS IN</h3>
+            <h2 className="text-2xl">EVENT STARTS IN</h2>
             <div className="flex">
                 {/* Splitting the countdown "00:00:00:00" => [00", "00", "00", "00] */}
                 {countdown && countdown.split(":").map((part, index) => (
