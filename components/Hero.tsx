@@ -21,7 +21,6 @@ export const Hero = () => {
                     start: "75% 50%",
                     end: "bottom top",
                     scrub: true,
-                    markers:true
                 },
             }
         );
