@@ -145,7 +145,7 @@ export const Nav = () => {
                 }}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={() => updateUnderlinePosition(underlineState.linkIndex)}
-                className="relative flex gap-32 font-sans">
+                className="relative flex gap-32">
                 {/* Links */}
                 {links.map((name, index) => (
                     <LinkC
