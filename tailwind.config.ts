@@ -7,15 +7,7 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-    colors: {
-      background: "var(--background)",
-      foreground: "var(--foreground)",
-    },
-    transitionTimingFunction: {
-      'swoosh-smooth': 'cubic-bezier(0.25, 0, 0.35, 1)',
-    },
-  },
+    extend: {},
 },
 plugins: [],
 } satisfies Config;

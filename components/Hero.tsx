@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from '@gsap/react';
 import { useRef } from "react";
+import { dazn } from "@/fonts/fonts";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,5 +25,14 @@ export const Hero = () => {
             }
         );
     }, []);
-    return <section ref={heroRef} className="bg-[url(../public/bg.webp)] bg-fixed min-h-screen bg-cover bg-left max-h-screen w-full lg:bg-center" />
+    
+    return (
+        <section className={`${dazn.className} font-semibold h-screen w-screen bg-[#f7fe19] font-bold text-9xl flex items-center flex-col justify-center`}>
+            <h1>RYAN GARCIA</h1>
+            <h1>VS</h1>
+            <h1>ROLLY ROMERO</h1>
+        </section>
+    )
 }
+
+{/* <section ref={heroRef} className="bg-[url(../public/bg.webp)] bg-fixed min-h-screen bg-cover bg-left max-h-screen w-full lg:bg-center" /> */}
