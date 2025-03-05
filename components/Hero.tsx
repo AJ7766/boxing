@@ -27,7 +27,7 @@ export const Hero = () => {
     }, []);
     
     return (
-        <section className={`${dazn.className} font-semibold h-screen w-screen bg-[#f7fe19] font-bold text-9xl flex items-center flex-col justify-center`}>
+        <section className={`${dazn.className} font-semibold h-screen w-screen bg-[#f7fe19] text-9xl flex items-center flex-col justify-center`}>
             <h1>RYAN GARCIA</h1>
             <h1>VS</h1>
             <h1>ROLLY ROMERO</h1>
