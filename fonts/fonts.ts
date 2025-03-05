@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 
 export const rajdhani = Rajdhani({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
   display: 'swap',
 });
 
