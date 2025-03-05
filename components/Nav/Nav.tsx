@@ -5,6 +5,7 @@ import { useIsClient } from "@/hooks/useClient";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { rajdhani } from "@/fonts/fonts";
 
 export const Nav = () => {
     const isClient = useIsClient();
@@ -37,7 +38,7 @@ export const Nav = () => {
                 gsap.fromTo(
                     navRef.current,
                     { height: "0px" },
-                    { height: "64px", ease: "sine.in", duration: 0.6 }
+                    { height: "63px", ease: "sine.in", duration: 0.6 }
                 );
                 setHasAnimated(true);
             }
@@ -49,7 +50,7 @@ export const Nav = () => {
             // Set the position of the nav when scrolled
             gsap.set(navRef.current, { position: "fixed", top: "0px" });
             // When scrolled, update the nav immediately to the new styles.
-            gsap.to(navRef.current, { width: "100vw", height: "64px", color: "white", backgroundColor: "black", duration: 0.6, ease: "circ.out" });
+            gsap.to(navRef.current, { width: "100vw", height: "63px", color: "white", backgroundColor: "black", duration: 0.6, ease: "circ.out" });
             setHasAnimated(true);
         }
     }, [isClient, isScrolled])
@@ -136,7 +137,7 @@ export const Nav = () => {
     return (
         <nav
             ref={navRef}
-            className={`${isScrolled ? "w-screen h-16" : "w-[1024px] h-0"} items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex z-30 drop-shadow-[0px_4px_9px_#00000026]`}>
+            className={`${isScrolled ? "w-screen h-[63px]" : "w-[1024px] h-0"} items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex z-30 drop-shadow-[0px_4px_9px_#00000026]`}>
             <menu
                 // Reference to element if it doesn't already exist
                 ref={(el: HTMLMenuElement | null) => {
@@ -145,7 +146,7 @@ export const Nav = () => {
                 }}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={() => updateUnderlinePosition(underlineState.linkIndex)}
-                className="relative flex gap-32">
+                className={`${rajdhani.className} relative flex gap-32 font-semibold text-base`}>
                 {/* Links */}
                 {links.map((name, index) => (
                     <LinkC
