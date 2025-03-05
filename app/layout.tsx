@@ -10,7 +10,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${rajdhani.className} bg-black text-black antialiased overflow-x-hidden`}>
+      <body className={`${rajdhani.className} bg-white text-black antialiased overflow-x-hidden`}>
         <Nav />
         {children}
         <Footer />

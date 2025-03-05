@@ -25,26 +25,14 @@ export const Search = () => {
             { width: "1.5%" },
             { width: "100%", duration: 0.5, ease: "power2.in" }
         )
-            .fromTo(
+            .to(
                 inputRef.current,
-                { height: 0, },
                 { height: 'auto', duration: 0.5, ease: "power4.out" }, ">" // Start immediately after the previous animation ends
             )
-            .fromTo(
+            .to(
                 inputRef.current,
-                { backgroundColor: "#111827" },
                 { backgroundColor: "#f3f4f6", duration: 1, ease: "power4.out" }, 0 // Start immediately
             );
-        // Create a ScrollTrigger
-        // ScrollTrigger.create({
-        //     trigger: containerRef.current,
-        //     start: "bottom 90%",
-        //     onEnter: () => tl.play(),
-        //     onLeaveBack: () => {
-        //         setShowPlaceholder(false);
-        //         tl.reverse()
-        //     }
-        // });
     }, [isClient]);
 
     useEffect(() => {
@@ -60,14 +48,14 @@ export const Search = () => {
     if (!isClient) return;
 
     return (
-        <search ref={containerRef} className="mx-auto max-w-[900px]">
+        <search ref={containerRef} className="mx-auto">
             <label htmlFor="searchQuery" className="sr-only">
                 Search fight
             </label>
             <input
                 ref={inputRef}
                 id="searchQuery"
-                className="bg-gray-100 w-full rounded-md text-center text-2xl font-semibold py-2 mx-auto -translate-y-1/2"
+                className="bg-gray-800 w-full h-0 rounded-md text-center text-2xl font-semibold py-2 mx-auto -translate-y-1/2"
                 type="text"
                 name="query"
                 placeholder={showPlaceholder ? "Search fight" : ""}
