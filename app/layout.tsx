@@ -2,7 +2,7 @@ import { rajdhani } from "@/fonts/fonts";
 import "./globals.css";
 import { Nav } from "@/components/Nav/Nav";
 import { Footer } from "@/components/Footer";
-import { Hero } from "@/components/Hero";
+import { Hero } from "@/components/News/Hero";
 
 export default async function RootLayout({
   children,
@@ -13,7 +13,6 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${rajdhani.className} bg-black text-black antialiased overflow-x-hidden`}>
         <Nav />
-        <Hero />
         {children}
         <Footer />
       </body>

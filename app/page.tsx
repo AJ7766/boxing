@@ -5,11 +5,12 @@ import { Video } from "@/components/News/Video";
 import { Countdown } from "@/components/News/Countdown";
 import { EventDetails } from "@/components/News/EventDetails";
 import { BroadcastProps } from "@/types/fightsType";
+import { Hero } from "@/components/News/Hero";
 
 const videos = [{
   id: 'j6L7PxQvKmw',
   alt: 'RYAN GARCIA & EDDY TALK ROLLY ROMERO FIGHT! "RYAN IS ON ANOTHER LEVEL! HES GONNA BE READY',
-  type:'RYAN GARCIA TALKS ABOUT THE FIGHT'
+  type: 'RYAN GARCIA TALKS ABOUT THE FIGHT'
 }]
 
 export default async function News() {
@@ -31,40 +32,43 @@ export default async function News() {
     console.error('No fight found');
 
   return (
-    <main className={`relative bg-gray-100 px-7 py-16`}>
-      <Countdown date={fetchedFight?.eventDate?.toISOString()} />
-      <div className="relative overflow-hidden z-10">
-        <EventFighters
-          fighter1={fetchedFight?.fighter1}
-          fighter2={fetchedFight?.fighter2}
-        >
-          <EventDetails
+    <>
+      <Hero />
+      <main className={`relative bg-gray-100 px-7 py-16`}>
+        <Countdown date={fetchedFight?.eventDate?.toISOString()} />
+        <div className="relative overflow-hidden z-10">
+          <EventFighters
+            fighter1={fetchedFight?.fighter1}
+            fighter2={fetchedFight?.fighter2}
+          >
+            <EventDetails
+              fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
+              fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
+              eventDate={fetchedFight?.eventDate?.toISOString()}
+              location={fetchedFight?.location}
+              date={fetchedFight?.date?.toISOString()}
+              broadcasters={fetchedFight?.broadcasters as BroadcastProps[] | undefined}
+            />
+            {/* Videos */}
+            <div className="flex flex-row gap-1">
+              {videos && videos.map((video) => (
+                <Video
+                  key={video.id}
+                  id={video.id}
+                  alt={video.alt}
+                  type={video.type}
+                />
+              ))
+              }
+            </div>
+          </EventFighters>
+          <BgText
             fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
             fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
-            eventDate={fetchedFight?.eventDate?.toISOString()}
-            location={fetchedFight?.location}
-            date={fetchedFight?.date?.toISOString()}
-            broadcasters={fetchedFight?.broadcasters as BroadcastProps[] | undefined}
           />
-          {/* Videos */}
-          <div className="flex flex-row gap-1">
-            {videos && videos.map((video) => (
-              <Video
-                key={video.id}
-                id={video.id}
-                alt={video.alt}
-                type={video.type}
-              />
-            ))
-            }
-          </div>
-        </EventFighters>
-        <BgText
-          fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
-          fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
-        />
-      </div>
-    </main >
+        </div>
+      </main >
+    </>
   )
 }
 

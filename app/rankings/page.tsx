@@ -23,7 +23,7 @@ export default async function Rankings() {
     };
 
     return (
-        <main className="bg-white py-12 px-6">
+        <main className="bg-white pt-52 pb-12 px-6">
             <Title>POUND FOR POUND RANKINGS</Title>
             <Table
                 mensRankings={sortRankings(mensRankings, 'theRing')}

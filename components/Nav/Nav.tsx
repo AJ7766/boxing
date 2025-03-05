@@ -31,13 +31,13 @@ export const Nav = () => {
 
         if (!isScrolled) {
             // Set initial position of the nav, when not scrolled
-            gsap.set(navRef.current, { position: "absolute", top: "80px" });
+            gsap.set(navRef.current, { position: "absolute", top: "50px" });
             // Animate the height on initial render if not scrolled
             if (!hasAnimated) {
                 gsap.fromTo(
                     navRef.current,
                     { height: "0px" },
-                    { height: "56px", ease: "sine.in", duration: 0.6 }
+                    { height: "64px", ease: "sine.in", duration: 0.6 }
                 );
                 setHasAnimated(true);
             }
@@ -49,14 +49,14 @@ export const Nav = () => {
             // Set the position of the nav when scrolled
             gsap.set(navRef.current, { position: "fixed", top: "0px" });
             // When scrolled, update the nav immediately to the new styles.
-            gsap.to(navRef.current, { width: "100vw", height: "56px", color: "white", backgroundColor: "black", duration: 0.6, ease: "circ.out" });
+            gsap.to(navRef.current, { width: "100vw", height: "64px", color: "white", backgroundColor: "black", duration: 0.6, ease: "circ.out" });
             setHasAnimated(true);
         }
     }, [isClient, isScrolled])
 
     // Assigning event listeners
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 80);
+        const handleScroll = () => setIsScrolled(window.scrollY > 50);
         const handleResize = () => setWindowWidth(window.innerWidth)
         // Initial call
         handleScroll()
@@ -136,7 +136,7 @@ export const Nav = () => {
     return (
         <nav
             ref={navRef}
-            className={`${isScrolled ? "w-screen h-14" : "w-[1024px] h-0"} items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex z-30`}>
+            className={`${isScrolled ? "w-screen h-16" : "w-[1024px] h-0"} items-center justify-center -translate-x-1/2 left-1/2 hidden lg:flex z-30 drop-shadow-[0px_4px_9px_#00000026]`}>
             <menu
                 // Reference to element if it doesn't already exist
                 ref={(el: HTMLMenuElement | null) => {

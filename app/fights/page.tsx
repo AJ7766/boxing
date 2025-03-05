@@ -9,7 +9,7 @@ import { getSearchParams } from "@/services/fightsServices";
 export default async function Fights({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
     const { page, per_page, start, end } = await getSearchParams({ searchParams });
     return (
-        <main className={`bg-white text-lg whitespace-nowrap flex flex-col justify-center gap-20 py-12 px-6`}>
+        <main className={`bg-white text-lg whitespace-nowrap flex flex-col justify-center gap-20 pt-52 pb-12 px-6`}>
             <Title>SCHEDULED FIGHTS</Title>
             <QueryClientProviderWrapper>
                 <FightsProvider start={start} end={end}>

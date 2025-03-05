@@ -19,7 +19,7 @@ export const Search = () => {
     useGSAP(() => {
         if (!containerRef.current || !inputRef.current || !isClient) return;
         // Create a timeline
-        const tl = gsap.timeline({ paused: true, onComplete: () => setShowPlaceholder(true) });
+        const tl = gsap.timeline({ onComplete: () => setShowPlaceholder(true) });
         tl.fromTo(
             containerRef.current,
             { width: "1.5%" },
@@ -36,15 +36,15 @@ export const Search = () => {
                 { backgroundColor: "#f3f4f6", duration: 1, ease: "power4.out" }, 0 // Start immediately
             );
         // Create a ScrollTrigger
-        ScrollTrigger.create({
-            trigger: containerRef.current,
-            start: "bottom 90%",
-            onEnter: () => tl.play(),
-            onLeaveBack: () => {
-                setShowPlaceholder(false);
-                tl.reverse()
-            }
-        });
+        // ScrollTrigger.create({
+        //     trigger: containerRef.current,
+        //     start: "bottom 90%",
+        //     onEnter: () => tl.play(),
+        //     onLeaveBack: () => {
+        //         setShowPlaceholder(false);
+        //         tl.reverse()
+        //     }
+        // });
     }, [isClient]);
 
     useEffect(() => {

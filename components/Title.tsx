@@ -14,26 +14,19 @@ export const Title = ({ children }: { children: string }) => {
     useGSAP(() => {
         if (!overlayRef.current || !isClient) return;
         // Create a tween that animates from full width to 0% width
-        const tween = gsap.fromTo(
+        gsap.fromTo(
             overlayRef.current,
             { width: "100%" },
-            { width: "0%", duration: 0.66, ease: "steps(25)", paused: true }
+            { width: "0%", duration: 0.66, ease: "steps(25)" }
         );
-        // Create a ScrollTrigger to control the tween
-        ScrollTrigger.create({
-            trigger: overlayRef.current,
-            start: "bottom 90%",
-            onEnter: () => tween.play(),
-            onLeaveBack: () => tween.reverse()
-        });
     }, [isClient]);
 
     return (
         <div className="relative w-fit mx-auto">
-            <h3 className="text-4xl font-semibold relative text-center">
+            <h3 className="text-5xl font-bold relative text-center">
                 {children}
                 {/* Overlay div to simulate pseudo-element */}
-                <div
+                <span
                     ref={overlayRef}
                     className="absolute inset-0 -translate-x-full left-full bg-white"
                 />
