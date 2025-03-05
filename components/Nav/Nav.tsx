@@ -147,7 +147,7 @@ export const Nav = () => {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={() => updateUnderlinePosition(underlineState.linkIndex)}
                 className={`${rajdhani.className} relative flex gap-32 font-semibold text-base 
-                ${isClient ? 'opacity-100' : 'opacity-0'} ease-in duration-300`}>
+                ${isClient ? 'opacity-100' : 'opacity-0'} transition-opacity ease-in duration-300`}>
                 {/* Links */}
                 {links.map((name, index) => (
                     <LinkC

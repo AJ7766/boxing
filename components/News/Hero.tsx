@@ -4,13 +4,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from '@gsap/react';
 import { useRef } from "react";
 import { dazn } from "@/fonts/fonts";
+import { useIsClient } from "@/hooks/useClient";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const Hero = () => {
     const heroRef = useRef<HTMLElement>(null);
-
+    const isClient = useIsClient();
     useGSAP(() => {
+        if (!heroRef.current || !isClient) return;
+        gsap.to(heroRef.current, { backgroundColor: "#f7fe19", duration: 1, ease: "power3.in" });
+
         gsap.fromTo(
             heroRef.current,
             { opacity: 1 },
@@ -24,10 +28,10 @@ export const Hero = () => {
                 },
             }
         );
-    }, []);
-    
+    }, [isClient]);
+
     return (
-        <section ref={heroRef} className={`${dazn.className} font-semibold h-screen w-screen bg-[#f7fe19] text-[8.5vw] leading-[1.1] flex items-center flex-col justify-center`}>
+        <section ref={heroRef} className={`${dazn.className} bg-white font-semibold h-screen w-screen text-[8.5vw] leading-[1.1] flex items-center flex-col justify-center`}>
             <h1>RYAN GARCIA</h1>
             <h1>VS</h1>
             <h1>ROLLY ROMERO</h1>
