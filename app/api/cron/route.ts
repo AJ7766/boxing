@@ -8,7 +8,7 @@ import { Prisma } from "@prisma/client";
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
-    const authHeader = req.headers.get('authorization');
+    const authHeader = req.headers.get('authorization') || req.headers.get('Authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
         return NextResponse.json('Unauthorized', {
             status: 401,
