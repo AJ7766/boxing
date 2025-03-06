@@ -23,7 +23,7 @@ export const Hero = () => {
                 scrollTrigger: {
                     trigger: heroRef.current,
                     start: "75% 50%",
-                    end: "bottom top",
+                    end: "bottom 20%",
                     scrub: true,
                 },
             }
@@ -31,10 +31,12 @@ export const Hero = () => {
     }, [isClient]);
 
     return (
-        <section ref={heroRef} className={`${dazn.className} bg-black font-semibold h-screen w-screen text-[8.5vw] leading-[1.1] flex items-center flex-col justify-center`}>
-            <h1>RYAN GARCIA</h1>
-            <h1>VS</h1>
-            <h1>ROLLY ROMERO</h1>
-        </section>
+        <div className="h-screen w-full">
+            <section ref={heroRef} className={`${dazn.className} fixed h-full w-full bg-black font-semibold text-[8.5vw] leading-[1.1] flex items-center flex-col justify-center -z-10`}>
+                <h1>RYAN GARCIA</h1>
+                <h1>VS</h1>
+                <h1>ROLLY ROMERO</h1>
+            </section>
+        </div>
     )
 }
