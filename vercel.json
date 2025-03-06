@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/cron",
+      "path": "/api/refreshData",
       "schedule": "0 11 * * *"
     }
   ]
