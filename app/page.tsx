@@ -18,7 +18,6 @@ const videos = [
     alt: 'RYAN GARCIA & EDDY TALK ROLLY ROMERO FIGHT! "RYAN IS ON ANOTHER LEVEL! HES GONNA BE READY',
     type: 'RYAN GARCIA TALKS ABOUT THE FIGHT',
   }]
-
 export default async function News() {
   const id = '67c2bf078553c6d8585ef370';
   const fetchedFight = await prisma.fight.findUnique({
