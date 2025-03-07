@@ -7,11 +7,17 @@ import { EventDetails } from "@/components/News/EventDetails";
 import { BroadcastProps } from "@/types/fightsType";
 import { Hero } from "@/components/News/Hero";
 
-const videos = [{
-  id: 'j6L7PxQvKmw',
-  alt: 'RYAN GARCIA & EDDY TALK ROLLY ROMERO FIGHT! "RYAN IS ON ANOTHER LEVEL! HES GONNA BE READY',
-  type: 'RYAN GARCIA TALKS ABOUT THE FIGHT'
-}]
+const videos = [
+  {
+    id: 'jkshdpVr2vk',
+    alt: 'Fatal Fury NYC Launch Press Conference With Devin Haney, Ryan Garcia & Teofimo Lopez',
+    'type': 'PRESS CONFERENCE',
+  },
+  {
+    id: 'j6L7PxQvKmw',
+    alt: 'RYAN GARCIA & EDDY TALK ROLLY ROMERO FIGHT! "RYAN IS ON ANOTHER LEVEL! HES GONNA BE READY',
+    type: 'RYAN GARCIA TALKS ABOUT THE FIGHT',
+  }]
 
 export default async function News() {
   const id = '67c2bf078553c6d8585ef370';
