@@ -7,6 +7,62 @@ import { Prisma } from "@prisma/client";
 
 export const dynamic = 'force-dynamic'
 
+// Define interfaces for your API responses
+interface FighterResponse {
+    id: string;
+    name?: string;
+    age?: number;
+    height?: string | null;
+    nationality?: string;
+    nickname?: string;
+    titles?: TitleProps[];
+    reach?: string | null;
+    stance?: string;
+    stats?: {
+        wins?: number;
+        losses?: number;
+        draws?: number;
+        total_bouts?: number;
+        total_rounds?: number;
+        ko_percentage?: number;
+        ko_wins?: number;
+        stopped?: number;
+    };
+    debut?: string;
+    division?: {
+        name?: string;
+        weight_lb?: number;
+        weight_kg?: number;
+    };
+}
+
+interface FightResponse {
+    id: string;
+    title?: string;
+    date?: string;
+    event: {
+        title: string;
+        date?: string;
+        broadcasters?: BroadcastProps[];
+    };
+    location?: string;
+    results?: {
+        outcome?: string;
+        round?: number;
+    };
+    scheduled_rounds?: number;
+    scores: string[];
+    status?: string;
+    division?: {
+        name?: string;
+    };
+    titles?: TitleProps[];
+    fighters: {
+        fighter_1: { fighter_id: string };
+        fighter_2: { fighter_id: string };
+    };
+}
+
 export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization') || req.headers.get('Authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -58,16 +114,16 @@ const fetchTitles = async () => {
     const url = `${process.env.API_URL}/v1/titles/?page_num=1&page_size=200`;
     const res = await fetch(url, options);
     const titles = await res.json();
-        // Use upsert to avoid duplicate titles based on the unique id field
-        await Promise.all(
-            titles.map((title: TitleProps) =>
-              prisma.title.upsert({
+    // Use upsert to avoid duplicate titles based on the unique id field
+    await Promise.all(
+        titles.map((title: TitleProps) =>
+            prisma.title.upsert({
                 where: { id: title.id },
                 update: { name: title.name },
                 create: { id: title.id, name: title.name },
-              })
-            )
-          );
+            })
+        )
+    );
     console.log("Finished fetching titles");
 };
 
@@ -75,136 +131,136 @@ const fetchFighters = async () => {
     const url = `${process.env.API_URL}/v1/fighters/?page_num=1&page_size=5000`;
     const res = await fetch(url, options);
     const fighters = await res.json();
-  
+
     await Promise.all(
-      fighters.map((fighter: any) =>
-        prisma.fighter.upsert({
-          where: { id: fighter.id },
-          update: {
-            name: fighter.name || null,
-            age: fighter.age || null,
-            height: fighter.height || null,
-            nationality: fighter.nationality || null,
-            nickname: fighter.nickname || null,
-            titles: {
-              connect:
-                fighter.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
-            },
-            reach: fighter.reach || null,
-            stance: fighter.stance || null,
-            wins: fighter.stats?.wins || null,
-            losses: fighter.stats?.losses || null,
-            draws: fighter.stats?.draws || null,
-            total_bouts: fighter.stats?.total_bouts || null,
-            total_rounds: fighter.stats?.total_rounds || null,
-            ko_percentage: fighter.stats?.ko_percentage || null,
-            ko_wins: fighter.stats?.ko_wins || null,
-            stopped: fighter.stats?.stopped || null,
-            debut: fighter.debut || null,
-            division: fighter.division?.name || null,
-            weightLb: fighter.division?.weight_lb || null,
-            weightKg: fighter.division?.weight_kg || null,
-          },
-          create: {
-            id: fighter.id,
-            name: fighter.name || null,
-            age: fighter.age || null,
-            height: fighter.height || null,
-            nationality: fighter.nationality || null,
-            nickname: fighter.nickname || null,
-            titles: {
-              connect:
-                fighter.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
-            },
-            reach: fighter.reach || null,
-            stance: fighter.stance || null,
-            wins: fighter.stats?.wins || null,
-            losses: fighter.stats?.losses || null,
-            draws: fighter.stats?.draws || null,
-            total_bouts: fighter.stats?.total_bouts || null,
-            total_rounds: fighter.stats?.total_rounds || null,
-            ko_percentage: fighter.stats?.ko_percentage || null,
-            ko_wins: fighter.stats?.ko_wins || null,
-            stopped: fighter.stats?.stopped || null,
-            debut: fighter.debut || null,
-            division: fighter.division?.name || null,
-            weightLb: fighter.division?.weight_lb || null,
-            weightKg: fighter.division?.weight_kg || null,
-          },
-        })
-      )
+        fighters.map((fighter: FighterResponse) =>
+            prisma.fighter.upsert({
+                where: { id: fighter.id },
+                update: {
+                    name: fighter.name || null,
+                    age: fighter.age || null,
+                    height: fighter.height || null,
+                    nationality: fighter.nationality || null,
+                    nickname: fighter.nickname || null,
+                    titles: {
+                        connect:
+                            fighter.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
+                    },
+                    reach: fighter.reach || null,
+                    stance: fighter.stance || null,
+                    wins: fighter.stats?.wins || null,
+                    losses: fighter.stats?.losses || null,
+                    draws: fighter.stats?.draws || null,
+                    total_bouts: fighter.stats?.total_bouts || null,
+                    total_rounds: fighter.stats?.total_rounds || null,
+                    ko_percentage: fighter.stats?.ko_percentage || null,
+                    ko_wins: fighter.stats?.ko_wins || null,
+                    stopped: fighter.stats?.stopped || null,
+                    debut: fighter.debut || null,
+                    division: fighter.division?.name || null,
+                    weightLb: fighter.division?.weight_lb || null,
+                    weightKg: fighter.division?.weight_kg || null,
+                },
+                create: {
+                    id: fighter.id,
+                    name: fighter.name || null,
+                    age: fighter.age || null,
+                    height: fighter.height || null,
+                    nationality: fighter.nationality || null,
+                    nickname: fighter.nickname || null,
+                    titles: {
+                        connect:
+                            fighter.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
+                    },
+                    reach: fighter.reach || null,
+                    stance: fighter.stance || null,
+                    wins: fighter.stats?.wins || null,
+                    losses: fighter.stats?.losses || null,
+                    draws: fighter.stats?.draws || null,
+                    total_bouts: fighter.stats?.total_bouts || null,
+                    total_rounds: fighter.stats?.total_rounds || null,
+                    ko_percentage: fighter.stats?.ko_percentage || null,
+                    ko_wins: fighter.stats?.ko_wins || null,
+                    stopped: fighter.stats?.stopped || null,
+                    debut: fighter.debut || null,
+                    division: fighter.division?.name || null,
+                    weightLb: fighter.division?.weight_lb || null,
+                    weightKg: fighter.division?.weight_kg || null,
+                },
+            })
+        )
     );
     console.log("Finished fetching fighters");
-  };
-  
+};
 
-  const fetchFights = async () => {
+
+const fetchFights = async () => {
     const url = `${process.env.API_URL}/v1/fights/?page_num=1&page_size=10000`;
     const res = await fetch(url, options);
     const fights = await res.json();
-  
+
     await Promise.all(
-      fights.map((fight: any) => {
-        const broadcasters =
-          fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
-            const [country, network] = Object.entries(broadcaster)[0];
-            return {
-              country,
-              network,
-            };
-          }) || [];
-  
-        return prisma.fight.upsert({
-          where: { id: fight.id },
-          update: {
-            title: fight.title || null,
-            date: fight.date ? new Date(fight.date) : null,
-            eventTitle: fight.event.title || null,
-            eventDate: fight.event.date ? new Date(fight.event.date) : null,
-            location: fight.location || null,
-            result: fight.results ? {
-                outcome: fight.results.outcome ?? null,
-                round: fight.results.round ?? null,
-            } as Prisma.JsonObject : Prisma.JsonNull,
-            scheduledRounds: fight.scheduled_rounds || null,
-            scores: fight.scores || [],
-            status: fight.status || null,
-            division: fight.division?.name || null,
-            titles: {
-              connect:
-                fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
-            },
-            broadcasters: broadcasters,
-            fighter1Id: fight.fighters.fighter_1.fighter_id || null,
-            fighter2Id: fight.fighters.fighter_2.fighter_id || null,
-          },
-          create: {
-            id: fight.id,
-            title: fight.title || null,
-            date: fight.date ? new Date(fight.date) : null,
-            location: fight.location || null,
-            result: fight.results ? {
-                outcome: fight.results.outcome ?? null,
-                round: fight.results.round ?? null,
-            } as Prisma.JsonObject : Prisma.JsonNull,
-            scheduledRounds: fight.scheduled_rounds || null,
-            scores: fight.scores || [],
-            status: fight.status || null,
-            division: fight.division?.name || null,
-            titles: {
-              connect:
-                fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
-            },
-            broadcasters: broadcasters,
-            fighter1Id: fight.fighters.fighter_1.fighter_id || null,
-            fighter2Id: fight.fighters.fighter_2.fighter_id || null,
-          },
-        });
-      })
+        fights.map((fight: FightResponse) => {
+            const broadcasters =
+                fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
+                    const [country, network] = Object.entries(broadcaster)[0];
+                    return {
+                        country,
+                        network,
+                    };
+                }) || [];
+
+            return prisma.fight.upsert({
+                where: { id: fight.id },
+                update: {
+                    title: fight.title || null,
+                    date: fight.date ? new Date(fight.date) : null,
+                    eventTitle: fight.event.title || null,
+                    eventDate: fight.event.date ? new Date(fight.event.date) : null,
+                    location: fight.location || null,
+                    result: fight.results ? {
+                        outcome: fight.results.outcome ?? null,
+                        round: fight.results.round ?? null,
+                    } as Prisma.JsonObject : Prisma.JsonNull,
+                    scheduledRounds: fight.scheduled_rounds || null,
+                    scores: fight.scores || [],
+                    status: fight.status || null,
+                    division: fight.division?.name || null,
+                    titles: {
+                        connect:
+                            fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
+                    },
+                    broadcasters: broadcasters,
+                    fighter1Id: fight.fighters.fighter_1.fighter_id || null,
+                    fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+                },
+                create: {
+                    id: fight.id,
+                    title: fight.title || null,
+                    date: fight.date ? new Date(fight.date) : null,
+                    location: fight.location || null,
+                    result: fight.results ? {
+                        outcome: fight.results.outcome ?? null,
+                        round: fight.results.round ?? null,
+                    } as Prisma.JsonObject : Prisma.JsonNull,
+                    scheduledRounds: fight.scheduled_rounds || null,
+                    scores: fight.scores || [],
+                    status: fight.status || null,
+                    division: fight.division?.name || null,
+                    titles: {
+                        connect:
+                            fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
+                    },
+                    broadcasters: broadcasters,
+                    fighter1Id: fight.fighters.fighter_1.fighter_id || null,
+                    fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+                },
+            });
+        })
     );
     console.log("Finished fetching fights: " + fights.length);
-  };
-  
+};
+
 
 const fetchRankings = async () => {
     const { mensScrapedRankings, womensCrapedRankings } = await scrapeRankings();

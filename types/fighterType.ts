@@ -37,5 +37,5 @@ export interface FighterProps {
     divisionSlug?: string | null;
     weightLb?: number | null;
     weightKg?: number | null;
-    titleNames?: TitleProps[] | null;
+    titles?: TitleProps[] | null;
 }
