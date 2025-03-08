@@ -207,16 +207,7 @@ const fetchFights = async () => {
     const limit = pLimit(5);
     await Promise.all(
         fights.map((fight: FightResponse) => {
-            const broadcasters =
-                fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
-                    const [country, network] = Object.entries(broadcaster)[0];
-                    return {
-                        country,
-                        network,
-                    };
-                }) || [];
-
-            return limit(() => {
+            return limit(() =>
                 prisma.fight.upsert({
                     where: { id: fight.id },
                     update: {
@@ -237,7 +228,13 @@ const fetchFights = async () => {
                             connect:
                                 fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
                         },
-                        broadcasters: broadcasters,
+                        broadcasters: fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
+                            const [country, network] = Object.entries(broadcaster)[0];
+                            return {
+                                country,
+                                network,
+                            };
+                        }) || [],
                         fighter1Id: fight.fighters.fighter_1.fighter_id || null,
                         fighter2Id: fight.fighters.fighter_2.fighter_id || null,
                     },
@@ -258,12 +255,18 @@ const fetchFights = async () => {
                             connect:
                                 fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
                         },
-                        broadcasters: broadcasters,
+                        broadcasters: fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
+                            const [country, network] = Object.entries(broadcaster)[0];
+                            return {
+                                country,
+                                network,
+                            };
+                        }) || [],
                         fighter1Id: fight.fighters.fighter_1.fighter_id || null,
                         fighter2Id: fight.fighters.fighter_2.fighter_id || null,
                     },
                 })
-            });
+            )
         })
     );
     console.log("Finished fetching fights: " + fights.length);
