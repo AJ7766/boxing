@@ -206,7 +206,7 @@ const fetchFights = async () => {
     await Promise.all(
         fights.map((fight: FightResponse) =>
             limit(() => {
-                return prisma.fight.upsert({
+                prisma.fight.upsert({
                     where: { id: fight.id },
                     update: {
                         title: fight.title || null,
