@@ -13,77 +13,68 @@ export const getSearchParams = async ({ searchParams }: { searchParams: Promise<
 }
 
 export const getFights = async (query: string, start: number, end: number, oneWeekAgo: Date) => {
-    const fightsPromise = prisma.fight.findMany({
-        where: {
-            OR: query
-                ? [
-                    { title: { contains: query, mode: 'insensitive' } },
-                    { fighter1: { name: { contains: query, mode: 'insensitive' } } },
-                    { fighter2: { name: { contains: query, mode: 'insensitive' } } }
-                ]
-                : undefined,
-            date: {
-                gte: oneWeekAgo,
+    const [fights, totalFights] = await prisma.$transaction([
+        prisma.fight.findMany({
+            where: {
+                OR: query
+                    ? [
+                        { title: { contains: query, mode: 'insensitive' } },
+                        { fighter1: { name: { contains: query, mode: 'insensitive' } } },
+                        { fighter2: { name: { contains: query, mode: 'insensitive' } } }
+                    ]
+                    : undefined,
+                date: { gte: oneWeekAgo },
             },
-        },
-        skip: query ? 0 : start,
-        take: end - start,
-        select: {
-            title: true,
-            fighter1: {
-                select: {
-                    name: true,
-                    nickname: true,
-                    wins: true,
-                    losses: true,
-                    draws: true,
-                    total_bouts: true,
-                    ko_wins: true,
-                    stopped: true,
+            skip: query ? 0 : start,
+            take: end - start,
+            select: {
+                title: true,
+                fighter1: {
+                    select: {
+                        name: true,
+                        nickname: true,
+                        wins: true,
+                        losses: true,
+                        draws: true,
+                        total_bouts: true,
+                        ko_wins: true,
+                        stopped: true,
+                    },
                 },
-            },
-            fighter2: {
-                select: {
-                    name: true,
-                    nickname: true,
-                    wins: true,
-                    losses: true,
-                    draws: true,
-                    total_bouts: true,
-                    ko_wins: true,
-                    stopped: true,
+                fighter2: {
+                    select: {
+                        name: true,
+                        nickname: true,
+                        wins: true,
+                        losses: true,
+                        draws: true,
+                        total_bouts: true,
+                        ko_wins: true,
+                        stopped: true,
+                    },
                 },
+                date: true,
+                location: true,
+                division: true,
+                broadcasters: true,
+                scheduledRounds: true,
+                titles: true,
             },
-            date: true,
-            location: true,
-            division: true,
-            broadcasters: true,
-            scheduledRounds: true,
-            titles: true,
-        },
-        orderBy: {
-            date: 'asc',
-        },
-    });
+            orderBy: { date: 'asc' },
+        }),
+        prisma.fight.count({
+            where: {
+                OR: query
+                    ? [
+                        { title: { contains: query, mode: 'insensitive' } },
+                        { fighter1: { name: { contains: query, mode: 'insensitive' } } },
+                        { fighter2: { name: { contains: query, mode: 'insensitive' } } }
+                    ]
+                    : undefined,
+                date: { gte: oneWeekAgo },
+            },
+        }),
+    ]);
 
-    const [fights, totalFights] = await Promise.all([fightsPromise, getTotalFights(oneWeekAgo, query)]);
     return { fights, totalFights };
-}
-
-const getTotalFights = async (oneWeekAgo: Date, query?: string) => {
-    const totalFights = prisma.fight.count({
-        where: {
-            ...(query && {
-                OR: [
-                    { title: { contains: query, mode: 'insensitive' } },
-                    { fighter1: { name: { contains: query, mode: 'insensitive' } } },
-                    { fighter2: { name: { contains: query, mode: 'insensitive' } } }
-                ],
-            }),
-            date: {
-                gte: oneWeekAgo,
-            },
-        },
-    });
-    return totalFights;
-}
+};
