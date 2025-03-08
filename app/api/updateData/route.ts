@@ -6,9 +6,7 @@ import { BroadcastProps } from "@/types/fightsType";
 import { Prisma } from "@prisma/client";
 import pLimit from "p-limit";
 
-export const dynamic = 'force-dynamic'
-
-// Define interfaces for your API responses
+// Interfaces for API responses
 interface FighterResponse {
     id: string;
     name?: string;
@@ -64,6 +62,8 @@ interface FightResponse {
     };
 }
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization') || req.headers.get('Authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
 }
 
 // Create a limiter with a concurrency of 5
-let limit = pLimit(5);
+const limit = pLimit(5);
 
 const fetchData = async () => {
     const metadata = await prisma.metadata.findUnique({
