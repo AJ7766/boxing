@@ -206,7 +206,7 @@ const fetchFights = async () => {
 
     const limit = pLimit(5);
     await Promise.all(
-        fights.map((fight: FightResponse, i: number) => {
+        fights.map((fight: FightResponse) => {
             const broadcasters =
                 fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
                     const [country, network] = Object.entries(broadcaster)[0];
