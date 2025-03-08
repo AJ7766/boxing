@@ -85,7 +85,7 @@ const fetchData = async () => {
 
     const now = new Date();
     const twentyThreeHoursAgo = new Date(now.getTime() - 23 * 60 * 60 * 1000);
-
+    // Check if data was updated within the last 23 hours
     if (metadata?.lastFetchedAt && metadata.lastFetchedAt > twentyThreeHoursAgo) {
         console.log("Skipping fetch: Data was updated recently.");
         return;
@@ -205,7 +205,7 @@ const fetchFights = async () => {
 
     await Promise.all(
         fights.map((fight: FightResponse) =>
-            limit(() => {
+            limit(() => void
                 prisma.fight.upsert({
                     where: { id: fight.id },
                     update: {
@@ -264,7 +264,7 @@ const fetchFights = async () => {
                         fighter2Id: fight.fighters.fighter_2.fighter_id || null,
                     },
                 })
-            })
+            )
         )
     );
     console.log("Finished fetching fights: " + fights.length);
