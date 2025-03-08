@@ -210,65 +210,63 @@ const fetchFights = async () => {
 
     await prisma.$transaction(
         fights.map((fight: FightResponse) =>
-            limit(() => {
-                return prisma.fight.upsert({
-                    where: { id: fight.id },
-                    update: {
-                        title: fight.title || null,
-                        date: fight.date ? new Date(fight.date) : null,
-                        eventTitle: fight.event.title || null,
-                        eventDate: fight.event.date ? new Date(fight.event.date) : null,
-                        location: fight.location || null,
-                        result: fight.results ? {
-                            outcome: fight.results.outcome ?? null,
-                            round: fight.results.round ?? null,
-                        } as Prisma.JsonObject : Prisma.JsonNull,
-                        scheduledRounds: fight.scheduled_rounds || null,
-                        scores: fight.scores || [],
-                        status: fight.status || null,
-                        division: fight.division?.name || null,
-                        titles: {
-                            connect:
-                                fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
-                        },
-                        broadcasters: fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
-                            const [country, network] = Object.entries(broadcaster)[0];
-                            return {
-                                country,
-                                network,
-                            };
-                        }) || [],
-                        fighter1Id: fight.fighters.fighter_1.fighter_id || null,
-                        fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+            prisma.fight.upsert({
+                where: { id: fight.id },
+                update: {
+                    title: fight.title || null,
+                    date: fight.date ? new Date(fight.date) : null,
+                    eventTitle: fight.event.title || null,
+                    eventDate: fight.event.date ? new Date(fight.event.date) : null,
+                    location: fight.location || null,
+                    result: fight.results ? {
+                        outcome: fight.results.outcome ?? null,
+                        round: fight.results.round ?? null,
+                    } as Prisma.JsonObject : Prisma.JsonNull,
+                    scheduledRounds: fight.scheduled_rounds || null,
+                    scores: fight.scores || [],
+                    status: fight.status || null,
+                    division: fight.division?.name || null,
+                    titles: {
+                        connect:
+                            fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
                     },
-                    create: {
-                        id: fight.id,
-                        title: fight.title || null,
-                        date: fight.date ? new Date(fight.date) : null,
-                        location: fight.location || null,
-                        result: fight.results ? {
-                            outcome: fight.results.outcome ?? null,
-                            round: fight.results.round ?? null,
-                        } as Prisma.JsonObject : Prisma.JsonNull,
-                        scheduledRounds: fight.scheduled_rounds || null,
-                        scores: fight.scores || [],
-                        status: fight.status || null,
-                        division: fight.division?.name || null,
-                        titles: {
-                            connect:
-                                fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
-                        },
-                        broadcasters: fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
-                            const [country, network] = Object.entries(broadcaster)[0];
-                            return {
-                                country,
-                                network,
-                            };
-                        }) || [],
-                        fighter1Id: fight.fighters.fighter_1.fighter_id || null,
-                        fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+                    broadcasters: fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
+                        const [country, network] = Object.entries(broadcaster)[0];
+                        return {
+                            country,
+                            network,
+                        };
+                    }) || [],
+                    fighter1Id: fight.fighters.fighter_1.fighter_id || null,
+                    fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+                },
+                create: {
+                    id: fight.id,
+                    title: fight.title || null,
+                    date: fight.date ? new Date(fight.date) : null,
+                    location: fight.location || null,
+                    result: fight.results ? {
+                        outcome: fight.results.outcome ?? null,
+                        round: fight.results.round ?? null,
+                    } as Prisma.JsonObject : Prisma.JsonNull,
+                    scheduledRounds: fight.scheduled_rounds || null,
+                    scores: fight.scores || [],
+                    status: fight.status || null,
+                    division: fight.division?.name || null,
+                    titles: {
+                        connect:
+                            fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
                     },
-                })
+                    broadcasters: fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
+                        const [country, network] = Object.entries(broadcaster)[0];
+                        return {
+                            country,
+                            network,
+                        };
+                    }) || [],
+                    fighter1Id: fight.fighters.fighter_1.fighter_id || null,
+                    fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+                },
             })
         )
     );
