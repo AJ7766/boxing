@@ -8,18 +8,21 @@ export const LinkC = ({ name, ref }: { name: string, ref: ForwardedRef<HTMLAncho
 
     useEffect(() => {
         const handleLoad = () => {
-            // Prefetch after the window has finished loading
             router.prefetch(href);
+            console.log('Prefetched', href);
         };
 
-        // Attach the load event listener
-        window.addEventListener('load', handleLoad);
+        // Check if the document is already loaded
+        if (document.readyState === "complete") {
+            handleLoad();
+        } else {
+            window.addEventListener("load", handleLoad);
+        }
 
-        // Cleanup the event listener on component unmount
         return () => {
-            window.removeEventListener('load', handleLoad);
+            window.removeEventListener("load", handleLoad);
         };
-    }, [href, router]);    
+    }, [href, router]); 
 
     return <Link
         ref={ref}
