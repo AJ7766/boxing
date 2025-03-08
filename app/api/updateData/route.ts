@@ -206,7 +206,7 @@ const fetchFights = async () => {
 
     const limit = pLimit(5);
     await Promise.all(
-        fights.map((fight: FightResponse) => {
+        fights.map((fight: FightResponse, i: number) => {
             const broadcasters =
                 fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
                     const [country, network] = Object.entries(broadcaster)[0];
@@ -216,7 +216,7 @@ const fetchFights = async () => {
                     };
                 }) || [];
 
-            return limit(() =>
+            return limit(() => {
                 prisma.fight.upsert({
                     where: { id: fight.id },
                     update: {
@@ -263,6 +263,8 @@ const fetchFights = async () => {
                         fighter2Id: fight.fighters.fighter_2.fighter_id || null,
                     },
                 })
+                console.log("Fetched fight:", i)
+            }
             );
         })
     );
