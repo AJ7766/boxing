@@ -6,7 +6,11 @@ interface FightProps {
 export const BgText = ({ fighter1, fighter2 }: FightProps) => {
     return (
         <div className="absolute h-auto top-0 flex flex-col justify-center overflow-hidden text-gray-100 opacity-60 text-[350px] font-semibold whitespace-nowrap leading-none -z-10">
-            <h1 className="text-start">{fighter1} <br />{fighter2}</h1>
+            <span className="text-start">
+                {fighter1}
+                <br />
+                {fighter2}
+            </span>
         </div >
     );
 };

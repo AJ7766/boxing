@@ -1,7 +1,6 @@
 import { BgText } from "@/components/News/BgText";
 import { prisma } from "@/lib/prisma";
 import { Video } from "@/components/News/Video";
-import { Countdown } from "@/components/News/Countdown";
 import { EventDetails } from "@/components/News/EventDetails";
 import { BroadcastProps } from "@/types/fightsType";
 import { Hero } from "@/components/News/Hero";

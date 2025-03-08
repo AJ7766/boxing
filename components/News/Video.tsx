@@ -24,7 +24,9 @@ export const Video = ({ id, alt, type }: VideoProps) => {
                     className="w-auto transform transition-transform duration-300 ease-[cubic-bezier(0.25, 0, 0.35, 1)] hover:scale-105"
                 />
             </Link>
-            {isClient && <span className="absolute top-2 left-2 text-white text-xl font-semibold drop-shadow-[2px_1px_2.5px_black]">{type}</span>}
+            {isClient &&
+                <span className="absolute top-2 left-2 text-white text-xl font-semibold drop-shadow-[2px_1px_2.5px_black]">{type}
+                </span>}
         </div>
     )
 }
