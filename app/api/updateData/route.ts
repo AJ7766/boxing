@@ -65,7 +65,7 @@ interface FightResponse {
 export const dynamic = 'force-dynamic'
 
 export async function GET(req: NextRequest) {
-    const authHeader = req.headers.get('authorization') || req.headers.get('Authorization');
+    const authHeader = req.headers.get('authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
         return NextResponse.json('Unauthorized', {
             status: 401,
