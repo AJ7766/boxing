@@ -4,10 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { RankingsProps } from '@/types/rankingsTypes';
 
 export default async function Rankings() {
-    const [mensRankings, womensRankings] = await prisma.$transaction([
+    const [mensRankings, womensRankings] = await Promise.all([
         prisma.mensRankings.findMany({}),
-        prisma.womensRankings.findMany({}),
-    ]);
+        prisma.womensRankings.findMany({})
+    ])
 
     JSON.parse(JSON.stringify(mensRankings));
     JSON.parse(JSON.stringify(womensRankings));
