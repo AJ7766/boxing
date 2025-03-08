@@ -3,44 +3,36 @@ import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
 export const scrapeRankings = async () => {
-    // Launch a new browser instance
+    // Create a new browser instance
     const browser = await puppeteer.launch({
         args: chromium.args,
         executablePath: process.env.NODE_ENV === 'development' ? process.env.LOCAL_CHROME as string
             : await chromium.executablePath(),
         headless: chromium.headless === 'true',
     });
-
+    // Create a new page
     const page = await browser.newPage();
-
     // Navigate to the Wikipedia page
     await page.goto(process.env.SCRAPE_RANKING_URL as string);
-
     // Wait for the tables to load
     await page.waitForSelector('table');
-
     // Extract data for men's and women's rankings
     const rankings = await page.evaluate(() => {
         const mensRows = Array.from(document.querySelectorAll('table:nth-of-type(1) tr'));
         const womensRows = Array.from(document.querySelectorAll('table:nth-of-type(2) tr'));
-
         // Filter out rows that don't contain <td> elements (headers or empty rows)
         const mensDataRows = mensRows.filter(row => row.querySelectorAll('td').length > 0);
         const womensDataRows = womensRows.filter(row => row.querySelectorAll('td').length > 0);
-
         // Find the index where the unwanted section starts (men's rankings section)
         const stopMensIndex = mensDataRows.findIndex(row =>
             row.textContent?.trim().toLowerCase().includes("current world champions")
         );
-
         const stopWomensIndex = womensDataRows.findIndex(row =>
             row.textContent?.trim().toLowerCase().includes("current world champions")
         );
-
         // Get the valid rows for men's and women's rankings
         const validMensRows = stopMensIndex !== -1 ? mensDataRows.slice(0, stopMensIndex) : mensDataRows;
         const validWomensRows = stopWomensIndex !== -1 ? womensDataRows.slice(0, stopWomensIndex) : womensDataRows;
-
         // Map the men’s and women’s data separately
         const mensRankings: RankingsProps[] = validMensRows.map(row => {
             const cells = Array.from(row.querySelectorAll('td'));

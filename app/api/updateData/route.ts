@@ -132,7 +132,7 @@ const fetchTitles = async () => {
             )
         )
     );
-    console.log("Finished fetching titles");
+    console.log("Finished fetching titles", titles.length);
 };
 
 const fetchFighters = async () => {
@@ -200,7 +200,7 @@ const fetchFighters = async () => {
             )
         )
     );
-    console.log("Finished fetching fighters");
+    console.log("Finished fetching fighters", fighters.length);
 };
 
 const fetchFights = async () => {
