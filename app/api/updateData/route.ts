@@ -88,11 +88,10 @@ const fetchData = async () => {
         return;
     }
 
+    const limit = pLimit(5);
+
     console.log("Fetching new data...");
-    await fetchTitles();
-    await fetchFighters();
-    await fetchFights();
-    await fetchRankings();
+    await Promise.all([limit(fetchTitles), limit(fetchFighters), limit(fetchFights), limit(fetchRankings)]);
 
     await prisma.metadata.upsert({
         where: { id: 1 },
@@ -206,82 +205,69 @@ const fetchFights = async () => {
     const fights = await res.json();
 
     const limit = pLimit(5);
-    const BATCH_SIZE = 250;  // Process 250 fights per batch
+    await Promise.all(
+        fights.map((fight: FightResponse) => {
+            const broadcasters =
+                fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
+                    const [country, network] = Object.entries(broadcaster)[0];
+                    return {
+                        country,
+                        network,
+                    };
+                }) || [];
 
-    // Split into batches of 250 fights
-    for (let i = 0; i < fights.length; i += BATCH_SIZE) {
-        const batch = fights.slice(i, i + BATCH_SIZE);
-
-        await Promise.all(
-            batch.map((fight: FightResponse) => {
-                const broadcasters =
-                    fight.event.broadcasters?.map((broadcaster: BroadcastProps) => {
-                        const [country, network] = Object.entries(broadcaster)[0];
-                        return {
-                            country,
-                            network,
-                        };
-                    }) || [];
-
-                return limit(() =>
-                    prisma.fight.upsert({
-                        where: { id: fight.id },
-                        update: {
-                            title: fight.title || null,
-                            date: fight.date ? new Date(fight.date) : null,
-                            eventTitle: fight.event.title || null,
-                            eventDate: fight.event.date ? new Date(fight.event.date) : null,
-                            location: fight.location || null,
-                            result: fight.results ? {
-                                outcome: fight.results.outcome ?? null,
-                                round: fight.results.round ?? null,
-                            } as Prisma.JsonObject : Prisma.JsonNull,
-                            scheduledRounds: fight.scheduled_rounds || null,
-                            scores: fight.scores || [],
-                            status: fight.status || null,
-                            division: fight.division?.name || null,
-                            titles: {
-                                connect:
-                                    fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
-                            },
-                            broadcasters: broadcasters,
-                            fighter1Id: fight.fighters.fighter_1.fighter_id || null,
-                            fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+            return limit(() =>
+                prisma.fight.upsert({
+                    where: { id: fight.id },
+                    update: {
+                        title: fight.title || null,
+                        date: fight.date ? new Date(fight.date) : null,
+                        eventTitle: fight.event.title || null,
+                        eventDate: fight.event.date ? new Date(fight.event.date) : null,
+                        location: fight.location || null,
+                        result: fight.results ? {
+                            outcome: fight.results.outcome ?? null,
+                            round: fight.results.round ?? null,
+                        } as Prisma.JsonObject : Prisma.JsonNull,
+                        scheduledRounds: fight.scheduled_rounds || null,
+                        scores: fight.scores || [],
+                        status: fight.status || null,
+                        division: fight.division?.name || null,
+                        titles: {
+                            connect:
+                                fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
                         },
-                        create: {
-                            id: fight.id,
-                            title: fight.title || null,
-                            date: fight.date ? new Date(fight.date) : null,
-                            location: fight.location || null,
-                            result: fight.results ? {
-                                outcome: fight.results.outcome ?? null,
-                                round: fight.results.round ?? null,
-                            } as Prisma.JsonObject : Prisma.JsonNull,
-                            scheduledRounds: fight.scheduled_rounds || null,
-                            scores: fight.scores || [],
-                            status: fight.status || null,
-                            division: fight.division?.name || null,
-                            titles: {
-                                connect:
-                                    fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
-                            },
-                            broadcasters: broadcasters,
-                            fighter1Id: fight.fighters.fighter_1.fighter_id || null,
-                            fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+                        broadcasters: broadcasters,
+                        fighter1Id: fight.fighters.fighter_1.fighter_id || null,
+                        fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+                    },
+                    create: {
+                        id: fight.id,
+                        title: fight.title || null,
+                        date: fight.date ? new Date(fight.date) : null,
+                        location: fight.location || null,
+                        result: fight.results ? {
+                            outcome: fight.results.outcome ?? null,
+                            round: fight.results.round ?? null,
+                        } as Prisma.JsonObject : Prisma.JsonNull,
+                        scheduledRounds: fight.scheduled_rounds || null,
+                        scores: fight.scores || [],
+                        status: fight.status || null,
+                        division: fight.division?.name || null,
+                        titles: {
+                            connect:
+                                fight.titles?.map((title: TitleProps) => ({ id: title.id })) || [],
                         },
-                    })
-                );
-            })
-        );
-
-        console.log(`Processed batch ${i / BATCH_SIZE + 1} of ${Math.ceil(fights.length / BATCH_SIZE)}`);
-        await delay(1000); // Wait 1 second before next batch
-    }
-
+                        broadcasters: broadcasters,
+                        fighter1Id: fight.fighters.fighter_1.fighter_id || null,
+                        fighter2Id: fight.fighters.fighter_2.fighter_id || null,
+                    },
+                })
+            );
+        })
+    );
     console.log("Finished fetching fights: " + fights.length);
 };
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const fetchRankings = async () => {
     const { mensScrapedRankings, womensCrapedRankings } = await scrapeRankings();
@@ -291,7 +277,7 @@ const fetchRankings = async () => {
     const mensRankingPromises = mensScrapedRankings.map((ranking) => {
         return limit(() =>
             prisma.mensRankings.upsert({
-                where: { id: ranking.id },
+                where: { id: ranking.id }, // Use id as the unique identifier for mensRankings
                 update: {
                     boxer: ranking.boxer || '-',
                     record: ranking.record || '-',
@@ -304,7 +290,7 @@ const fetchRankings = async () => {
                     boxRec: ranking.boxRec || '-'
                 },
                 create: {
-                    id: ranking.id,
+                    id: ranking.id, // Ensure to pass the id for new records
                     boxer: ranking.boxer || '-',
                     record: ranking.record || '-',
                     weightClass: ranking.weightClass || '-',
@@ -318,12 +304,11 @@ const fetchRankings = async () => {
             })
         );
     });
-
     // Create an array to hold promises for womensRankings
     const womensRankingPromises = womensCrapedRankings.map((ranking) => {
         return limit(() =>
             prisma.womensRankings.upsert({
-                where: { id: ranking.id },
+                where: { id: ranking.id }, // Use id as the unique identifier for womensRankings
                 update: {
                     boxer: ranking.boxer || '-',
                     record: ranking.record || '-',
@@ -334,7 +319,7 @@ const fetchRankings = async () => {
                     boxRec: ranking.boxRec || '-'
                 },
                 create: {
-                    id: ranking.id,
+                    id: ranking.id, // Ensure to pass the id for new records
                     boxer: ranking.boxer || '-',
                     record: ranking.record || '-',
                     weightClass: ranking.weightClass || '-',
