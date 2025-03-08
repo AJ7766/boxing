@@ -33,7 +33,7 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
 
     return (
         <>
-            <div className='flex text-2xl font-medium justify-center mt-10'>
+            <div className='flex text-2xl font-semibold justify-center mt-10'>
                 <CategoryButton womens={!womens} category="Men" onClick={() => setWomens(false)} />
                 <CategoryButton womens={womens} category="Women" onClick={() => setWomens(true)} />
             </div>
@@ -107,7 +107,7 @@ export const Table = ({ mensRankings, womensRankings }: { mensRankings: Rankings
 
 const CategoryButton = ({ womens, category, onClick }: { womens: boolean, category: string, onClick: () => void }) => {
     return <button className={`relative px-3 py-2 
-        after:content-[''] after:absolute after:bottom-2 after:h-[3px] after:left-1/2 after:-translate-x-1/2 after:bg-red-600 after:transition-[width] after:duration-300 
+        after:content-[''] after:absolute after:bottom-2 after:h-[2.5px] after:left-1/2 after:-translate-x-1/2 after:bg-red-600 after:transition-[width] after:duration-300 
         ${womens ? 'after:w-2/5' : 'after:w-0 hover:after:w-[calc(100%-24px)]'}`} onClick={onClick}>{category}&apos;s</button>
 }
 

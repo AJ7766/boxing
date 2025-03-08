@@ -4,6 +4,7 @@ import { useIsClient } from "@/hooks/useClient";
 import { DateTime } from 'luxon';
 import { BroadcastProps } from '@/types/fightsType';
 import Image from 'next/image';
+import { Countdown } from './Countdown';
 
 interface EventDetailsProps {
     fighter1?: string | null;
@@ -16,7 +17,8 @@ interface EventDetailsProps {
 export const EventDetails = ({ fighter1, fighter2, eventDate, location, date, broadcasters }: EventDetailsProps) => {
     const isClient = useIsClient();
 
-    return <div className='font-bold'>
+    return <div className='font-bold text-xl'>
+        <Countdown date={date} />
         {/* Fighter1 vs Fighter2 */}
         <div /> <time />
         <p className="font-bold">{fighter1} vs {fighter2}</p>

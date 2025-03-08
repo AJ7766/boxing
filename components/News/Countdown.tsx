@@ -1,6 +1,7 @@
 "use client";
 import { DateTime } from "luxon";
 import React, { useCallback, useEffect, useState } from "react";
+import { Title } from "../Title";
 
 export const Countdown = ({ date }: { date?: string | null }) => {
     const [countdown, setCountdown] = useState<string>("00:00:00:00");
@@ -30,9 +31,9 @@ export const Countdown = ({ date }: { date?: string | null }) => {
     }, [updateCountdown]);
 
     return (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 bg-white flex flex-col gap-1 text-center font-bold text-xl shadow">
-            <h2 className="text-2xl">EVENT STARTS IN</h2>
-            <div className="flex">
+        <div className="p-4 flex flex-col gap-1 font-bold text-center">
+            <Title>EVENT STARTS IN</Title>
+            <div className="flex text-center mx-auto">
                 {/* Splitting the countdown "00:00:00:00" => [00", "00", "00", "00] */}
                 {countdown && countdown.split(":").map((part, index) => (
                     <React.Fragment key={index}>
@@ -41,7 +42,7 @@ export const Countdown = ({ date }: { date?: string | null }) => {
                                 {/* Splitting each part of the countdown "00" => [0, 0], rendering two <span>*/}
                                 {part.split("").map((char, charIndex) => (
                                     <span
-                                        className='relative w-6 bg-gray-300'
+                                        className='relative text-3xl w-6'
                                         key={charIndex}
                                     >
                                         {char}
@@ -49,11 +50,11 @@ export const Countdown = ({ date }: { date?: string | null }) => {
                                 ))}
                             </div>
                             {/* Rendering the unit of the countdown */}
-                            <span>{["DAYS", "HOURS", "MINS", "SECS"][index]}</span>
+                            <span className="text-xl">{["DAYS", "HOURS", "MINS", "SECS"][index]}</span>
                         </div>
                         {/* Rendering the ":" between each part of the countdown */}
                         {index < countdown.split(":").length - 1 && (
-                            <span className="relative mx-1">:</span>
+                            <span className="relative text-3xl mx-1 text-red-500">:</span>
                         )}
                     </React.Fragment>
                 ))}

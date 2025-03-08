@@ -5,13 +5,13 @@ import { dazn } from "@/fonts/fonts";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const Hero = () => {
+export const Hero = ({ fighter1, fighter2 }: { fighter1?: string | null, fighter2?: string | null }) => {
     return (
         <div className="h-screen w-full">
-            <section className={`${dazn.className} fixed h-full w-full bg-[#f7fe19] font-semibold text-[8.5vw] leading-[1.1] flex items-center flex-col justify-center -z-10`}>
-                <h1>RYAN GARCIA</h1>
+            <section className={`${dazn.className} fixed h-full w-full bg-[#f7fe19] font-semibold text-[8vw] leading-[1.1] flex items-center flex-col justify-center -z-10`}>
+                <h1>{fighter1}</h1>
                 <h1>VS</h1>
-                <h1>ROLLY ROMERO</h1>
+                <h1>{fighter2}</h1>
             </section>
         </div>
     )
