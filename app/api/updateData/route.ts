@@ -206,7 +206,7 @@ const fetchFights = async () => {
     await Promise.all(
         fights.map((fight: FightResponse) =>
             limit(() => {
-                prisma.fight.upsert({
+                return prisma.fight.upsert({
                     where: { id: fight.id },
                     update: {
                         title: fight.title || null,
@@ -274,8 +274,8 @@ const fetchRankings = async () => {
     const { mensScrapedRankings, womensCrapedRankings } = await scrapeRankings();
 
     // Create an array to hold promises for mensRankings
-    const mensRankingPromises = mensScrapedRankings.map((ranking) => {
-        return limit(() => {
+    const mensRankingPromises = mensScrapedRankings.map((ranking) =>
+        limit(() => {
             prisma.mensRankings.upsert({
                 where: { id: ranking.id }, // Use id as the unique identifier for mensRankings
                 update: {
@@ -303,10 +303,10 @@ const fetchRankings = async () => {
                 }
             })
         })
-    });
+    )
     // Create an array to hold promises for womensRankings
-    const womensRankingPromises = womensCrapedRankings.map((ranking) => {
-        return limit(() => {
+    const womensRankingPromises = womensCrapedRankings.map((ranking) =>
+        limit(() => {
             prisma.womensRankings.upsert({
                 where: { id: ranking.id }, // Use id as the unique identifier for womensRankings
                 update: {
@@ -330,8 +330,7 @@ const fetchRankings = async () => {
                 }
             })
         })
-    });
-
+    )
     // Wait for all promises to resolve
     await Promise.all([...mensRankingPromises, ...womensRankingPromises]);
 
