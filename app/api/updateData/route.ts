@@ -58,9 +58,6 @@ const fetchTitles = async () => {
     const url = `${process.env.API_URL}/v1/titles/?page_num=1&page_size=200`;
     const res = await fetch(url, options);
     const titles = await res.json();
-    for (let i = 0; i < titles.length; i++) {
-        const title = titles[i];
-
         // Use upsert to avoid duplicate titles based on the unique id field
         await Promise.all(
             titles.map((title: TitleProps) =>
@@ -71,7 +68,6 @@ const fetchTitles = async () => {
               })
             )
           );
-    }
     console.log("Finished fetching titles");
 };
 
@@ -166,12 +162,10 @@ const fetchFighters = async () => {
             eventTitle: fight.event.title || null,
             eventDate: fight.event.date ? new Date(fight.event.date) : null,
             location: fight.location || null,
-            result: fight.results
-              ? {
-                  outcome: fight.results.outcome ?? null,
-                  round: fight.results.round ?? null,
-                }
-              : null,
+            result: fight.results ? {
+                outcome: fight.results.outcome ?? null,
+                round: fight.results.round ?? null,
+            } as Prisma.JsonObject : Prisma.JsonNull,
             scheduledRounds: fight.scheduled_rounds || null,
             scores: fight.scores || [],
             status: fight.status || null,
@@ -189,12 +183,10 @@ const fetchFighters = async () => {
             title: fight.title || null,
             date: fight.date ? new Date(fight.date) : null,
             location: fight.location || null,
-            result: fight.results
-              ? {
-                  outcome: fight.results.outcome ?? null,
-                  round: fight.results.round ?? null,
-                }
-              : null,
+            result: fight.results ? {
+                outcome: fight.results.outcome ?? null,
+                round: fight.results.round ?? null,
+            } as Prisma.JsonObject : Prisma.JsonNull,
             scheduledRounds: fight.scheduled_rounds || null,
             scores: fight.scores || [],
             status: fight.status || null,
