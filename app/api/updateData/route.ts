@@ -210,8 +210,8 @@ const fetchFights = async () => {
 
     await prisma.$transaction(
         fights.map((fight: FightResponse) =>
-            limit(() => void
-                prisma.fight.upsert({
+            limit(() => {
+                return prisma.fight.upsert({
                     where: { id: fight.id },
                     update: {
                         title: fight.title || null,
@@ -269,7 +269,7 @@ const fetchFights = async () => {
                         fighter2Id: fight.fighters.fighter_2.fighter_id || null,
                     },
                 })
-            )
+            })
         )
     );
     console.log("Finished fetching fights: " + fights.length);
