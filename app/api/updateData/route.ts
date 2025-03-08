@@ -75,6 +75,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Data fetched successfully" });
 }
 
+// Create a limiter with a concurrency of 5
+let limit = pLimit(5);
+
 const fetchData = async () => {
     const metadata = await prisma.metadata.findUnique({
         where: { id: 1 },
@@ -87,8 +90,6 @@ const fetchData = async () => {
         console.log("Skipping fetch: Data was updated recently.");
         return;
     }
-
-    const limit = pLimit(5);
 
     console.log("Fetching new data...");
     await Promise.all([limit(fetchTitles), limit(fetchFighters), limit(fetchFights), limit(fetchRankings)]);
@@ -114,17 +115,16 @@ const fetchTitles = async () => {
     const url = `${process.env.API_URL}/v1/titles/?page_num=1&page_size=200`;
     const res = await fetch(url, options);
     const titles = await res.json();
-    // Create a limiter with a concurrency of 5
-    const limit = pLimit(5);
+
     await Promise.all(
         titles.map((title: TitleProps) =>
-            limit(() =>
+            limit(() => {
                 prisma.title.upsert({
                     where: { id: title.id },
                     update: { name: title.name },
                     create: { id: title.id, name: title.name },
                 })
-            )
+            })
         )
     );
     console.log("Finished fetching titles");
@@ -135,10 +135,9 @@ const fetchFighters = async () => {
     const res = await fetch(url, options);
     const fighters = await res.json();
 
-    const limit = pLimit(5);
     await Promise.all(
         fighters.map((fighter: FighterResponse) =>
-            limit(() =>
+            limit(() => {
                 prisma.fighter.upsert({
                     where: { id: fighter.id },
                     update: {
@@ -193,7 +192,7 @@ const fetchFighters = async () => {
                         weightKg: fighter.division?.weight_kg || null,
                     },
                 })
-            )
+            })
         )
     );
     console.log("Finished fetching fighters");
@@ -204,10 +203,9 @@ const fetchFights = async () => {
     const res = await fetch(url, options);
     const fights = await res.json();
 
-    const limit = pLimit(5);
     await Promise.all(
         fights.map((fight: FightResponse) =>
-            limit(() =>
+            limit(() => {
                 prisma.fight.upsert({
                     where: { id: fight.id },
                     update: {
@@ -266,7 +264,7 @@ const fetchFights = async () => {
                         fighter2Id: fight.fighters.fighter_2.fighter_id || null,
                     },
                 })
-            )
+            })
         )
     );
     console.log("Finished fetching fights: " + fights.length);
@@ -274,11 +272,10 @@ const fetchFights = async () => {
 
 const fetchRankings = async () => {
     const { mensScrapedRankings, womensCrapedRankings } = await scrapeRankings();
-    const limit = pLimit(5);
 
     // Create an array to hold promises for mensRankings
     const mensRankingPromises = mensScrapedRankings.map((ranking) => {
-        return limit(() =>
+        return limit(() => {
             prisma.mensRankings.upsert({
                 where: { id: ranking.id }, // Use id as the unique identifier for mensRankings
                 update: {
@@ -305,11 +302,11 @@ const fetchRankings = async () => {
                     boxRec: ranking.boxRec || '-'
                 }
             })
-        );
+        })
     });
     // Create an array to hold promises for womensRankings
     const womensRankingPromises = womensCrapedRankings.map((ranking) => {
-        return limit(() =>
+        return limit(() => {
             prisma.womensRankings.upsert({
                 where: { id: ranking.id }, // Use id as the unique identifier for womensRankings
                 update: {
@@ -332,7 +329,7 @@ const fetchRankings = async () => {
                     boxRec: ranking.boxRec || '-'
                 }
             })
-        );
+        })
     });
 
     // Wait for all promises to resolve
