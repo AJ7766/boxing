@@ -216,7 +216,7 @@ const fetchFights = async () => {
                     };
                 }) || [];
 
-            return limit(() => {
+            return limit(() => 
                 prisma.fight.upsert({
                     where: { id: fight.id },
                     update: {
@@ -263,8 +263,6 @@ const fetchFights = async () => {
                         fighter2Id: fight.fighters.fighter_2.fighter_id || null,
                     },
                 })
-                console.log("Fetched fight:", i)
-            }
             );
         })
     );
