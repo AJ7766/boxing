@@ -14,6 +14,7 @@ export const getSearchParams = async ({ searchParams }: { searchParams: Promise<
 
 export const getFights = async (query: string, start: number, end: number, oneWeekAgo: Date) => {
     const [fights, totalFights] = await Promise.all([
+        // Fetching fights
         prisma.fight.findMany({
             where: {
                 OR: query
