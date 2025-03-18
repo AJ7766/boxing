@@ -1,8 +1,15 @@
 import { prisma } from "@/lib/prisma";
-import { Video } from "@/components/News/Video";
-import { EventDetails } from "@/components/News/EventDetails";
+import dynamic from "next/dynamic";
 import { BroadcastProps } from "@/types/fightsType";
-import { Hero } from "@/components/News/Hero";
+const Hero = dynamic(() => 
+  import('@/components/News/Hero').then((mod) => mod.Hero)
+)
+const EventDetails = dynamic(() => 
+  import('@/components/News/EventDetails').then((mod) => mod.EventDetails)
+)
+const Video = dynamic(() => 
+  import('@/components/News/Video').then((mod) => mod.Video)
+)
 
 const videos = [
   {

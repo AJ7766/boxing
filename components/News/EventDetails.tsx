@@ -4,7 +4,10 @@ import { useIsClient } from "@/hooks/useClient";
 import { DateTime } from 'luxon';
 import { BroadcastProps } from '@/types/fightsType';
 import Image from 'next/image';
-import { Countdown } from './Countdown';
+import dynamic from 'next/dynamic';
+const Countdown = dynamic(() => 
+  import('@/components/News/Countdown').then((mod) => mod.Countdown)
+)
 
 interface EventDetailsProps {
     fighter1?: string | null;
