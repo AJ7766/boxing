@@ -49,13 +49,13 @@ export const Countdown = ({ date }: { date?: string | null }) => {
             <Title>EVENT STARTS IN</Title>
             <div className="flex flex-col align-center mx-auto">
                 <div className="flex text-4xl space-x-1">
-                    <AnimatedDigitTd digit={countdown.days} />
+                    <Digit digit={countdown.days} />
                     <span>:</span>
-                    <AnimatedDigitTd digit={countdown.hours} />
+                    <Digit digit={countdown.hours} />
                     <span>:</span>
-                    <AnimatedDigitTd digit={countdown.minutes} />
+                    <Digit digit={countdown.minutes} />
                     <span>:</span>
-                    <AnimatedDigitTd digit={countdown.seconds} />
+                    <Digit digit={countdown.seconds} />
                 </div>
                 <div className="flex text-lg mx-auto gap-2">
                     <span>DAYS</span>
@@ -67,6 +67,17 @@ export const Countdown = ({ date }: { date?: string | null }) => {
         </div >
     );
 };
+
+const Digit = ({ digit }: { digit: number }) => {
+    const padded = String(digit).padStart(2, "0");
+    return (
+        <div className="flex justify-center items-center">
+            {padded.split("").map((d, i) => (
+                <AnimatedDigit key={i} digit={Number(d)} />
+            ))}
+        </div>
+    );
+}
 
 const AnimatedDigit = ({ digit }: { digit: number }) => {
     const [prevDigit, setPrevDigit] = useState<string | null>(null);
@@ -119,21 +130,10 @@ const AnimatedDigit = ({ digit }: { digit: number }) => {
             )}
             <span
                 ref={currentRef}
-                className={`absolute top-0 left-0 w-full ${prevDigit ? "opacity-0" : "opacity-100"}`}
+                className={`absolute top-0 left-0 w-full`}
             >
                 {currentDigit}
             </span>
         </div>
     );
-};
-
-const AnimatedDigitTd = ({ digit }: { digit: number }) => {
-    const padded = String(digit).padStart(2, "0");
-    return (
-        <div className="flex justify-center items-center">
-            {padded.split("").map((d, i) => (
-                <AnimatedDigit key={i} digit={Number(d)} />
-            ))}
-        </div>
-    );
-};
+}
