@@ -2,7 +2,6 @@
 import { DateTime } from "luxon";
 import React, { useEffect, useRef, useState } from "react";
 import { Title } from "../Title";
-import { useIsClient } from "@/hooks/useClient";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -14,7 +13,6 @@ interface DateProps {
 }
 
 export const Countdown = ({ date }: { date?: string | null }) => {
-    const isClient = useIsClient();
     const [countdown, setCountdown] = useState<DateProps>({
         days: 0,
         hours: 0,
@@ -41,8 +39,6 @@ export const Countdown = ({ date }: { date?: string | null }) => {
         const interval = setInterval(updateCountdown, 1000);
         return () => clearInterval(interval);
     }, [date]);
-
-    if (!isClient) return null;
 
     return (
         <div className="p-4 flex flex-col font-bold text-center">
