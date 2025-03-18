@@ -1,4 +1,3 @@
-import { BgText } from "@/components/News/BgText";
 import { prisma } from "@/lib/prisma";
 import { Video } from "@/components/News/Video";
 import { EventDetails } from "@/components/News/EventDetails";
@@ -7,16 +6,41 @@ import { Hero } from "@/components/News/Hero";
 
 const videos = [
   {
+    id: 'Bjgke_VnPIk',
+    alt: 'Ryan Garcia and Devin Haney Face-Offs',
+    type: 'FACE-OFF'
+  },
+  {
     id: 'jkshdpVr2vk',
     alt: 'Fatal Fury NYC Launch Press Conference With Devin Haney, Ryan Garcia & Teofimo Lopez',
-    'type': 'PRESS CONFERENCE',
+    type: 'PRESS CONFERENCE',
   },
   {
     id: 'j6L7PxQvKmw',
     alt: 'RYAN GARCIA & EDDY TALK ROLLY ROMERO FIGHT! "RYAN IS ON ANOTHER LEVEL! HES GONNA BE READY',
     type: 'RYAN GARCIA TALKS ABOUT THE FIGHT',
   }]
+
+
 export default async function News() {
+  const fighterSelect = {
+    name: true,
+    nickname: true,
+    age: true,
+    height: true,
+    nationality: true,
+    reach: true,
+    stance: true,
+    wins: true,
+    losses: true,
+    draws: true,
+    total_bouts: true,
+    total_rounds: true,
+    ko_percentage: true,
+    ko_wins: true,
+    stopped: true,
+  };
+
   const id = '67c2bf078553c6d8585ef370';
   const fetchedFight = await prisma.fight.findUnique({
     where: { id },
@@ -26,8 +50,12 @@ export default async function News() {
       date: true,
       eventDate: true,
       broadcasters: true,
-      fighter1: { select: { name: true, nickname: true } },
-      fighter2: { select: { name: true, nickname: true } },
+      fighter1: {
+        select: fighterSelect
+      },
+      fighter2: {
+        select: fighterSelect
+      },
     },
   });
 
@@ -62,10 +90,6 @@ export default async function News() {
             ))
             }
           </div>
-          <BgText
-            fighter1={fetchedFight?.fighter1?.name || fetchedFight?.fighter1?.nickname}
-            fighter2={fetchedFight?.fighter2?.name || fetchedFight?.fighter2?.nickname}
-          />
         </div>
       </main >
     </>

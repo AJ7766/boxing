@@ -1,69 +1,139 @@
 "use client";
 import { DateTime } from "luxon";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Title } from "../Title";
+import { useIsClient } from "@/hooks/useClient";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+interface DateProps {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+}
 
 export const Countdown = ({ date }: { date?: string | null }) => {
-    const [countdown, setCountdown] = useState<string>("00:00:00:00");
+    const isClient = useIsClient();
+    const [countdown, setCountdown] = useState<DateProps>({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    });
 
-    const updateCountdown = useCallback(() => {
-        if (!date) return;
-        // Calculate the remaining time to the fight
-        // Converting to an object with days, hours, minutes and seconds
-        const now = DateTime.now();
-        const fightTime = DateTime.fromISO(date);
-        const diff = fightTime.diff(now, ["days", "hours", "minutes", "seconds"]).toObject();
-        if (!diff.seconds || diff.seconds < 0)
-            return setCountdown("00:00:00:00")
-        // Joining the object to display in "00:00:00:00" format
-        setCountdown([
-            formatNumber(diff.days),
-            formatNumber(diff.hours),
-            formatNumber(diff.minutes),
-            formatNumber(Math.floor(diff.seconds ?? 0))
-        ].join(":"));
-    }, [date]);
-
-    // Updating the countdown every second
     useEffect(() => {
+        if (!date) return;
+        const updateCountdown = () => {
+            const now = DateTime.now();
+            const fightTime = DateTime.fromISO(date);
+            const diff = fightTime.diff(now, ["days", "hours", "minutes", "seconds"]).toObject(); // Calculate the difference
+
+            setCountdown({
+                days: diff.days ?? 0,
+                hours: diff.hours ?? 0,
+                minutes: diff.minutes ?? 0,
+                seconds: Math.floor(diff.seconds || 0),
+            });
+        };
+        // Initial update, then update every second
+        updateCountdown();
         const interval = setInterval(updateCountdown, 1000);
         return () => clearInterval(interval);
-    }, [updateCountdown]);
+    }, [date]);
+
+    if (!isClient) return null;
 
     return (
-        <div className="p-4 flex flex-col gap-1 font-bold text-center">
+        <div className="p-4 flex flex-col font-bold text-center">
             <Title>EVENT STARTS IN</Title>
-            <div className="flex text-center mx-auto">
-                {/* Splitting the countdown "00:00:00:00" => [00", "00", "00", "00] */}
-                {countdown && countdown.split(":").map((part, index) => (
-                    <React.Fragment key={index}>
-                        <div key={index} className="flex flex-col items-center">
-                            <div className="flex gap-[2px]">
-                                {/* Splitting each part of the countdown "00" => [0, 0], rendering two <span>*/}
-                                {part.split("").map((char, charIndex) => (
-                                    <span
-                                        className='relative text-3xl w-6'
-                                        key={charIndex}
-                                    >
-                                        {char}
-                                    </span>
-                                ))}
-                            </div>
-                            {/* Rendering the unit of the countdown */}
-                            <span className="text-xl">{["DAYS", "HOURS", "MINS", "SECS"][index]}</span>
-                        </div>
-                        {/* Rendering the ":" between each part of the countdown */}
-                        {index < countdown.split(":").length - 1 && (
-                            <span className="relative text-3xl mx-1 text-red-500">:</span>
-                        )}
-                    </React.Fragment>
-                ))}
+            <div className="flex flex-col align-center mx-auto">
+                <div className="flex text-4xl space-x-1">
+                    <AnimatedDigitTd digit={countdown.days} />
+                    <span>:</span>
+                    <AnimatedDigitTd digit={countdown.hours} />
+                    <span>:</span>
+                    <AnimatedDigitTd digit={countdown.minutes} />
+                    <span>:</span>
+                    <AnimatedDigitTd digit={countdown.seconds} />
+                </div>
+                <div className="flex text-lg mx-auto gap-2">
+                    <span>DAYS</span>
+                    <span>HOURS</span>
+                    <span>MINS</span>
+                    <span>SECS</span>
+                </div>
             </div>
+        </div >
+    );
+};
+
+const AnimatedDigit = ({ digit }: { digit: number }) => {
+    const [prevDigit, setPrevDigit] = useState<string | null>(null);
+    const [currentDigit, setCurrentDigit] = useState<string>(String(digit));
+
+    // Refs for the outgoing (prev) and incoming (current) digits
+    const prevRef = useRef<HTMLSpanElement>(null);
+    const currentRef = useRef<HTMLSpanElement>(null);
+
+    // When the digit prop changes, store the old digit and update the current one.
+    useEffect(() => {
+        const newDigit = String(digit);
+        if (newDigit !== currentDigit) {
+            setPrevDigit(currentDigit);
+            setCurrentDigit(newDigit);
+        }
+    }, [digit, currentDigit]);
+
+    // Animate the digit transition whenever prevDigit is set.
+    useGSAP(() => {
+        if (prevDigit && prevRef.current && currentRef.current) {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    setPrevDigit(null);
+                },
+            });
+            // Animate the previous digit sliding down and fading out.
+            tl.to(prevRef.current, {
+                y: 50,
+                opacity: 0,
+                duration: 0.5,
+                ease: "power2.in",
+            });
+            // Animate the new digit sliding in from above.
+            tl.fromTo(
+                currentRef.current,
+                { y: -50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+                "-=0.3"
+            );
+        }
+    }, [prevDigit]);
+
+    return (
+        <div className="relative inline-block w-[18px] h-[2ch] overflow-hidden">
+            {prevDigit && (
+                <span ref={prevRef} className="absolute top-0 left-0 w-full">
+                    {prevDigit}
+                </span>
+            )}
+            <span
+                ref={currentRef}
+                className={`absolute top-0 left-0 w-full ${prevDigit ? "opacity-0" : "opacity-100"}`}
+            >
+                {currentDigit}
+            </span>
         </div>
     );
 };
 
-// Format a number with leading zeros, for example: 1 -> "01"
-const formatNumber = (num: number | undefined) => {
-    return num !== undefined ? num.toString().padStart(2, "0") : "00";
-}
+const AnimatedDigitTd = ({ digit }: { digit: number }) => {
+    const padded = String(digit).padStart(2, "0");
+    return (
+        <div className="flex justify-center items-center">
+            {padded.split("").map((d, i) => (
+                <AnimatedDigit key={i} digit={Number(d)} />
+            ))}
+        </div>
+    );
+};
