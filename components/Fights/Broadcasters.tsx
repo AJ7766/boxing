@@ -9,9 +9,9 @@ export const Broadcasters = ({ broadcasters }: { broadcasters?: BroadcastProps[]
             {broadcasters.map((broadcaster: BroadcastProps, i) => (
                 <div className="text-sm font-semibold flex items-center gap-2" key={i}>
                     {broadcaster.country.includes('United States') &&
-                        <Image src="/us.svg" width={22} height={22} alt="USA broadcaster" />}
+                        <Image src="/us.svg" width={22} height={22} loading='lazy' alt="USA broadcaster" />}
                     {broadcaster.country.includes('United Kingdom') &&
-                        <Image src="/gb.svg" width={22} height={22} alt="United Kingdom broadcaster" />}
+                        <Image src="/gb.svg" width={22} height={22} loading='lazy' alt="United Kingdom broadcaster" />}
                     <p>{broadcaster.network}</p>
                 </div>
             ))}

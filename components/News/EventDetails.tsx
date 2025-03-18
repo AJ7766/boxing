@@ -21,7 +21,7 @@ interface EventDetailsProps {
 
 export const EventDetails = ({ fighter1, fighter2, eventDate, location, date, broadcasters }: EventDetailsProps) => {
     const isClient = useIsClient();
-
+    
     return (
         <div className='font-bold text-xl'>
             {/* Countdown */}
