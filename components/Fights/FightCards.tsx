@@ -38,7 +38,7 @@ export const FightCards = () => {
     }, [isLoading, isClient]);
 
     // Skeleton
-    if (isClient || isLoading) {
+    if (!isClient || isLoading) {
         return (
             <>
                 <SkeletonCard />
