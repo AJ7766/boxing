@@ -53,7 +53,7 @@ export const FightCards = () => {
     return (
         // RENDER FIGHTS
         (fights?.map((fight, i) => (
-            <div ref={el => { containerRefs.current[i] = el }} className={`w-full mx-auto grid grid-cols-[30%_50%_auto] self-start items-start text-base gap-2 border-b mb-16 pb-2`} key={i}>
+            <div ref={el => { containerRefs.current[i] = el }} className={`w-full mx-auto grid grid-cols-[30%_50%_auto] self-start items-start text-base gap-2 border-b mb-10 pb-10`} key={i}>
                 <div className="flex flex-col justify-between text-left">
                     {/* FIGHT DATE */}
                     <FightDate date={fight.date ? new window.Date(fight.date).toISOString() : null} />
