@@ -3,8 +3,10 @@ export const FightersTable = ({ fighter1, stats1, fighter2, stats2 }: { fighter1
         <div className="h-full flex flex-col justify-between items-start">
             <table className="border-collapse">
                 <tbody>
-                    <tr className="text-xl font-bold leading-none border-b-[3px] border-gray-400">
-                        <td className="pr-4">{fighter1}</td>
+                    <tr className="relative text-xl font-bold leading-none
+                    before:w-full before:absolute before:bottom-0 before:left-0 before:h-[3px] 
+                    before:bg-gradient-to-r before:from-red-600 before:to-blue-black before:to-blue-500 before:animate-pulse">
+                        <td className="pr-4 inline-block">{fighter1}</td>
                         <td className="pr-4">VS</td>
                         <td>{fighter2}</td>
                     </tr>
