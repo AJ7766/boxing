@@ -48,7 +48,7 @@ export const Search = () => {
     if (!isClient) return;
 
     return (
-        <search ref={containerRef} className="mx-auto">
+        <search ref={containerRef} className="mx-auto pt-20 pb-8">
             <label htmlFor="searchQuery" className="sr-only">
                 Search fight
             </label>

@@ -37,14 +37,23 @@ export const FightCards = () => {
         });
     }, [isLoading, isClient]);
 
-    if (!isClient || isLoading) return <p className="text-center text-4xl font-medium">Loading...</p>;
+    // Skeleton
+    if (!isClient || isLoading) {
+        return (
+            <div className="w-full flex flex-col gap-4 animate-pulse ">
+                <div className="w-full bg-gray-200 mx-auto h-24 rounded" />
+                <div className="w-full bg-gray-200 mx-auto h-24 rounded" />
+                <div className="w-full bg-gray-200 mx-auto h-24 rounded" />
+            </div>
+        )
+    }
 
     if (fights?.length === 0) return <p className="text-center text-4xl font-medium">No fights found</p>
 
     return (
         // RENDER FIGHTS
         (fights?.map((fight, i) => (
-            <div ref={el => { containerRefs.current[i] = el }} className={`w-full mx-auto grid grid-cols-[30%_50%_auto] self-start items-start text-base gap-2 border-b mb-2`} key={i}>
+            <div ref={el => { containerRefs.current[i] = el }} className={`w-full mx-auto grid grid-cols-[30%_50%_auto] self-start items-start text-base gap-2 border-b mb-16 pb-2`} key={i}>
                 <div className="flex flex-col justify-between text-left">
                     {/* FIGHT DATE */}
                     <FightDate date={fight.date ? new window.Date(fight.date).toISOString() : null} />
