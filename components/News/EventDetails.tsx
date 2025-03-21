@@ -23,7 +23,7 @@ export const EventDetails = ({ fighter1, fighter2, eventDate, location, date, br
     const isClient = useIsClient();
     
     return (
-        <div className='font-bold text-xl'>
+        <div className='font-bold text-lg'>
             {/* Countdown */}
             <Countdown date={date} />
             {/* Fighter1 vs Fighter2 */}
