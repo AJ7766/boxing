@@ -38,7 +38,7 @@ export const FightCards = () => {
     }, [isLoading, isClient]);
 
     // Skeleton
-    if (!isClient || isLoading) {
+    if (isClient || isLoading) {
         return (
             <>
                 <SkeletonCard />
@@ -75,17 +75,17 @@ export const FightCards = () => {
 
 const SkeletonCard = () => (
     <div className="w-full flex flex-col gap-4 pb-10 animate-pulse">
-        <div className="w-full h-32 bg-gray-200 flex flex-col p-2 mx-auto rounded">
+        <div className="w-full h-32 bg-gray-100 flex flex-col p-2 mx-auto rounded">
             <div className="flex">
                 <div className="flex flex-col gap-2 w-1/3">
-                    <span className="w-24 h-6 bg-gray-400 rounded" />
-                    <span className="w-36 h-5 bg-gray-400 rounded" />
+                    <span className="w-24 h-6 bg-gray-200 rounded" />
+                    <span className="w-36 h-5 bg-gray-200 rounded" />
                 </div>
-                <span className="w-64 h-6 bg-gray-400 self-center rounded" />
+                <span className="w-64 h-6 bg-gray-200 self-center rounded" />
             </div>
             <div className="flex justify-between mt-auto">
-                <span className="w-20 h-6 bg-gray-400 rounded" />
-                <span className="w-20 h-6 bg-gray-400 rounded" />
+                <span className="w-20 h-6 bg-gray-200 rounded" />
+                <span className="w-20 h-6 bg-gray-200 rounded" />
             </div>
         </div>
     </div>
